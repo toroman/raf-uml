@@ -50,7 +50,7 @@ public class AddInheritanceTool implements MouseInputListener {
                             JOptionPane.DEFAULT_OPTION,
                             JOptionPane.ERROR_MESSAGE);
                     parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
-                    return;
+                    return; 
                 }
                 if (((UMLBox) object).inherits(from)) {
                     // Error: Vetj je nasledjen nasledjivanje
