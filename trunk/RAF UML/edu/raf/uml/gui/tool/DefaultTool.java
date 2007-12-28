@@ -15,12 +15,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package edu.raf.uml.gui;
+package edu.raf.uml.gui.tool;
 
 import java.awt.event.MouseEvent;
 
 import javax.swing.event.MouseInputListener;
 
+import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.gui.util.Draggable;
 import edu.raf.uml.gui.util.Focusable;
 import edu.raf.uml.model.UMLObject;

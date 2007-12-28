@@ -15,47 +15,28 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package edu.raf.uml.gui.tool;
 
-package edu.raf.uml.gui;
-
+import edu.raf.uml.gui.DiagramPanel;
+import edu.raf.uml.model.UMLObject;
 import java.awt.event.MouseEvent;
-
 import javax.swing.event.MouseInputListener;
 
-import edu.raf.uml.model.UMLClass;
-import edu.raf.uml.model.UMLObject;
-
-public class AddClassTool implements MouseInputListener {
+public class DeleteTool implements MouseInputListener {
 
 	public DiagramPanel parentPanel;
 
-	public AddClassTool(DiagramPanel parentPanel) {
+	public DeleteTool(DiagramPanel parentPanel) {
 		this.parentPanel = parentPanel;
 	}
 
 	public void mouseClicked(MouseEvent event) {
-		int count = 0;
-		for (UMLObject object : parentPanel.diagram.objects) {
-			if (object instanceof UMLClass
-					&& ((UMLClass) (object)).className.equals("NewClass"
-							+ count)) {
-				count++;
-			}
+		UMLObject object = parentPanel.diagram.getObjectAt(event.getPoint());
+		if (object != null) {
+			object.delete();
 		}
-		UMLClass newClass;
-		parentPanel.diagram.giveFocus(newClass = new UMLClass(
-				parentPanel.diagram, event.getX(), event.getY()));
-		newClass.className = "NewClass" + count;
 		parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
 		parentPanel.repaint();
-	}
-
-	public void mouseDragged(MouseEvent event) {
-
-	}
-
-	public void mouseMoved(MouseEvent arg0) {
-
 	}
 
 	public void mouseEntered(MouseEvent arg0) {
@@ -70,7 +51,15 @@ public class AddClassTool implements MouseInputListener {
 
 	}
 
-	public void mouseReleased(MouseEvent event) {
+	public void mouseReleased(MouseEvent arg0) {
+
+	}
+
+	public void mouseDragged(MouseEvent arg0) {
+
+	}
+
+	public void mouseMoved(MouseEvent arg0) {
 
 	}
 }
