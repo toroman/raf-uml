@@ -24,6 +24,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
+import edu.raf.uml.gui.tool.AddClassTool;
+import edu.raf.uml.gui.tool.AddInheritanceTool;
+import edu.raf.uml.gui.tool.DefaultTool;
+import edu.raf.uml.gui.tool.DeleteTool;
 import edu.raf.uml.model.UMLDiagram;
 
 @SuppressWarnings("serial")
