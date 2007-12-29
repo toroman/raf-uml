@@ -19,14 +19,12 @@ package edu.raf.uml.gui.tool;
 
 import java.awt.event.MouseEvent;
 
-import javax.swing.event.MouseInputListener;
-
 import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.gui.util.Draggable;
 import edu.raf.uml.gui.util.Focusable;
 import edu.raf.uml.model.UMLObject;
 
-public class DefaultTool implements MouseInputListener {
+public class DefaultTool extends AbstractDrawableTool {
 
 	public DiagramPanel parentPanel;
 	private Draggable draggingObject = null;
@@ -85,23 +83,7 @@ public class DefaultTool implements MouseInputListener {
 		}
 		parentPanel.repaint();
 	}
-
-	public void mouseMoved(MouseEvent arg0) {
-
-	}
-
-	public void mouseEntered(MouseEvent arg0) {
-
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-
-	}
-
-	public void mousePressed(MouseEvent arg0) {
-
-	}
-
+	
 	public void mouseReleased(MouseEvent event) {
 		if (dragging) {
 			if (draggingObject != null) {

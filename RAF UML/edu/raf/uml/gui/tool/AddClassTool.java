@@ -20,13 +20,11 @@ package edu.raf.uml.gui.tool;
 
 import java.awt.event.MouseEvent;
 
-import javax.swing.event.MouseInputListener;
-
 import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.model.UMLClass;
 import edu.raf.uml.model.UMLObject;
 
-public class AddClassTool implements MouseInputListener {
+public class AddClassTool extends AbstractDrawableTool {
 
 	public DiagramPanel parentPanel;
 
@@ -49,29 +47,5 @@ public class AddClassTool implements MouseInputListener {
 		newClass.className = "NewClass" + count;
 		parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
 		parentPanel.repaint();
-	}
-
-	public void mouseDragged(MouseEvent event) {
-
-	}
-
-	public void mouseMoved(MouseEvent arg0) {
-
-	}
-
-	public void mouseEntered(MouseEvent arg0) {
-
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-
-	}
-
-	public void mousePressed(MouseEvent arg0) {
-
-	}
-
-	public void mouseReleased(MouseEvent event) {
-
 	}
 }

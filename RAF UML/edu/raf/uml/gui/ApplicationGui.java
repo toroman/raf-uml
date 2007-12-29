@@ -97,7 +97,7 @@ public class ApplicationGui extends JFrame {
 		toolAddInheritance.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				diagramPanel.setTool(DiagramPanel.ADD_INHERITANCE_TOOL);
+				diagramPanel.setTool(DiagramPanel.ADD_RELATION_TOOL);
 			}
 		});
 
