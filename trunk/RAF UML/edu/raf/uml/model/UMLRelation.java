@@ -247,16 +247,22 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, F
 
     @Override
     public void delete() {
+    	delete (true);
+    }
+    
+    public void delete (boolean notifyParents) {
         super.delete();
-        from.relations.remove(this);
-        to.relations.remove(this);
+        if (notifyParents) {
+        	from.relations.remove(this);
+        	to.relations.remove(this);
+       }
         Iterator<GuiPoint> iter = points.iterator();
         GuiPoint point;
         while (iter.hasNext()) {
             point = iter.next();
             if (diagram.objects.contains(point)) {
-                point.delete();
+                point.delete(false);
             }
-        }
+        }  	
     }
 }
