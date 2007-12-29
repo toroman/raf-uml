@@ -17,11 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package edu.raf.uml.model;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+
 import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.gui.util.Focusable;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.util.ArrayList;
 
 public class UMLDiagram {
 
@@ -54,13 +56,13 @@ public class UMLDiagram {
         onFocus = fobject;
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics2D g) {
         for (int i = 0; i < objects.size(); i++) {
             objects.get(i).paint(g);
         }
     }
 
-    public UMLObject getObjectAt(Point point) {
+    public UMLObject getObjectAt(Point2D.Double point) {
         for (int i = objects.size() - 1; i >= 0; i--) {
             if (objects.get(i).contains(point)) {
                 return objects.get(i);

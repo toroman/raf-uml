@@ -17,23 +17,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package edu.raf.uml.model;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
+import java.util.ArrayList;
+
 import edu.raf.uml.gui.util.Draggable;
 import edu.raf.uml.gui.util.Focusable;
 import edu.raf.uml.gui.util.GuiPoint;
 import edu.raf.uml.gui.util.PointContainer;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.util.ArrayList;
 
 public abstract class UMLBox extends UMLObject implements Focusable, Draggable, PointContainer {
 
-    public int x,  y,  width,  height;
+    public double x,  y,  width,  height;
     public GuiPoint nwPoint,  nePoint,  sePoint,  swPoint;
     public ArrayList<UMLRelation> relations;
-    private int xoffset,  yoffset;
+    private double xoffset,  yoffset;
 
-    public UMLBox(UMLDiagram diagram, int x, int y, int width, int height) {
+    public UMLBox(UMLDiagram diagram, double x, double y, double width, double height) {
         super(diagram);
         this.x = x;
         this.y = y;
@@ -64,18 +66,6 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
         }
     }
 
-    public boolean inherits(UMLBox other) {
-        if (this == other) {
-            return true;
-        }
-        for (UMLRelation relation : relations) {
-            if (relation instanceof UMLInheritance && relation.to == this && (relation.from == other || relation.from.inherits(other))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public abstract int calculateMinHeight();
 
     public abstract int calculateMinWidth();
@@ -83,9 +73,10 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     /*
      * PointContainer methods
      */
-    public void movePoint(GuiPoint guiPoint, int x, int y) {
-        int oldx = this.x;
-        int oldy = this.y;
+    @Override
+    public void movePoint(GuiPoint guiPoint, double x, double y) {
+        double oldx = this.x;
+        double oldy = this.y;
         if (guiPoint == nwPoint) {
             this.x = Math.min(x, this.x + this.width - this.calculateMinWidth());
             this.width = oldx + width - this.x;
@@ -107,11 +98,13 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
         return;
     }
 
-    public void pointClicked(GuiPoint guiPoint, Point clickLocation) {
+    @Override
+    public void pointClicked(GuiPoint guiPoint, Point2D.Double clickLocation) {
 
     }
 
-    public void pointDoubleClicked(GuiPoint guiPoint, Point clickLocation) {
+    @Override
+    public void pointDoubleClicked(GuiPoint guiPoint, Point2D.Double clickLocation) {
         if (guiPoint == nwPoint) {
             movePoint(guiPoint, Integer.MAX_VALUE, Integer.MAX_VALUE);
         } else if (guiPoint == nePoint) {
@@ -123,18 +116,22 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
         }
     }
 
-    public void pointDragStarted(GuiPoint guiPoint, int x, int y) {
+    @Override
+    public void pointDragStarted(GuiPoint guiPoint, double x, double y) {
 
     }
 
-    public void pointDragged(GuiPoint guiPoint, int x, int y) {
+    @Override
+    public void pointDragged(GuiPoint guiPoint, double x, double y) {
         this.movePoint(guiPoint, x, y);
     }
 
+    @Override
     public void pointDragEnded(GuiPoint guiPoint) {
 
     }
 
+    @Override
     public void deletePoint(GuiPoint guiPoint) {
         delete();
     }
@@ -142,6 +139,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     /*
      * Focusable methods
      */
+    @Override
     public void gainFocus(UMLDiagram diagram) {
         nePoint.setVisible(true);
         sePoint.setVisible(true);
@@ -154,6 +152,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
         diagram.moveForward(nwPoint);
     }
 
+    @Override
     public void loseFocus(UMLDiagram diagram) {
         nePoint.setVisible(false);
         sePoint.setVisible(false);
@@ -164,17 +163,20 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     /*
      * Draggable methods
      */
-    public void startDrag(int x, int y) {
+    @Override
+    public void startDrag(double x, double y) {
         xoffset = x - this.x;
         yoffset = y - this.y;
     }
 
-    public void drag(int x, int y) {
+    @Override
+    public void drag(double x, double y) {
         this.x = x - xoffset;
         this.y = y - yoffset;
         calculatePointLocations();
     }
 
+    @Override
     public void endDrag() {
 
     }
@@ -183,7 +185,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
      * UMLObject methods
      */
     @Override
-    public boolean contains(Point point) {
+    public boolean contains(Point2D.Double point) {
         if (point.x >= x && point.x <= x + width && point.y >= y && point.y <= y + height) {
             return true;
         }
@@ -191,22 +193,22 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics2D g) {
         Color tempColor = g.getColor();
         g.setColor(Color.WHITE);
-        g.fillRect(x, y, width, height);
+        g.fillRect((int)x, (int)y, (int)width, (int)height);
         g.setColor(Color.DARK_GRAY);
-        g.drawRect(x, y, width, height);
+        g.drawRect((int)x, (int)y, (int)width, (int)height);
         g.setColor(tempColor);
     }
 
     @Override
-    public void clickOn(Point point) {
+    public void clickOn(Point2D.Double point) {
 
     }
 
     @Override
-    public void DoubleclickOn(Point point) {
+    public void DoubleclickOn(Double point) {
 
     }
 

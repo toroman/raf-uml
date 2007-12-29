@@ -25,12 +25,12 @@ public interface Draggable {
     /**
      * Ovu metodu poziva gui kada se pochinje drag tog objekta
      */
-    public void startDrag(int x, int y);
+    public void startDrag(double x, double y);
 
     /**
      * Ovo gui non-stop poziva dok drag traje
      */
-    public void drag(int x, int y);
+    public void drag(double x, double y);
 
     /**
      * ovo gui pozove kad se drag zavrshi

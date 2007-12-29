@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.gui.util.Draggable;
 import edu.raf.uml.gui.util.Focusable;
+import edu.raf.uml.gui.util.MathUtil;
 import edu.raf.uml.model.UMLObject;
 
 public class DefaultTool extends AbstractDrawableTool {
@@ -37,13 +38,13 @@ public class DefaultTool extends AbstractDrawableTool {
 	public void mouseClicked(MouseEvent event) {
 		try {
 			UMLObject object = parentPanel.diagram
-					.getObjectAt(event.getPoint());
+					.getObjectAt(MathUtil.toPoint2D((event.getPoint())));
 			if (object == parentPanel.diagram.onFocus) {
 				if (object != null) {
 					if (event.getClickCount() == 1) {
-						object.clickOn(event.getPoint());
+						object.clickOn(MathUtil.toPoint2D(event.getPoint()));
 					} else {
-						object.DoubleclickOn(event.getPoint());
+						object.DoubleclickOn(MathUtil.toPoint2D(event.getPoint()));
 					}
 				}
 				return;
@@ -52,9 +53,9 @@ public class DefaultTool extends AbstractDrawableTool {
 				return;
 			} else if (object != null) {
 				if (event.getClickCount() == 1) {
-					object.clickOn(event.getPoint());
+					object.clickOn(MathUtil.toPoint2D(event.getPoint()));
 				} else {
-					object.DoubleclickOn(event.getPoint());
+					object.DoubleclickOn(MathUtil.toPoint2D(event.getPoint()));
 				}
 				return;
 			} else {
@@ -68,7 +69,7 @@ public class DefaultTool extends AbstractDrawableTool {
 	public void mouseDragged(MouseEvent event) {
 		if (!dragging) {
 			dragging = true;
-			UMLObject kme = parentPanel.diagram.getObjectAt(event.getPoint());
+			UMLObject kme = parentPanel.diagram.getObjectAt(MathUtil.toPoint2D(event.getPoint()));
 			if (kme instanceof Focusable) {
 				parentPanel.diagram.giveFocus((Focusable) kme);
 			}

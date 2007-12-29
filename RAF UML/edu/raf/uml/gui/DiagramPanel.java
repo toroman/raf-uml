@@ -21,6 +21,7 @@ package edu.raf.uml.gui;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
@@ -36,6 +37,7 @@ import edu.raf.uml.gui.tool.DefaultTool;
 import edu.raf.uml.gui.tool.DeleteTool;
 import edu.raf.uml.gui.tool.factory.ClassBoxFactory;
 import edu.raf.uml.gui.tool.factory.CommentBoxFactory;
+import edu.raf.uml.gui.tool.factory.CommentRelationFactory;
 import edu.raf.uml.gui.tool.factory.InheritanceRelationFactory;
 import edu.raf.uml.model.UMLDiagram;
 
@@ -105,6 +107,16 @@ public class DiagramPanel extends JPanel {
                 this.setRefreshOnMove(false);
                 setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                 break;                
+            case ADD_COMMENT_RELATION_TOOL:
+                currentTool = new AddRelationTool(this, new CommentRelationFactory());
+                this.addMouseListener(currentTool);
+                this.addMouseMotionListener(currentTool);
+                if (!gui.toolAddCommentRelation.isSelected()) {
+                    gui.toolAddCommentRelation.setSelected(true);
+                }
+                this.setRefreshOnMove(true);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                break;                
        }
     }
 
@@ -129,7 +141,7 @@ public class DiagramPanel extends JPanel {
         Color tempColor = g.getColor();
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, 2000, 2000);
-        diagram.paint(g);
+        diagram.paint((Graphics2D)g);
         currentTool.paint(g);
         g.setColor(tempColor);
     }
@@ -162,4 +174,5 @@ public class DiagramPanel extends JPanel {
     public static final int ADD_INHERITANCE_TOOL = 3;
     public static final int DELETE_TOOL = 4;
     public static final int ADD_COMMENT_BOX_TOOL = 5;
+    public static final int ADD_COMMENT_RELATION_TOOL = 6;
 }

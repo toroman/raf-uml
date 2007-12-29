@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package edu.raf.uml.gui.util;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;;
 
 /**
  * Ovaj interfejs implementira svaka klasa koja "sadrzhi" GuiPoint objekte.
@@ -29,24 +29,24 @@ public interface PointContainer {
      * Kada se jednom klikne na neku tachku, ona prijavi svom parentu da je
      * kliknuta, i parent obradi taj klik u ovoj metodi.
      */
-    public void pointClicked(GuiPoint guiPoint, Point clickLocation);
+    public void pointClicked(GuiPoint guiPoint, Point2D.Double clickLocation);
 
     /**
      * Kada se dvaput klikne na neku tachku, ona prijavi svom parentu da je
      * kliknuta, i parent obradi taj klik u ovoj metodi.
      */
-    public void pointDoubleClicked(GuiPoint guiPoint, Point clickLocation);
+    public void pointDoubleClicked(GuiPoint guiPoint, Point2D.Double clickLocation);
 
     /**
      * GuiPoint je Draggable, i mora da prijavi svom parentu da je njen drag
      * otpocheo.
      */
-    public void pointDragStarted(GuiPoint guiPoint, int x, int y);
+    public void pointDragStarted(GuiPoint guiPoint, double x, double y);
 
     /**
      * GuiPoint je Draggable, i mora da prijavi svom parentu da je drag u toku.
      */
-    public void pointDragged(GuiPoint guiPoint, int x, int y);
+    public void pointDragged(GuiPoint guiPoint, double x, double y);
 
     /**
      * GuiPoint je Draggable, i mora da prijavi svom parentu da je drag gotov.
@@ -57,7 +57,7 @@ public interface PointContainer {
      * Kada god GuiPoint promeni koordinate, iz bilo kog razloga, on to javi
      * parentu.
      */
-    public void movePoint(GuiPoint guiPoint, int x, int y);
+    public void movePoint(GuiPoint guiPoint, double x, double y);
 
     /**
      * Kada tachka treba da se obrishe, ona javi parentu da je upravo obrisana.

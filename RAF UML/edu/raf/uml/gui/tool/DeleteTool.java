@@ -20,6 +20,7 @@ package edu.raf.uml.gui.tool;
 import java.awt.event.MouseEvent;
 
 import edu.raf.uml.gui.DiagramPanel;
+import edu.raf.uml.gui.util.MathUtil;
 import edu.raf.uml.model.UMLObject;
 
 public class DeleteTool extends AbstractDrawableTool {
@@ -31,7 +32,7 @@ public class DeleteTool extends AbstractDrawableTool {
 	}
 
 	public void mouseClicked(MouseEvent event) {
-		UMLObject object = parentPanel.diagram.getObjectAt(event.getPoint());
+		UMLObject object = parentPanel.diagram.getObjectAt(MathUtil.toPoint2D(event.getPoint()));
 		if (object != null) {
 			object.delete();
 		}

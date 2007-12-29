@@ -18,10 +18,6 @@ public class InheritanceRelationFactory implements RelationFactory {
 		if (to instanceof UMLCommentBox)
 			return "Cannot inherit a comment";
 		if (to instanceof UMLBox) {
-			if (from.inherits((UMLBox)to))
-				return "Circural inheritance detected."; 
-			if (((UMLBox)to).inherits(from))
-				return "Object already inherited.";
 			return null;
 		}
 		return "Cannot inherit to other than UMLBox";
