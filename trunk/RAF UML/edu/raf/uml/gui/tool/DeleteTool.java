@@ -17,12 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package edu.raf.uml.gui.tool;
 
+import java.awt.event.MouseEvent;
+
 import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.model.UMLObject;
-import java.awt.event.MouseEvent;
-import javax.swing.event.MouseInputListener;
 
-public class DeleteTool implements MouseInputListener {
+public class DeleteTool extends AbstractDrawableTool {
 
 	public DiagramPanel parentPanel;
 
@@ -37,29 +37,5 @@ public class DeleteTool implements MouseInputListener {
 		}
 		parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
 		parentPanel.repaint();
-	}
-
-	public void mouseEntered(MouseEvent arg0) {
-
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-
-	}
-
-	public void mousePressed(MouseEvent arg0) {
-
-	}
-
-	public void mouseReleased(MouseEvent arg0) {
-
-	}
-
-	public void mouseDragged(MouseEvent arg0) {
-
-	}
-
-	public void mouseMoved(MouseEvent arg0) {
-
 	}
 }
