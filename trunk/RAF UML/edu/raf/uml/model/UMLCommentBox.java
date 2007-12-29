@@ -1,7 +1,7 @@
 package edu.raf.uml.model;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
 
 public class UMLCommentBox extends UMLBox {
@@ -19,12 +19,12 @@ public class UMLCommentBox extends UMLBox {
     public UMLCommentBox (UMLDiagram diagram, int x, int y) {
         super(diagram, x, y, 0, 0);
         shapePolygon = new Polygon (
-        		new int [] {x, x+width-EDGE_TRIM_SIZE, x+width, x + width, x}, 
-        		new int [] {y, y, y+EDGE_TRIM_SIZE, y+width, y+width},
+        		new int [5], 
+        		new int [5],
         		5);
         edgeTriangle = new Polygon (
-        		new int [] {x+width-EDGE_TRIM_SIZE, x, x+width}, 
-        		new int [] {y, y+EDGE_TRIM_SIZE, y+EDGE_TRIM_SIZE}, 
+        		new int [3],
+        		new int [3], 
         		3);
         text = "";
         this.movePoint(sePoint, -1, -1);
@@ -41,7 +41,7 @@ public class UMLCommentBox extends UMLBox {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics2D g) {
         Color tempColor = g.getColor();
         g.setColor(Color.WHITE);
         g.fillPolygon(shapePolygon);
@@ -53,32 +53,32 @@ public class UMLCommentBox extends UMLBox {
         g.drawPolygon(edgeTriangle);
          
         g.setColor(Color.BLACK);
-        g.drawString(text, x + 3, y + 15);
+        g.drawString(text, (int)x + 3, (int)y + 15);
         g.setColor(tempColor);
     }
     
     @Override
     public void calculatePointLocations() {
     	super.calculatePointLocations();
-    	shapePolygon.xpoints[0] = x;
-    	shapePolygon.xpoints[1] = x+width-EDGE_TRIM_SIZE;
-    	shapePolygon.xpoints[2] = x+width;
-    	shapePolygon.xpoints[3] = x+width;
-    	shapePolygon.xpoints[4] = x;
+    	shapePolygon.xpoints[0] = (int)x;
+    	shapePolygon.xpoints[1] = (int)(x+width-EDGE_TRIM_SIZE);
+    	shapePolygon.xpoints[2] = (int)(x+width);
+    	shapePolygon.xpoints[3] = (int)(x+width);
+    	shapePolygon.xpoints[4] = (int)x;
  
-    	shapePolygon.ypoints[0] = y;
-    	shapePolygon.ypoints[1] = y;
-    	shapePolygon.ypoints[2] = y+EDGE_TRIM_SIZE;
-    	shapePolygon.ypoints[3] = y+height;
-    	shapePolygon.ypoints[4] = y+height;
+    	shapePolygon.ypoints[0] = (int)y;
+    	shapePolygon.ypoints[1] = (int)y;
+    	shapePolygon.ypoints[2] = (int)(y+EDGE_TRIM_SIZE);
+    	shapePolygon.ypoints[3] = (int)(y+height);
+    	shapePolygon.ypoints[4] = (int)(y+height);
 
-		edgeTriangle.xpoints[0] = x+width-EDGE_TRIM_SIZE;
-		edgeTriangle.xpoints[1] = x+width-EDGE_TRIM_SIZE;
-		edgeTriangle.xpoints[2] = x+width;
+		edgeTriangle.xpoints[0] = (int)(x+width-EDGE_TRIM_SIZE);
+		edgeTriangle.xpoints[1] = (int)(x+width-EDGE_TRIM_SIZE);
+		edgeTriangle.xpoints[2] = (int)(x+width);
 
-		edgeTriangle.ypoints[0] = y;
-		edgeTriangle.ypoints[1] = y+EDGE_TRIM_SIZE;
-		edgeTriangle.ypoints[2] = y+EDGE_TRIM_SIZE;    
+		edgeTriangle.ypoints[0] = (int)y;
+		edgeTriangle.ypoints[1] = (int)(y+EDGE_TRIM_SIZE);
+		edgeTriangle.ypoints[2] = (int)(y+EDGE_TRIM_SIZE);    
     }
     
     /**

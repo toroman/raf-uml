@@ -18,73 +18,44 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package edu.raf.uml.model;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.Iterator;
 
-import edu.raf.uml.gui.util.GuiPoint;
-
-public class UMLInheritance extends UMLRelation {
+public class UMLInheritance extends UMLBoxRelation {
 
     public UMLInheritance(UMLDiagram diagram, UMLBox from, UMLBox to) {
-        super(diagram, from, to);
+        super(diagram, from, to);        
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics2D g) {
+    	super.paint(g);
         Color tempColor = g.getColor();
-        GuiPoint tempPoint1, tempPoint2;
         Polygon polygon;
 
-        g.setColor(Color.BLACK);
-        if (from.y > points.getFirst().y) {
-            // Pochinje na gore
-            g.drawLine(points.getFirst().x, points.getFirst().y, points.getFirst().x, from.y);
-        } else if (from.x > points.getFirst().x) {
-            // Pochinje na levo
-            g.drawLine(points.getFirst().x, points.getFirst().y, from.x, points.getFirst().y);
-        } else if (from.y + from.height < points.getFirst().y) {
-            // Pochinje na dole
-            g.drawLine(points.getFirst().x, points.getFirst().y, points.getFirst().x, from.y + from.height);
-        } else if (from.x + from.width < points.getFirst().x) {
-            // Pochinje na desno
-            g.drawLine(points.getFirst().x, points.getFirst().y, from.x + from.width, points.getFirst().y);
-        }
-        Iterator<GuiPoint> point1 = points.iterator();
-        Iterator<GuiPoint> point2 = points.iterator();
-        point2.next();
-        while (point2.hasNext()) {
-            tempPoint1 = point1.next();
-            tempPoint2 = point2.next();
-            g.drawLine(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y);
-        }
         if (to.y > points.getLast().y) {
             // Zavrshava se gore
-            g.drawLine(points.getLast().x, points.getLast().y, points.getLast().x, to.y);
             polygon = new Polygon(
-                    new int[]{points.getLast().x - 5, points.getLast().x + 5, points.getLast().x},
-                    new int[]{to.y - 10, to.y - 10, to.y - 1},
+                    new int[]{(int)points.getLast().x - 5, (int)points.getLast().x + 5, (int)points.getLast().x},
+                    new int[]{(int)to.y - 10, (int)to.y - 10, (int)to.y - 1},
                     3);
         } else if (to.x > points.getLast().x) {
             // Zavrshava se levo
             polygon = new Polygon(
-                    new int[]{to.x - 10, to.x - 1, to.x - 10},
-                    new int[]{points.getLast().y - 5, points.getLast().y, points.getLast().y + 5},
+                    new int[]{(int)to.x - 10, (int)to.x - 1, (int)to.x - 10},
+                    new int[]{(int)points.getLast().y - 5, (int)points.getLast().y, (int)points.getLast().y + 5},
                     3);
-            g.drawLine(points.getLast().x, points.getLast().y, to.x, points.getLast().y);
         } else if (to.y + to.height < points.getLast().y) {
             // Zavrshava se na dole
-            g.drawLine(points.getLast().x, points.getLast().y, points.getLast().x, to.y + to.height);
             polygon = new Polygon(
-                    new int[]{points.getLast().x - 5, points.getLast().x, points.getLast().x + 5},
-                    new int[]{to.y + to.height + 10, to.y + to.height + 1, to.y + to.height + 10},
+                    new int[]{(int)points.getLast().x - 5, (int)points.getLast().x, (int)points.getLast().x + 5},
+                    new int[]{(int)to.y + (int)to.height + 10, (int)to.y + (int)to.height + 1, (int)to.y + (int)to.height + 10},
                     3);
         } else {
             // Zavrshava se desno
-            g.drawLine(points.getLast().x, points.getLast().y, to.x + to.width, points.getLast().y);
             polygon = new Polygon(
-                    new int[]{to.x + to.width + 10, to.x + to.width + 1, to.x + to.width + 10},
-                    new int[]{points.getLast().y - 5, points.getLast().y, points.getLast().y + 5},
+                    new int[]{(int)to.x + (int)to.width + 10, (int)to.x + (int)to.width + 1, (int)to.x + (int)to.width + 10},
+                    new int[]{(int)points.getLast().y - 5, (int)points.getLast().y, (int)points.getLast().y + 5},
                     3);
         }
         g.setColor(Color.WHITE);

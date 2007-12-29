@@ -46,6 +46,7 @@ public class ApplicationGui extends JFrame {
 	public JButton toolAddInheritance;
 	public JButton toolDelete;
 	public JButton toolAddCommentBox;
+	public JButton toolAddCommentRelation;
 	public ArrayList<JButton> toolButtons;
 
 	public ApplicationGui() {
@@ -121,6 +122,16 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.ADD_COMMENT_BOX_TOOL);
 			}
 		});
+		
+		toolAddCommentRelation = new JButton("", createImageIcon("AddCommentRelationToolIcon.PNG"));
+		toolAddCommentRelation.setToolTipText("Add comment relation");
+		toolAddCommentRelation.setFocusable(false);
+		toolAddCommentRelation.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.setTool(DiagramPanel.ADD_COMMENT_RELATION_TOOL);
+			}
+		});
 
 		toolBar.setFloatable(false);
 		toolBar.add(toolDefault);
@@ -132,11 +143,13 @@ public class ApplicationGui extends JFrame {
 		toolBar.add(toolDelete);
 		toolBar.addSeparator();
 		toolBar.add(toolAddCommentBox);
+		toolBar.add(toolAddCommentRelation);
 		toolButtons.add(toolDefault);
 		toolButtons.add(toolAddClass);
 		toolButtons.add(toolAddInheritance);
 		toolButtons.add(toolDelete);
 		toolButtons.add(toolAddCommentBox);
+		toolButtons.add(toolAddCommentRelation);		
 	}
 
 	public ImageIcon createImageIcon(String path) {

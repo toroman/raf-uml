@@ -17,11 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package edu.raf.uml.gui.util;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
+
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLObject;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
 
 /**
  * Ovo je pomotjna klasa, jako bitna da bi sela stvar kako-tako radila. To su one crne
@@ -34,20 +36,20 @@ import java.awt.Point;
  */
 public class GuiPoint extends UMLObject implements Draggable {
 
-    public int x,  y;
+    public double x, y;
     private boolean isVisible = false;
     private PointContainer parent;
-    private int xoffset,  yoffset;
+    private double xoffset,  yoffset;
 
-    public GuiPoint(UMLDiagram diagram, PointContainer parent, int x, int y) {
+    public GuiPoint(UMLDiagram diagram, PointContainer parent, double x, double y) {
         super(diagram);
         this.setParent(parent);
         this.x = x;
         this.y = y;
     }
 
-    public Point toPoint() {
-        return new Point(x, y);
+    public Point2D.Double toPoint() {
+        return new Point2D.Double(x, y);
     }
 
     /*
@@ -55,7 +57,7 @@ public class GuiPoint extends UMLObject implements Draggable {
      * 
      * @see guiUtil.Draggable#startDrag(int, int)
      */
-    public void startDrag(int x, int y) {
+    public void startDrag(double x, double y) {
         xoffset = x - this.x;
         yoffset = y - this.y;
     }
@@ -65,7 +67,7 @@ public class GuiPoint extends UMLObject implements Draggable {
      * 
      * @see guiUtil.Draggable#drag(int, int)
      */
-    public void drag(int x, int y) {
+    public void drag(double x, double y) {
         this.x = x - xoffset;
         this.y = y - yoffset;
         getParent().pointDragged(this, x, y);
@@ -86,7 +88,7 @@ public class GuiPoint extends UMLObject implements Draggable {
      * @see uml.UMLObject#clickOn(java.awt.Point)
      */
     @Override
-    public void clickOn(Point point) {
+    public void clickOn(Point2D.Double point) {
         getParent().pointClicked(this, point);
     }
 
@@ -96,7 +98,7 @@ public class GuiPoint extends UMLObject implements Draggable {
      * @see uml.UMLObject#DoubleclickOn(java.awt.Point)
      */
     @Override
-    public void DoubleclickOn(Point point) {
+    public void DoubleclickOn(Double point) {
         getParent().pointDoubleClicked(this, point);
     }
 
@@ -106,7 +108,7 @@ public class GuiPoint extends UMLObject implements Draggable {
      * @see uml.UMLObject#contains(java.awt.Point)
      */
     @Override
-    public boolean contains(Point point) {
+    public boolean contains(Point2D.Double point) {
         if (isVisible() && Math.abs(point.x - x) <= 2 && Math.abs(point.y - y) <= 2) {
             return true;
         }
@@ -119,11 +121,11 @@ public class GuiPoint extends UMLObject implements Draggable {
      * @see uml.UMLObject#paint(java.awt.Graphics)
      */
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics2D g) {
         if (isVisible()) {
             Color tempColor = g.getColor();
             g.setColor(Color.BLACK);
-            g.fillRect(x - 2, y - 2, 5, 5);
+            g.fillRect((int)x - 2, (int)y - 2, 5, 5);
             g.setColor(tempColor);
         }
     }

@@ -19,7 +19,7 @@ package edu.raf.uml.model;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 public class UMLClass extends UMLBox {
@@ -28,7 +28,7 @@ public class UMLClass extends UMLBox {
     public ArrayList<String> methods,  fields;
     public static FontMetrics fontMetrics;
 
-    public UMLClass(UMLDiagram diagram, int x, int y) {
+    public UMLClass(UMLDiagram diagram, double x, double y) {
         super(diagram, x, y, 0, 0);
         className = "";
         methods = new ArrayList<String>();
@@ -61,11 +61,11 @@ public class UMLClass extends UMLBox {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics2D g) {
         super.paint(g);
         Color tempColor = g.getColor();
         g.setColor(Color.BLACK);
-        g.drawString(className, x + 3, y + 15);
+        g.drawString(className, (int)x + 3, (int)y + 15);
         g.setColor(tempColor);
     }
 }
