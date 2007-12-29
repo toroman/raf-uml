@@ -135,8 +135,13 @@ public class GuiPoint extends UMLObject implements Draggable {
      */
     @Override
     public void delete() {
-        super.delete();
-        getParent().deletePoint(this);
+        delete (true);
+    }
+    
+    public void delete(boolean notifyParent) {
+    	super.delete();
+    	if (notifyParent)
+    		getParent().deletePoint(this);
     }
 
     public void setVisible(boolean isVisible) {

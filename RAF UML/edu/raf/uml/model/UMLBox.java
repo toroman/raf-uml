@@ -213,17 +213,19 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     @Override
     public void delete() {
         super.delete();
+        for (UMLRelation relation: relations)
+        	relation.delete(false);
         if (diagram.objects.contains(nwPoint)) {
-            nwPoint.delete();
+            nwPoint.delete(false);
         }
         if (diagram.objects.contains(swPoint)) {
-            swPoint.delete();
+            swPoint.delete(false);
         }
         if (diagram.objects.contains(sePoint)) {
-            sePoint.delete();
+            sePoint.delete(false);
         }
         if (diagram.objects.contains(nePoint)) {
-            nePoint.delete();
+            nePoint.delete(false);
         }
     }
 }
