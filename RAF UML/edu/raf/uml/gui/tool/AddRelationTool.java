@@ -56,7 +56,6 @@ public class AddRelationTool extends AbstractDrawableTool {
                 	return;
             	} else {
             		System.out.println(factory.canRelateFrom((UMLBox)object));
-                    parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);            		
             	}
             }
         }
@@ -68,7 +67,6 @@ public class AddRelationTool extends AbstractDrawableTool {
             parentPanel.repaint();
         } else {
             System.out.println(factory.canRelate(from, object));
-            parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
         }
     }
     

@@ -45,6 +45,7 @@ public class ApplicationGui extends JFrame {
 	public JButton toolAddClass;
 	public JButton toolAddInheritance;
 	public JButton toolDelete;
+	public JButton toolAddCommentBox;
 	public ArrayList<JButton> toolButtons;
 
 	public ApplicationGui() {
@@ -97,7 +98,7 @@ public class ApplicationGui extends JFrame {
 		toolAddInheritance.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				diagramPanel.setTool(DiagramPanel.ADD_RELATION_TOOL);
+				diagramPanel.setTool(DiagramPanel.ADD_INHERITANCE_TOOL);
 			}
 		});
 
@@ -110,6 +111,16 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.DELETE_TOOL);
 			}
 		});
+		
+		toolAddCommentBox = new JButton("", createImageIcon("AddCommentBoxToolIcon.PNG"));
+		toolAddCommentBox.setToolTipText("Add comment box");
+		toolAddCommentBox.setFocusable(false);
+		toolAddCommentBox.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.setTool(DiagramPanel.ADD_COMMENT_BOX_TOOL);
+			}
+		});
 
 		toolBar.setFloatable(false);
 		toolBar.add(toolDefault);
@@ -119,10 +130,13 @@ public class ApplicationGui extends JFrame {
 		toolBar.add(toolAddInheritance);
 		toolBar.addSeparator();
 		toolBar.add(toolDelete);
+		toolBar.addSeparator();
+		toolBar.add(toolAddCommentBox);
 		toolButtons.add(toolDefault);
 		toolButtons.add(toolAddClass);
 		toolButtons.add(toolAddInheritance);
 		toolButtons.add(toolDelete);
+		toolButtons.add(toolAddCommentBox);
 	}
 
 	public ImageIcon createImageIcon(String path) {

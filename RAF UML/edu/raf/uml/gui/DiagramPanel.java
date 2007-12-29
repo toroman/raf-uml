@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package edu.raf.uml.gui;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -29,10 +30,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import edu.raf.uml.gui.tool.AbstractDrawableTool;
-import edu.raf.uml.gui.tool.AddClassTool;
+import edu.raf.uml.gui.tool.AddBoxTool;
 import edu.raf.uml.gui.tool.AddRelationTool;
 import edu.raf.uml.gui.tool.DefaultTool;
 import edu.raf.uml.gui.tool.DeleteTool;
+import edu.raf.uml.gui.tool.factory.ClassBoxFactory;
+import edu.raf.uml.gui.tool.factory.CommentBoxFactory;
 import edu.raf.uml.gui.tool.factory.InheritanceRelationFactory;
 import edu.raf.uml.model.UMLDiagram;
 
@@ -60,17 +63,19 @@ public class DiagramPanel extends JPanel {
                     gui.toolDefault.setSelected(true);
                 }
                 this.setRefreshOnMove(false);
+                setCursor(Cursor.getDefaultCursor());
                 break;
             case ADD_CLASS_TOOL:
-                currentTool = new AddClassTool(this);
+                currentTool = new AddBoxTool(this, new ClassBoxFactory());
                 this.addMouseListener(currentTool);
                 this.addMouseMotionListener(currentTool);
                 if (!gui.toolAddClass.isSelected()) {
                     gui.toolAddClass.setSelected(true);
                 }
                 this.setRefreshOnMove(false);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                 break;
-            case ADD_RELATION_TOOL:
+            case ADD_INHERITANCE_TOOL:
                 currentTool = new AddRelationTool(this, new InheritanceRelationFactory ());
                 this.addMouseListener(currentTool);
                 this.addMouseMotionListener(currentTool);
@@ -78,6 +83,7 @@ public class DiagramPanel extends JPanel {
                     gui.toolAddInheritance.setSelected(true);
                 }
                 this.setRefreshOnMove(true);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                 break;
             case DELETE_TOOL:
                 currentTool = new DeleteTool(this);
@@ -87,7 +93,18 @@ public class DiagramPanel extends JPanel {
                     gui.toolDelete.setSelected(true);
                 }
                 this.setRefreshOnMove(false);
-                break;
+                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+               break;
+            case ADD_COMMENT_BOX_TOOL:
+                currentTool = new AddBoxTool(this, new CommentBoxFactory());
+                this.addMouseListener(currentTool);
+                this.addMouseMotionListener(currentTool);
+                if (!gui.toolAddCommentBox.isSelected()) {
+                    gui.toolAddCommentBox.setSelected(true);
+                }
+                this.setRefreshOnMove(false);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                break;                
        }
     }
 
@@ -142,6 +159,7 @@ public class DiagramPanel extends JPanel {
     
     public static final int DEFAULT_TOOL = 1;
     public static final int ADD_CLASS_TOOL = 2;
-    public static final int ADD_RELATION_TOOL = 3;
+    public static final int ADD_INHERITANCE_TOOL = 3;
     public static final int DELETE_TOOL = 4;
+    public static final int ADD_COMMENT_BOX_TOOL = 5;
 }

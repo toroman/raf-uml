@@ -21,30 +21,22 @@ package edu.raf.uml.gui.tool;
 import java.awt.event.MouseEvent;
 
 import edu.raf.uml.gui.DiagramPanel;
-import edu.raf.uml.model.UMLClass;
-import edu.raf.uml.model.UMLObject;
+import edu.raf.uml.gui.tool.factory.BoxFactory;
+import edu.raf.uml.model.UMLBox;
 
-public class AddClassTool extends AbstractDrawableTool {
+public class AddBoxTool extends AbstractDrawableTool {
 
 	public DiagramPanel parentPanel;
+	private BoxFactory factory;
 
-	public AddClassTool(DiagramPanel parentPanel) {
+	public AddBoxTool(DiagramPanel parentPanel, BoxFactory factory) {
 		this.parentPanel = parentPanel;
+		this.factory = factory;
 	}
 
 	public void mouseClicked(MouseEvent event) {
-		int count = 0;
-		for (UMLObject object : parentPanel.diagram.objects) {
-			if (object instanceof UMLClass
-					&& ((UMLClass) (object)).className.equals("NewClass"
-							+ count)) {
-				count++;
-			}
-		}
-		UMLClass newClass;
-		parentPanel.diagram.giveFocus(newClass = new UMLClass(
-				parentPanel.diagram, event.getX(), event.getY()));
-		newClass.className = "NewClass" + count;
+		UMLBox newBox = factory.createUMLBox(parentPanel.diagram, event.getX(), event.getY());
+		parentPanel.diagram.giveFocus(newBox);
 		parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
 		parentPanel.repaint();
 	}

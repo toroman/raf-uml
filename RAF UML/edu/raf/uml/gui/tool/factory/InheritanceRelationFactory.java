@@ -1,6 +1,8 @@
 package edu.raf.uml.gui.tool.factory;
 
 import edu.raf.uml.model.UMLBox;
+import edu.raf.uml.model.UMLClass;
+import edu.raf.uml.model.UMLCommentBox;
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLInheritance;
 import edu.raf.uml.model.UMLObject;
@@ -13,11 +15,16 @@ public class InheritanceRelationFactory implements RelationFactory {
 	 */	
 	@Override
 	public String canRelate(UMLBox from, UMLObject to) {
-		if (from.inherits((UMLBox) to))
-			return "Circural inheritance detected."; 
-	    if (((UMLBox) to).inherits(from))
-	        return "Object already inherited.";
-	    return null;
+		if (to instanceof UMLCommentBox)
+			return "Cannot inherit a comment";
+		if (to instanceof UMLBox) {
+			if (from.inherits((UMLBox)to))
+				return "Circural inheritance detected."; 
+			if (((UMLBox)to).inherits(from))
+				return "Object already inherited.";
+			return null;
+		}
+		return "Cannot inherit to other than UMLBox";
 	 }
 
 	/**
@@ -25,7 +32,11 @@ public class InheritanceRelationFactory implements RelationFactory {
 	 */
 	@Override
 	public String canRelateFrom(UMLBox from) {
-		return null;
+		if (from instanceof UMLClass)
+			return null;
+		if (from instanceof UMLCommentBox)
+			return "A comment cannot inherit anything";	
+		return "Unknown type of UMLBox";
 	}
 
 	/**
