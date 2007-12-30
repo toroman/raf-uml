@@ -26,6 +26,7 @@ import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.gui.tool.factory.RelationFactory;
 import edu.raf.uml.gui.util.MathUtil;
 import edu.raf.uml.model.UMLBox;
+import edu.raf.uml.model.UMLBoxRelation;
 import edu.raf.uml.model.UMLObject;
 import edu.raf.uml.model.UMLRelation;
 
@@ -48,26 +49,31 @@ public class AddRelationTool extends AbstractDrawableTool {
     public void mouseClicked(MouseEvent event) {
         UMLObject object = parentPanel.diagram.getObjectAt(MathUtil.toPoint2D(event.getPoint()));
         if (object == null) return;
-        if (object instanceof UMLBox) {
-            if (from == null) {
-            	if (factory.canRelateFrom((UMLBox)object) == null) {
-            		from = (UMLBox) object;
-            		lineStart = new Point (event.getPoint());
-            		lineEnd = new Point (event.getPoint());
-                	return;
-            	} else {
-            		System.out.println(factory.canRelateFrom((UMLBox)object));
-            	}
-            }
-        }
-        if (factory.canRelate(from, object) == null) {           	
-            UMLRelation relation = factory.makeRelation(
-            	parentPanel.diagram, from, object);
-            parentPanel.diagram.giveFocus(relation);
-            parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
-            parentPanel.repaint();
+        if (from == null) {
+        	if (object instanceof UMLBox) {
+        		if (factory.canRelateFrom((UMLBox)object) == null) {
+        			from = (UMLBox)object;
+        			lineStart = event.getPoint();
+        		}
+        		else
+        			System.out.println(factory.canRelateFrom((UMLBox)object));
+        	}        		
         } else {
-            System.out.println(factory.canRelate(from, object));
+       		if (factory.canRelate(from, object) == null) {
+    			UMLRelation relation = factory.makeRelation(parentPanel.diagram, from, object);
+    			relation.points.getFirst().x = event.getX();
+    			relation.points.getFirst().y = event.getY();
+        		if (relation instanceof UMLBoxRelation) {
+    				relation.points.getLast().x = lineStart.x;
+    				relation.points.getLast().y = lineStart.y;
+    			}
+   				relation.calculatePointLocations();
+    			parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
+    			parentPanel.diagram.giveFocus(relation);
+    			parentPanel.repaint();
+       		}
+    		else
+    			System.out.println(factory.canRelateFrom((UMLBox)object));
         }
     }
     

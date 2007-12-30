@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package edu.raf.uml.gui.tool;
 
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 
 import edu.raf.uml.gui.DiagramPanel;
@@ -93,5 +94,14 @@ public class DefaultTool extends AbstractDrawableTool {
 			}
 			dragging = false;
 		}
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent event) {
+		UMLObject kme = parentPanel.diagram.getObjectAt(MathUtil.toPoint2D(event.getPoint()));
+		if (kme != null)
+			parentPanel.setCursor(kme.getCursor());
+		else
+			parentPanel.setCursor(Cursor.getDefaultCursor());
 	}
 }

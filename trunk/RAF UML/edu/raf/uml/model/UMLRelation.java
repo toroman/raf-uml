@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package edu.raf.uml.model;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
@@ -113,6 +114,11 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, F
         } else {
             delete();
         }
+    }
+    
+    @Override
+    public Cursor giveCursorTo(GuiPoint guiPoint) {
+    	return MOVE_CURSOR;
     }
 
     /*

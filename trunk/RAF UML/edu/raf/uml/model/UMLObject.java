@@ -17,17 +17,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package edu.raf.uml.model;
 
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
-/*
+/**
  * Sve shto mozhe da postoji u dijagramu je UML object.
  */
 public abstract class UMLObject {
 
     UMLDiagram diagram;
+    protected static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
+    protected static final Cursor MOVE_CURSOR = new Cursor (Cursor.MOVE_CURSOR);
+    protected static final Cursor W_RESIZE_CURSOR = new Cursor (Cursor.W_RESIZE_CURSOR);
+    protected static final Cursor NW_RESIZE_CURSOR = new Cursor (Cursor.NW_RESIZE_CURSOR);
+    protected static final Cursor N_RESIZE_CURSOR = new Cursor (Cursor.N_RESIZE_CURSOR);
+    protected static final Cursor NE_RESIZE_CURSOR = new Cursor (Cursor.NE_RESIZE_CURSOR);
+    protected static final Cursor E_RESIZE_CURSOR = new Cursor (Cursor.E_RESIZE_CURSOR);
+    protected static final Cursor SE_RESIZE_CURSOR = new Cursor (Cursor.SE_RESIZE_CURSOR);
+    protected static final Cursor S_RESIZE_CURSOR = new Cursor (Cursor.S_RESIZE_CURSOR);
+    protected static final Cursor SW_RESIZE_CURSOR = new Cursor (Cursor.SW_RESIZE_CURSOR);
 
-    /*
+
+    /**
      * Konstruktor koji automatski taj objekat ubaci u diagram.
      */
     public UMLObject(UMLDiagram diagram) {
@@ -35,31 +47,35 @@ public abstract class UMLObject {
         diagram.objects.add(this);
     }
 
-    /*
+    /**
      * Destruktor?
      */
     public void delete() {
         diagram.removeObject(this);
     }
 
-    /*
+    /**
      * Poziva se kada god gui pita da li se objekat nalazi na tim koordinatama.
      */
     public abstract boolean contains(Point2D.Double point);
 
-    /*
+    /**
      * Iscrtavanje na panelu. GuiPointovi koji pripadaju tom objektu se sami iscrtavaju,
      * ako treba.
      */
     public abstract void paint(Graphics2D g);
 
-    /*
+    /**
      * Sve shto treba uraditi kada se klikne na taj objekat.
      */
     public abstract void clickOn(Point2D.Double point);
 
-    /*
+    /**
      * Sve shto treba uraditi kada se dvaput klikne na taj objekat.
      */
     public abstract void DoubleclickOn(Point2D.Double point);
+    
+    public Cursor getCursor () {
+    	return DEFAULT_CURSOR;
+    }
 }
