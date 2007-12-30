@@ -197,7 +197,7 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, F
 
     @Override
     public void delete() {
-    	delete (true);
+    	this.delete(true);
     }
     
     public void delete (boolean notifyParents) {
