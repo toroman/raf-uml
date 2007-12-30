@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package edu.raf.uml.gui.util;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
@@ -160,5 +161,10 @@ public class GuiPoint extends UMLObject implements Draggable {
 
     public PointContainer getParent() {
         return parent;
+    }
+    
+    @Override
+    public Cursor getCursor() {
+    	return parent.giveCursorTo(this);
     }
 }

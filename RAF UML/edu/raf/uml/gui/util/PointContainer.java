@@ -17,7 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package edu.raf.uml.gui.util;
 
-import java.awt.geom.Point2D;;
+import java.awt.Cursor;
+import java.awt.geom.Point2D;
 
 /**
  * Ovaj interfejs implementira svaka klasa koja "sadrzhi" GuiPoint objekte.
@@ -63,4 +64,10 @@ public interface PointContainer {
      * Kada tachka treba da se obrishe, ona javi parentu da je upravo obrisana.
      */
     public void deletePoint(GuiPoint guiPoint);
+    
+    /**
+     * Kada se kursor stavi na tachku, ona umesto da sebi bira kursor pita parenta
+     * koji joj kursor treba.
+     */
+    public Cursor giveCursorTo (GuiPoint guiPoint);
 }

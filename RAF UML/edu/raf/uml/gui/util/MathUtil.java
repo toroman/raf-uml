@@ -54,7 +54,7 @@ public final class MathUtil {
      * linearnog faktora.
      */
     public static Point2D.Double getProjectionPoint(double ax, double ay, double bx, double by,
-            int cx, int cy) {
+            double cx, double cy) {
         double r = getProjectionr(ax, ay, bx, by, cx, cy);
         return getProjectionPoint(ax, ay, bx, by, r);
     }
@@ -64,7 +64,7 @@ public final class MathUtil {
      */
     public static Point2D.Double getProjectionPoint(double ax, double ay, double bx, double by,
             double r) {
-        return new Point2D.Double((int) (ax + r * (bx - ax)), (int) (ay + r * (by - ay)));
+        return new Point2D.Double(ax + r * (bx - ax), ay + r * (by - ay));
     }
 
     /**

@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package edu.raf.uml.model;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
@@ -34,7 +35,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     public GuiPoint nwPoint,  nePoint,  sePoint,  swPoint;
     public ArrayList<UMLRelation> relations;
     private double xoffset,  yoffset;
-
+    
     public UMLBox(UMLDiagram diagram, double x, double y, double width, double height) {
         super(diagram);
         this.x = x;
@@ -51,7 +52,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     public void addRelation(UMLRelation relation) {
         relations.add(relation);
     }
-
+    
     public void calculatePointLocations() {
         nwPoint.x = x;
         nwPoint.y = y;
@@ -73,6 +74,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     /*
      * PointContainer methods
      */
+    
     @Override
     public void movePoint(GuiPoint guiPoint, double x, double y) {
         double oldx = this.x;
@@ -134,6 +136,20 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     @Override
     public void deletePoint(GuiPoint guiPoint) {
         delete();
+    }
+    
+    @Override
+    public Cursor giveCursorTo(GuiPoint guiPoint) {
+        if (guiPoint == nwPoint) {
+            return NW_RESIZE_CURSOR;
+        } else if (guiPoint == nePoint) {
+            return NE_RESIZE_CURSOR;
+        } else if (guiPoint == swPoint) {
+            return SW_RESIZE_CURSOR;
+        } else if (guiPoint == sePoint) {
+            return SE_RESIZE_CURSOR;
+        }
+        return MOVE_CURSOR;
     }
 
     /*

@@ -26,6 +26,7 @@ public class UMLRelationRelation extends UMLRelation {
         double newx = (to.points.getFirst().x + to.points.getLast().x) / 2;
         double newy = (to.points.getFirst().y + to.points.getLast().y) / 2;
 		points.addLast(new GuiPoint (diagram, this, newx, newy));
+		calculatePointLocations();
 	}
 	
 	@Override

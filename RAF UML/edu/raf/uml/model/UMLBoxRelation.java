@@ -67,6 +67,8 @@ public abstract class UMLBoxRelation extends UMLRelation {
 	            points.getLast().x = eastx + DISTANCE_FROM_UMLBOX;
 	            points.getLast().y = (int)MathUtil.getBetween(points.getLast().y, to.y, southy);
 	        }
+	    	for (UMLRelation relation: relations)
+	    		relation.calculatePointLocations();
 	    }
 
 	    /*
@@ -122,8 +124,6 @@ public abstract class UMLBoxRelation extends UMLRelation {
 	        g.setColor(tempColor); 
 	        if (line_dashed)
 	       		((Graphics2D)g).setStroke(tempStroke);
-	    	for (UMLRelation relation: relations)
-	    		relation.calculatePointLocations();
 	    }
 
 	    @Override
