@@ -20,44 +20,68 @@ package edu.raf.uml.model;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+import edu.raf.uml.gui.util.GuiString;
 
 public class UMLClass extends UMLBox {
 
-    public String className;
-    public ArrayList<String> methods,  fields;
+    public GuiString className;
+    public ArrayList<GuiString> methods,  fields;
     public static FontMetrics fontMetrics;
 
     public UMLClass(UMLDiagram diagram, double x, double y) {
         super(diagram, x, y, 0, 0);
-        className = "";
-        methods = new ArrayList<String>();
-        fields = new ArrayList<String>();
-
+        methods = new ArrayList<GuiString>();
+        fields = new ArrayList<GuiString>();
+        className = new GuiString (diagram, this);
+        className.setText("New Class");
+        className.setVisible(true);
         this.movePoint(sePoint, -1, -1);
     }
+    
+    public void addMethod () {
+    	GuiString newString; 
+    	methods.add(newString = new GuiString (diagram, this));
+    	newString.setVisible(true);
+    	newString.setText("New Method");
+    	calculatePointLocations();
+    	diagram.giveFocus(this);
+    }
 
+    public void addField () {
+    	GuiString newString; 
+    	fields.add(newString = new GuiString (diagram, this));
+    	newString.setVisible(true);
+    	newString.setText("New Field");
+    	calculatePointLocations();
+    	diagram.giveFocus(this);
+    }
+
+    
     @Override
-    public int calculateMinHeight() {
-        return 100;
+    public double calculateMinHeight() {
+        if (className != null)
+        	return (className.getBounds().height + 2) * (1 + Math.max(fields.size(), 1) + Math.max(methods.size(), 1)) + 12;
+        else
+        	return 10;
     }
 
     @Override
-    public int calculateMinWidth() {
-//		System.out.println(diagram.graphics.getFontMetrics());
-//		int minStrWidth = diagram.graphics.getFontMetrics().stringWidth(className);
-//		for (String method: methods) {
-//			int temp = diagram.graphics.getFontMetrics().stringWidth(method);
-//			if (temp > minStrWidth)
-//				minStrWidth = temp;
-//		}
-//		for (String field: fields) {
-//			int temp = diagram.graphics.getFontMetrics().stringWidth(field);
-//			if (temp > minStrWidth)
-//				minStrWidth = temp;
-//		}			
-//		return minStrWidth + 4;
-        return 100;
+    public double calculateMinWidth() {
+    	double minw;
+        if (className != null)
+        	minw = className.calculateMinWidth();
+        else
+        	minw = 0;
+    	for (GuiString kme: fields)
+    		if (kme.getBounds().width > minw)
+    			minw = kme.calculateMinWidth();
+    	for (GuiString kme: methods)
+    		if (kme.getBounds().width > minw)
+    			minw = kme.calculateMinWidth();
+        return minw + RIGHT_BLANK_SPACE_WIDTH;
     }
 
     @Override
@@ -65,7 +89,108 @@ public class UMLClass extends UMLBox {
         super.paint(g);
         Color tempColor = g.getColor();
         g.setColor(Color.BLACK);
-        g.drawString(className, (int)x + 3, (int)y + 15);
+        g.drawLine((int)x, (int)y + (int)className.getBounds().height + 6, (int)x + (int)width, (int)y + (int)className.getBounds().height + 6);
+        double linemody = Math.max(1, fields.size()) * (className.getBounds().height + 2) + 10 + (int)className.getBounds().height
+        		+ (height - calculateMinHeight()) / 2;
+        g.drawLine((int)x, (int)y + (int)linemody, (int)x + (int)width, (int)y + (int)linemody);
         g.setColor(tempColor);
     }
+    
+    @Override
+    public void gainFocus(UMLDiagram diagram) {
+    	super.gainFocus(diagram);
+    	className.isBackgroundRectVisible = true;
+    	diagram.moveForward(className);
+    	for (GuiString kme: fields) {
+        	kme.isBackgroundRectVisible = true;
+        	diagram.moveForward(kme);
+    	}
+    	for (GuiString kme: methods) {
+        	kme.isBackgroundRectVisible = true;
+        	diagram.moveForward(kme);
+    	}
+    }
+    
+    @Override
+    public void loseFocus(UMLDiagram diagram) {
+    	super.loseFocus(diagram);
+       	className.isBackgroundRectVisible = false;
+    	for (GuiString kme: fields) {
+        	kme.isBackgroundRectVisible = false;
+    	}
+    	for (GuiString kme: methods) {
+        	kme.isBackgroundRectVisible = false;
+    	}
+    }
+    
+    @Override
+    public void delete() {
+    	super.delete();
+    	className.delete(false);
+       	for (GuiString kme: fields) {
+        	kme.delete(false);
+    	}
+    	for (GuiString kme: methods) {
+        	kme.delete(false);
+    	}
+    }
+    
+    @Override
+    public void calculatePointLocations() {
+    	super.calculatePointLocations();
+    	if (className != null) {
+    		className.setX (x + (width - className.getBounds().width)/2);
+    		className.setY (y + 3);
+            double linemody = Math.max(1, fields.size()) * (className.getBounds().height + 2) + 10 + (int)className.getBounds().height
+					+ (height - calculateMinHeight()) / 2;
+            for (int i = 0; i < fields.size(); i++) {
+            	fields.get(i).setX (x + 3);
+            	fields.get(i).setY (y + className.getBounds().height + 6 + i*(className.getBounds().height+2) + 3); 
+             	fields.get(i).setWidth (width - RIGHT_BLANK_SPACE_WIDTH);
+            }
+            for (int i = 0; i < methods.size(); i++) {
+            	methods.get(i).setX (x + 3);
+            	methods.get(i).setY (y + linemody + i*(className.getBounds().height+2) + 3); 
+            	methods.get(i).setWidth (width - RIGHT_BLANK_SPACE_WIDTH);
+            }            
+    	}
+    }
+    
+    @Override
+    public void DoubleclickOn(Point2D.Double point) {
+        double linemody = Math.max(1, fields.size()) * (className.getBounds().height + 2) + 10 + (int)className.getBounds().height
+        		+ (height - calculateMinHeight()) / 2;
+    	if (point.y > y + linemody)
+    		addMethod ();
+    	else if (point.y > y + className.getBounds().height + 6)
+    		addField();
+    	super.DoubleclickOn(point);
+    }
+    
+    @Override
+    public void deleteString(GuiString guiString) {
+    	if (methods.contains(guiString)) {
+    		methods.remove(guiString);
+    		guiString.delete(false);
+    		calculatePointLocations();
+    		return;
+    	}
+    	else if (fields.contains(guiString)) {
+    		fields.remove(guiString);
+    		guiString.delete(false);
+    		calculatePointLocations();
+    		return;
+    	}
+    	else
+    		delete();
+    }
+    
+    @Override
+    public void stringTextChanged(GuiString guiString) {
+    	if (guiString != className && guiString.getText().equals(""))
+    		guiString.delete();
+    	super.stringTextChanged(guiString);
+    }
+    
+    protected static final int RIGHT_BLANK_SPACE_WIDTH = 17;
 }

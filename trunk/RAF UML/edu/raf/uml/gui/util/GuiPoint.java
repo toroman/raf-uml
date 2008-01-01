@@ -21,7 +21,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLObject;
@@ -99,7 +98,7 @@ public class GuiPoint extends UMLObject implements Draggable {
      * @see uml.UMLObject#DoubleclickOn(java.awt.Point)
      */
     @Override
-    public void DoubleclickOn(Double point) {
+    public void DoubleclickOn(Point2D.Double point) {
         getParent().pointDoubleClicked(this, point);
     }
 
@@ -110,9 +109,8 @@ public class GuiPoint extends UMLObject implements Draggable {
      */
     @Override
     public boolean contains(Point2D.Double point) {
-        if (isVisible() && Math.abs(point.x - x) <= 2 && Math.abs(point.y - y) <= 2) {
+        if (isVisible() && Math.abs(point.x - x) <= 2 && Math.abs(point.y - y) <= 2)
             return true;
-        }
         return false;
     }
 
@@ -165,6 +163,6 @@ public class GuiPoint extends UMLObject implements Draggable {
     
     @Override
     public Cursor getCursor() {
-    	return parent.giveCursorTo(this);
+       	return parent.giveCursorTo(this);
     }
 }

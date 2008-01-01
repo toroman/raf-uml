@@ -31,12 +31,12 @@ public class UMLCommentBox extends UMLBox {
     }
 
     @Override
-    public int calculateMinHeight() {
+    public double calculateMinHeight() {
         return 100;
     }
 
     @Override
-    public int calculateMinWidth() {
+    public double calculateMinWidth() {
         return 100;
     }
 

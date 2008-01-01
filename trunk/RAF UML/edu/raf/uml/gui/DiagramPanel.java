@@ -22,6 +22,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
@@ -29,6 +31,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import edu.raf.uml.gui.tool.AbstractDrawableTool;
 import edu.raf.uml.gui.tool.AddBoxTool;
@@ -39,6 +42,7 @@ import edu.raf.uml.gui.tool.factory.ClassBoxFactory;
 import edu.raf.uml.gui.tool.factory.CommentBoxFactory;
 import edu.raf.uml.gui.tool.factory.CommentRelationFactory;
 import edu.raf.uml.gui.tool.factory.InheritanceRelationFactory;
+import edu.raf.uml.gui.util.GuiString;
 import edu.raf.uml.model.UMLDiagram;
 
 @SuppressWarnings("serial")
@@ -49,10 +53,15 @@ public class DiagramPanel extends JPanel {
     public UMLDiagram diagram;
     public ApplicationGui gui;
     public AbstractDrawableTool currentTool;
+    public JTextField guiStringEditField;
+    public GuiString editingGuiString;
     
     public void setTool(int toolName) {
         this.removeMouseListener(currentTool);
         this.removeMouseMotionListener(currentTool);
+		if (editingGuiString != null) {
+			removeGuiStringTextField();
+		}
         for (JButton toolButton : gui.toolButtons) {
             toolButton.setSelected(false);
         }
@@ -119,6 +128,23 @@ public class DiagramPanel extends JPanel {
                 break;                
        }
     }
+    
+    public void removeGuiStringTextField () {
+    	this.remove(guiStringEditField);
+    	if (editingGuiString != null) {
+    		editingGuiString.setText(guiStringEditField.getText());
+    		editingGuiString = null;
+    	}
+    	repaint();
+    }
+    
+    public void showGuiStringTextField (GuiString guiString) {
+    	this.add(guiStringEditField);
+    	guiStringEditField.setText(guiString.getText());
+    	guiStringEditField.setBounds ((int)guiString.getBounds().x, (int)guiString.getBounds().y, (int)guiString.getBounds().width+2, (int)guiString.getBounds().height+1);
+    	editingGuiString = guiString;
+    	guiStringEditField.requestFocus();
+    }
 
     public DiagramPanel(ApplicationGui gui) {
         super();
@@ -133,14 +159,25 @@ public class DiagramPanel extends JPanel {
         	}
         };
         this.gui = gui;
+        this.setPreferredSize(UMLDiagram.MAX_DIMENSION);
+        this.setLayout(null);
+        
+        guiStringEditField = new JTextField ();
+        guiStringEditField.addKeyListener(new KeyAdapter () {
+        	public void keyPressed(KeyEvent e) {
+        		if (e.getKeyCode() == KeyEvent.VK_ENTER)
+        			removeGuiStringTextField();
+        	}
+        });
+        
         diagram = new UMLDiagram(this);
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         Color tempColor = g.getColor();
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, 0, 2000, 2000);
+        g.fillRect(0, 0, UMLDiagram.MAX_DIMENSION.width, UMLDiagram.MAX_DIMENSION.height);
         diagram.paint((Graphics2D)g);
         currentTool.paint(g);
         g.setColor(tempColor);

@@ -45,9 +45,10 @@ public class AddRelationTool extends AbstractDrawableTool {
         lineStart = null;
         lineEnd = new Point (0, 0);
     }
-
-    public void mouseClicked(MouseEvent event) {
-        UMLObject object = parentPanel.diagram.getObjectAt(MathUtil.toPoint2D(event.getPoint()));
+    
+    @Override
+    public void mousePressed(MouseEvent event) {
+        UMLObject object = parentPanel.diagram.getContainerObjectAt(MathUtil.toPoint2D(event.getPoint()));
         if (object == null) return;
         if (from == null) {
         	if (object instanceof UMLBox) {
@@ -57,8 +58,15 @@ public class AddRelationTool extends AbstractDrawableTool {
         		}
         		else
         			System.out.println(factory.canRelateFrom((UMLBox)object));
-        	}        		
-        } else {
+        	}  
+        }
+    }
+        
+    @Override
+    public void mouseReleased(MouseEvent event) {
+    	if (from != null) {
+            UMLObject object = parentPanel.diagram.getContainerObjectAt(MathUtil.toPoint2D(event.getPoint()));
+            if (object == null) return;    		
        		if (factory.canRelate(from, object) == null) {
     			UMLRelation relation = factory.makeRelation(parentPanel.diagram, from, object);
     			relation.points.getFirst().x = event.getX();
@@ -68,12 +76,20 @@ public class AddRelationTool extends AbstractDrawableTool {
     				relation.points.getLast().y = lineStart.y;
     			}
    				relation.calculatePointLocations();
+        		if (relation instanceof UMLBoxRelation) {
+        			relation.middleString.setX((relation.points.getLast().x + relation.points.getFirst().x)/2 + 4);
+        			relation.middleString.setY((relation.points.getLast().y + relation.points.getFirst().y)/2 - relation.middleString.getBounds().height - 4);
+                }
     			parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
     			parentPanel.diagram.giveFocus(relation);
     			parentPanel.repaint();
+    			return;
        		}
-    		else
-    			System.out.println(factory.canRelateFrom((UMLBox)object));
+    		else {
+    			System.out.println(factory.canRelate(from, object));
+    			lineStart = null;
+    			from = null;
+    		}
         }
     }
     

@@ -27,9 +27,11 @@ import java.util.ArrayList;
 import edu.raf.uml.gui.util.Draggable;
 import edu.raf.uml.gui.util.Focusable;
 import edu.raf.uml.gui.util.GuiPoint;
+import edu.raf.uml.gui.util.GuiString;
 import edu.raf.uml.gui.util.PointContainer;
+import edu.raf.uml.gui.util.StringContainer;
 
-public abstract class UMLBox extends UMLObject implements Focusable, Draggable, PointContainer {
+public abstract class UMLBox extends UMLObject implements Focusable, Draggable, PointContainer, StringContainer {
 
     public double x,  y,  width,  height;
     public GuiPoint nwPoint,  nePoint,  sePoint,  swPoint;
@@ -54,6 +56,10 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     }
     
     public void calculatePointLocations() {
+    	if (height < calculateMinHeight())
+    		height = calculateMinHeight();
+    	if (width < calculateMinWidth())
+    		width = calculateMinWidth();
         nwPoint.x = x;
         nwPoint.y = y;
         nePoint.x = x + width;
@@ -67,9 +73,9 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
         }
     }
 
-    public abstract int calculateMinHeight();
+    public abstract double calculateMinHeight();
 
-    public abstract int calculateMinWidth();
+    public abstract double calculateMinWidth();
 
     /*
      * PointContainer methods
@@ -151,7 +157,61 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
         }
         return MOVE_CURSOR;
     }
+    
+    /*
+     * StringContainer Methods
+     */
 
+    @Override
+    public void deleteString(GuiString guiString) {
+    	delete ();
+    }
+    
+    @Override
+    public Cursor giveCursorTo(GuiString guiString) {
+    	return DEFAULT_CURSOR;
+    }
+    
+    @Override
+    public void moveString(GuiString guiString, double x, double y) {
+    	calculatePointLocations();
+    }
+    
+    @Override
+    public void stringClicked(GuiString guiString, Double clickLocation) {
+    	
+    }
+    
+    @Override
+    public void stringDoubleClicked(GuiString guiString, Double clickLocation) {
+    	
+    }
+    
+    @Override
+    public void stringDragEnded(GuiString guiString) {
+    	endDrag();
+    }
+    
+    @Override
+    public void stringDragged(GuiString guiString, double x, double y) {
+    	drag (x, y);
+    }
+    
+    @Override
+    public void stringDragStarted(GuiString guiString, double x, double y) {
+    	startDrag(x, y);    	
+    }
+    
+    @Override
+    public void stringSizeChanged(GuiString guiString) {
+    	this.calculatePointLocations();
+    }
+    
+    @Override
+    public void stringTextChanged(GuiString guiString) {
+    	
+    }
+    
     /*
      * Focusable methods
      */
@@ -224,8 +284,8 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
     }
 
     @Override
-    public void DoubleclickOn(Double point) {
-
+    public void DoubleclickOn(Point2D.Double point) {
+    	
     }
 
     @Override

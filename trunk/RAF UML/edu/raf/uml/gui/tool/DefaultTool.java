@@ -19,6 +19,7 @@ package edu.raf.uml.gui.tool;
 
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 
 import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.gui.util.Draggable;
@@ -29,8 +30,8 @@ import edu.raf.uml.model.UMLObject;
 public class DefaultTool extends AbstractDrawableTool {
 
 	public DiagramPanel parentPanel;
+	private Point2D.Double mouseDownPoint = null;
 	private Draggable draggingObject = null;
-	private boolean dragging;
 
 	public DefaultTool(DiagramPanel parentPanel) {
 		this.parentPanel = parentPanel;
@@ -66,18 +67,23 @@ public class DefaultTool extends AbstractDrawableTool {
 			parentPanel.repaint();
 		}
 	}
-
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		mouseDownPoint = new Point2D.Double (e.getX(), e.getY());
+		if (parentPanel.editingGuiString != null && !parentPanel.guiStringEditField.getBounds().contains(e.getPoint())) {
+			parentPanel.removeGuiStringTextField();
+		}
+	}
+	
 	public void mouseDragged(MouseEvent event) {
-		if (!dragging) {
-			dragging = true;
-			UMLObject kme = parentPanel.diagram.getObjectAt(MathUtil.toPoint2D(event.getPoint()));
-			if (kme instanceof Focusable) {
-				parentPanel.diagram.giveFocus((Focusable) kme);
-			}
+		if (mouseDownPoint != null) {
+			UMLObject kme = parentPanel.diagram.getObjectAt(mouseDownPoint);
 			if (kme instanceof Draggable) {
 				draggingObject = (Draggable) kme;
-				draggingObject.startDrag(event.getX(), event.getY());
+				draggingObject.startDrag(mouseDownPoint.getX(), mouseDownPoint.getY());
 			}
+			mouseDownPoint = null;
 		} else {
 			if (draggingObject != null) {
 				draggingObject.drag(event.getX(), event.getY());
@@ -87,13 +93,11 @@ public class DefaultTool extends AbstractDrawableTool {
 	}
 	
 	public void mouseReleased(MouseEvent event) {
-		if (dragging) {
-			if (draggingObject != null) {
-				draggingObject.endDrag();
-				draggingObject = null;
-			}
-			dragging = false;
+		if (draggingObject != null) {
+			draggingObject.endDrag();
+			draggingObject = null;
 		}
+		mouseDownPoint = null;
 	}
 	
 	@Override
