@@ -21,34 +21,60 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import edu.raf.uml.gui.util.Focusable;
 import edu.raf.uml.gui.util.GuiPoint;
+import edu.raf.uml.gui.util.GuiString;
 import edu.raf.uml.gui.util.MathUtil;
 import edu.raf.uml.gui.util.PointContainer;
+import edu.raf.uml.gui.util.StringContainer;
 
-public abstract class UMLRelation extends UMLObject implements PointContainer, Focusable {
+public abstract class UMLRelation extends UMLObject implements PointContainer, StringContainer, Focusable {
 
     public LinkedList<GuiPoint> points;
     public ArrayList <UMLRelationRelation> relations;
+    public GuiString startString, middleString, endString;
     public static final double CLICK_MISS_DISTANCE = 5;
-    public static final int DISTANCE_FROM_UMLBOX = 20;
+    public static final int DISTANCE_FROM_UMLBOX = 25;
     protected boolean line_dashed;
-
+    
     public UMLRelation(UMLDiagram diagram) {
         super(diagram);
         line_dashed = false;
         points = new LinkedList<GuiPoint>();
         relations = new ArrayList<UMLRelationRelation>();
+        startString = new GuiString (diagram, this);
+        middleString = new GuiString (diagram, this);
+        endString = new GuiString (diagram, this);
         diagram.giveFocus(this);
     }
 
     public void calculatePointLocations() {
     	
+    }
+    
+    Point2D.Double getClosestPoint (Point2D.Double point) {
+        GuiPoint tempPoint1, tempPoint2;
+        Point2D.Double bestPoint = new Point2D.Double (0, 0), tempPoint = new Point2D.Double (0, 0);
+        Iterator<GuiPoint> point1 = points.iterator();
+        Iterator<GuiPoint> point2 = points.iterator();
+        point2.next();
+        double bestDistance = Double.MAX_VALUE;
+        while (point2.hasNext()) {
+            tempPoint1 = point1.next();
+            tempPoint2 = point2.next();
+            double r = MathUtil.getBetween(MathUtil.getProjectionr(tempPoint1.toPoint(), tempPoint2.toPoint(), point), 0.0d, 1.0d);
+            tempPoint = MathUtil.getProjectionPoint(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y, r);
+            if (MathUtil.pointDistance(tempPoint, point) < bestDistance) {
+            	bestDistance = MathUtil.pointDistance(tempPoint, point);
+            	bestPoint.x = tempPoint.x;
+            	bestPoint.y = tempPoint.y;
+            }
+        }
+    	return bestPoint;
     }
 
     /*
@@ -61,6 +87,12 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, F
             point.setVisible(true);
             diagram.moveForward(point);
         }
+        diagram.moveForward(startString);
+        diagram.moveForward(middleString);
+        diagram.moveForward(endString);  
+        startString.isBackgroundRectVisible = true;
+        middleString.isBackgroundRectVisible = true;
+        endString.isBackgroundRectVisible = true;
     }
 
     @Override
@@ -68,6 +100,9 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, F
         for (GuiPoint point : points) {
             point.setVisible(false);
         }
+        startString.isBackgroundRectVisible = false;
+        middleString.isBackgroundRectVisible = false;
+        endString.isBackgroundRectVisible = false;
     }
 
     /*
@@ -120,6 +155,62 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, F
     public Cursor giveCursorTo(GuiPoint guiPoint) {
     	return MOVE_CURSOR;
     }
+    
+    /*
+     * StringContainer methods
+     */
+    
+    @Override
+    public void deleteString(GuiString guiString) {
+    	delete();
+    }
+    
+    @Override
+    public Cursor giveCursorTo(GuiString guiString) {
+    	return DEFAULT_CURSOR;
+    }
+    
+    @Override
+    public void moveString(GuiString guiString, double x, double y) {
+    	guiString.setX(x);
+    	guiString.setY(y);
+    	calculatePointLocations();
+    }
+    
+    @Override
+    public void stringClicked(GuiString guiString, Point2D.Double clickLocation) {
+    	
+    }
+    
+    @Override
+    public void stringDoubleClicked(GuiString guiString, Point2D.Double clickLocation) {
+    	
+    }
+    
+    @Override
+    public void stringDragEnded(GuiString guiString) {
+    	
+    }
+    
+    @Override
+    public void stringDragged(GuiString guiString, double x, double y) {
+    	this.moveString(guiString, x, y);
+    }
+    
+    @Override
+    public void stringDragStarted(GuiString guiString, double x, double y) {
+    	
+    }
+    
+    @Override
+    public void stringSizeChanged(GuiString guiString) {
+    	
+    }
+    
+    @Override
+    public void stringTextChanged(GuiString guiString) {
+    	
+    }
 
     /*
      * UMLObject methods
@@ -144,7 +235,7 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, F
     }
     
     @Override
-    public void DoubleclickOn(Double point) {
+    public void DoubleclickOn(Point2D.Double point) {
         GuiPoint tempPoint1, tempPoint2;
         Point2D.Double projectionPoint;
         Iterator<GuiPoint> point1 = points.iterator();
@@ -212,5 +303,8 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, F
         }
         for (UMLRelationRelation relation: relations)
         	relation.delete();
+        startString.delete(false);
+        middleString.delete(false);
+        endString.delete(false);
     }
 }

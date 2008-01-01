@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package edu.raf.uml.model;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
@@ -70,9 +71,21 @@ public class UMLDiagram {
         }
         return null;
     }
+    
+    public UMLObject getContainerObjectAt (Point2D.Double point) {
+        for (int i = objects.size() - 1; i >= 0; i--) {
+            if (objects.get(i).contains(point) &&
+            		(objects.get(i) instanceof UMLBox || objects.get(i) instanceof UMLRelation)) {
+                return objects.get(i);
+            }
+        }
+        return null;
+    }
 
     public void moveForward(UMLObject object) {
         objects.add(object);
         objects.remove(object);
     }
+    
+    public static final Dimension MAX_DIMENSION = new Dimension (4500, 3000);
 }

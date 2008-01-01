@@ -26,7 +26,7 @@ import java.awt.geom.Point2D;
  */
 public abstract class UMLObject {
 
-    UMLDiagram diagram;
+    protected UMLDiagram diagram;
     protected static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
     protected static final Cursor MOVE_CURSOR = new Cursor (Cursor.MOVE_CURSOR);
     protected static final Cursor W_RESIZE_CURSOR = new Cursor (Cursor.W_RESIZE_CURSOR);

@@ -21,6 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,9 +32,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
 import edu.raf.uml.gui.util.ColorHelper;
+import edu.raf.uml.model.UMLDiagram;
 
 @SuppressWarnings("serial")
 public class ApplicationGui extends JFrame {
@@ -47,26 +50,44 @@ public class ApplicationGui extends JFrame {
 	public JButton toolDelete;
 	public JButton toolAddCommentBox;
 	public JButton toolAddCommentRelation;
+	public JScrollPane mainScrollPane;
 	public ArrayList<JButton> toolButtons;
 
 	public ApplicationGui() {
-		super("UML Frame");
+		super("RAF-UML Editor");
+		setPreferredSize(new Dimension(800, 600));
+		setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - this.getPreferredSize().width)/2,
+				(Toolkit.getDefaultToolkit().getScreenSize().height - this.getPreferredSize().height)/2,
+				this.getPreferredSize().width,
+				this.getPreferredSize().height);
 		createMainPanel();
 		setContentPane(mainPanel);
-		setPreferredSize(new Dimension(640, 480));
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 	}
 
 	private void createMainPanel() {
-		diagramPanel = new DiagramPanel(this);
 		createToolbar();
-		diagramPanel.setTool(DiagramPanel.DEFAULT_TOOL);
+		createDiagramPanel();
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(diagramPanel, BorderLayout.CENTER);
+		mainPanel.add(mainScrollPane, BorderLayout.CENTER);
 		mainPanel.add(toolBar, BorderLayout.PAGE_START);
+	}
+	
+	private void createDiagramPanel() {
+		diagramPanel = new DiagramPanel(this);
+		diagramPanel.setTool(DiagramPanel.DEFAULT_TOOL);
+		mainScrollPane = new JScrollPane (diagramPanel, 
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		mainScrollPane.setWheelScrollingEnabled(false);
+		mainScrollPane.getHorizontalScrollBar().setUnitIncrement(40);
+		mainScrollPane.getVerticalScrollBar().setUnitIncrement(40);
+		mainScrollPane.getViewport().setViewPosition(new Point (
+				UMLDiagram.MAX_DIMENSION.width/2 - this.getPreferredSize().width/2,
+				UMLDiagram.MAX_DIMENSION.height/2 - this.getPreferredSize().height/2));
 	}
 
 	private void createToolbar() {
@@ -124,7 +145,7 @@ public class ApplicationGui extends JFrame {
 		});
 		
 		toolAddCommentRelation = new JButton("", createImageIcon("AddCommentRelationToolIcon.PNG"));
-		toolAddCommentRelation.setToolTipText("Add comment relation");
+		toolAddCommentRelation.setToolTipText("Add comment link");
 		toolAddCommentRelation.setFocusable(false);
 		toolAddCommentRelation.addActionListener(new ActionListener() {
 

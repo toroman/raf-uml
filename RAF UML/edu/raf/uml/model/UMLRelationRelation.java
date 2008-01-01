@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
-import java.util.Iterator;
 
 import edu.raf.uml.gui.util.GuiPoint;
 import edu.raf.uml.gui.util.MathUtil;
@@ -26,6 +25,8 @@ public class UMLRelationRelation extends UMLRelation {
         double newx = (to.points.getFirst().x + to.points.getLast().x) / 2;
         double newy = (to.points.getFirst().y + to.points.getLast().y) / 2;
 		points.addLast(new GuiPoint (diagram, this, newx, newy));
+		startString.setVisible(true);
+		middleString.setVisible(true);
 		calculatePointLocations();
 	}
 	
@@ -53,27 +54,20 @@ public class UMLRelationRelation extends UMLRelation {
             points.getFirst().y = (int)MathUtil.getBetween(points.getFirst().y, from.y, southy);
         }
 
-        Point2D.Double oldPoint = points.getLast().toPoint(), newPoint, bestPoint = new Point2D.Double (0, 0);
-        GuiPoint tempPoint1, tempPoint2;
-        Iterator<GuiPoint> point1 = to.points.iterator();
-        Iterator<GuiPoint> point2 = to.points.iterator();
-        point2.next();
-        double bestDistance = Double.MAX_VALUE;
-        while (point2.hasNext()) {
-            tempPoint1 = point1.next();
-            tempPoint2 = point2.next();
-            double r = MathUtil.getBetween(MathUtil.getProjectionr(tempPoint1.toPoint(), tempPoint2.toPoint(), oldPoint), 0.0d, 1.0d);
-            newPoint = MathUtil.getProjectionPoint(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y, r);
-            if (MathUtil.pointDistance(newPoint, oldPoint) < bestDistance) {
-            	bestDistance = MathUtil.pointDistance(newPoint, oldPoint);
-            	bestPoint.x = newPoint.x;
-            	bestPoint.y = newPoint.y;
-            }
-        }
+        Point2D.Double bestPoint = to.getClosestPoint(points.getLast().toPoint());
         points.getLast().x = bestPoint.x;
         points.getLast().y = bestPoint.y;
     	for (UMLRelation relation: relations)
     		relation.calculatePointLocations();
+    	
+    	bestPoint = this.getClosestPoint(new Point2D.Double (middleString.getBounds().x - 4, middleString.getBounds().y + middleString.getBounds().height + 4));
+    	middleString.getBounds().x = bestPoint.x + 4;
+    	middleString.getBounds().y = bestPoint.y - middleString.getBounds().height - 4;
+    	if (from.x > points.getFirst().x)
+    		startString.getBounds().x = from.x - startString.getBounds().width - 4;
+    	else
+    		startString.getBounds().x = points.getFirst().x + 4;
+    	startString.getBounds().y = points.getFirst().y - startString.getBounds().height - 4;
 	}
 
 	@Override
