@@ -31,7 +31,7 @@ public class DeleteTool extends AbstractDrawableTool {
 		this.parentPanel = parentPanel;
 	}
 
-	public void mouseClicked(MouseEvent event) {
+	public void mouseReleased(MouseEvent event) {
 		UMLObject object = parentPanel.diagram.getObjectAt(MathUtil.toPoint2D(event.getPoint()));
 		if (object != null) {
 			object.delete();
