@@ -22,9 +22,11 @@ public abstract class UMLBoxRelation extends UMLRelation {
 		points.addFirst(new GuiPoint(diagram, this, from.x + from.width / 2, from.y - DISTANCE_FROM_UMLBOX));
 		points.addLast(new GuiPoint(diagram, this, to.x + to.width / 2, to.y + +to.height + DISTANCE_FROM_UMLBOX));
 
-		startString.setVisible(true);
-		middleString.setVisible(true);
-		endString.setVisible(true);
+		startNorthString.setVisible(false);
+		startSouthString.setVisible(false);
+		middleString.setVisible(false);
+		endNorthString.setVisible(false);
+		endSouthString.setVisible(false);
 		calculatePointLocations();
 }
 
@@ -78,16 +80,26 @@ public abstract class UMLBoxRelation extends UMLRelation {
     	Point2D.Double bestPoint = this.getClosestPoint(new Point2D.Double (middleString.getBounds().x - 4, middleString.getBounds().y + middleString.getBounds().height + 4));
     	middleString.setX(bestPoint.x + 4);
     	middleString.setY(bestPoint.y - middleString.getBounds().height - 4);
-    	if (from.x > points.getFirst().x)
-    		startString.setX(from.x - startString.getBounds().width - 4);
-    	else
-    		startString.setX(points.getFirst().x + 4);
-    	startString.setY(points.getFirst().y - startString.getBounds().height - 4);
-    	if (to.x > points.getLast().x)
-    		endString.setX(to.x - endString.getBounds().width - 4);
-    	else
-    		endString.setX(points.getLast().x + 4);
-    	endString.setY (points.getLast().y - endString.getBounds().height - 4);
+    	if (from.x > points.getFirst().x) {
+    		startNorthString.setX(from.x - startNorthString.getBounds().width - 4);
+    		startSouthString.setX(from.x - startSouthString.getBounds().width - 4);
+    	}
+    	else {
+    		startNorthString.setX(points.getFirst().x + 4);
+    		startSouthString.setX(points.getFirst().x + 4);
+    	}
+    	startNorthString.setY(points.getFirst().y - startNorthString.getBounds().height - 4);
+    	startSouthString.setY(points.getFirst().y + 4);
+    	if (to.x > points.getLast().x) {
+    		endNorthString.setX(to.x - endNorthString.getBounds().width - 4);
+    		endSouthString.setX(to.x - endSouthString.getBounds().width - 4);
+    	}
+    	else {
+    		endNorthString.setX(points.getLast().x + 4);
+    		endSouthString.setX(points.getLast().x + 4);
+    	}
+    	endNorthString.setY (points.getLast().y - endNorthString.getBounds().height - 4);
+    	endSouthString.setY (points.getLast().y + 4);
 	}
 
 	/*

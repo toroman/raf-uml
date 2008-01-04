@@ -36,7 +36,7 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
 
     public LinkedList<GuiPoint> points;
     public ArrayList <UMLRelationRelation> relations;
-    public GuiString startString, middleString, endString;
+    public GuiString startNorthString, startSouthString, middleString, endNorthString, endSouthString;
     public static final double CLICK_MISS_DISTANCE = 5;
     public static final int DISTANCE_FROM_UMLBOX = 25;
     protected boolean line_dashed;
@@ -46,9 +46,11 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
         line_dashed = false;
         points = new LinkedList<GuiPoint>();
         relations = new ArrayList<UMLRelationRelation>();
-        startString = new GuiString (diagram, this);
+        startNorthString = new GuiString (diagram, this);
+        startSouthString = new GuiString (diagram, this);
         middleString = new GuiString (diagram, this);
-        endString = new GuiString (diagram, this);
+        endNorthString = new GuiString (diagram, this);
+        endSouthString = new GuiString (diagram, this);
         diagram.giveFocus(this);
     }
 
@@ -87,12 +89,16 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
             point.setVisible(true);
             diagram.moveForward(point);
         }
-        diagram.moveForward(startString);
+        diagram.moveForward(startNorthString);
+        diagram.moveForward(startSouthString);
         diagram.moveForward(middleString);
-        diagram.moveForward(endString);  
-        startString.isBackgroundRectVisible = true;
+        diagram.moveForward(endNorthString);  
+        diagram.moveForward(endSouthString);  
+        startNorthString.isBackgroundRectVisible = true;
+        startSouthString.isBackgroundRectVisible = true;
         middleString.isBackgroundRectVisible = true;
-        endString.isBackgroundRectVisible = true;
+        endNorthString.isBackgroundRectVisible = true;
+        endSouthString.isBackgroundRectVisible = true;
     }
 
     @Override
@@ -100,9 +106,11 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
         for (GuiPoint point : points) {
             point.setVisible(false);
         }
-        startString.isBackgroundRectVisible = false;
+        startNorthString.isBackgroundRectVisible = false;
+        startSouthString.isBackgroundRectVisible = false;
         middleString.isBackgroundRectVisible = false;
-        endString.isBackgroundRectVisible = false;
+        endNorthString.isBackgroundRectVisible = false;
+        endSouthString.isBackgroundRectVisible = false;
     }
 
     /*
@@ -209,7 +217,7 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
     
     @Override
     public void stringTextChanged(GuiString guiString) {
-    	
+    	calculatePointLocations();
     }
 
     /*
@@ -303,8 +311,10 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
         }
         for (UMLRelationRelation relation: relations)
         	relation.delete();
-        startString.delete(false);
+        startNorthString.delete(false);
+        startSouthString.delete(false);
         middleString.delete(false);
-        endString.delete(false);
+        endNorthString.delete(false);
+        endSouthString.delete(false);
     }
 }

@@ -2,9 +2,9 @@ package edu.raf.uml.gui.tool.factory;
 
 import edu.raf.uml.model.UMLBox;
 import edu.raf.uml.model.UMLClass;
-import edu.raf.uml.model.UMLCommentBox;
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLInheritance;
+import edu.raf.uml.model.UMLInterface;
 import edu.raf.uml.model.UMLObject;
 import edu.raf.uml.model.UMLRelation;
 
@@ -15,12 +15,13 @@ public class InheritanceRelationFactory implements RelationFactory {
 	 */	
 	@Override
 	public String canRelate(UMLBox from, UMLObject to) {
-		if (to instanceof UMLCommentBox)
-			return "Cannot inherit a comment";
-		if (to instanceof UMLBox) {
+		if (!(to instanceof UMLBox))
+			return "Can only inherit a " + (from instanceof UMLInterface ? "interface." : "class");
+		if (from instanceof UMLInterface && to instanceof UMLInterface)
 			return null;
-		}
-		return "Cannot inherit to other than UMLBox";
+		if (from instanceof UMLClass && to instanceof UMLClass)
+			return null;
+		return "Incompatibile types. Whatever.";
 	 }
 
 	/**
@@ -28,11 +29,9 @@ public class InheritanceRelationFactory implements RelationFactory {
 	 */
 	@Override
 	public String canRelateFrom(UMLBox from) {
-		if (from instanceof UMLClass)
+		if (from instanceof UMLClass || from instanceof UMLInterface)
 			return null;
-		if (from instanceof UMLCommentBox)
-			return "A comment cannot inherit anything";	
-		return "Unknown type of UMLBox";
+		return "Only classes and interfaces can inherit other objects";	
 	}
 
 	/**

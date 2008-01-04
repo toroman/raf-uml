@@ -15,6 +15,8 @@ public class CommentRelationFactory implements RelationFactory {
 	 */
 	@Override
 	public String canRelate(UMLBox from, UMLObject to) {
+		if (to instanceof UMLCommentBox || to instanceof UMLCommentBoxRelation || to instanceof UMLCommentRelationRelation)
+			return "Commenting a comment is dumb.";
 		return null;
 	}
 
