@@ -25,8 +25,11 @@ public class UMLRelationRelation extends UMLRelation {
         double newx = (to.points.getFirst().x + to.points.getLast().x) / 2;
         double newy = (to.points.getFirst().y + to.points.getLast().y) / 2;
 		points.addLast(new GuiPoint (diagram, this, newx, newy));
-		startString.setVisible(true);
-		middleString.setVisible(true);
+		startNorthString.setVisible(false);
+		startSouthString.setVisible(false);
+		middleString.setVisible(false);
+		endNorthString.setVisible(false);
+		endSouthString.setVisible(false);
 		calculatePointLocations();
 	}
 	
@@ -63,11 +66,16 @@ public class UMLRelationRelation extends UMLRelation {
     	bestPoint = this.getClosestPoint(new Point2D.Double (middleString.getBounds().x - 4, middleString.getBounds().y + middleString.getBounds().height + 4));
     	middleString.getBounds().x = bestPoint.x + 4;
     	middleString.getBounds().y = bestPoint.y - middleString.getBounds().height - 4;
-    	if (from.x > points.getFirst().x)
-    		startString.getBounds().x = from.x - startString.getBounds().width - 4;
-    	else
-    		startString.getBounds().x = points.getFirst().x + 4;
-    	startString.getBounds().y = points.getFirst().y - startString.getBounds().height - 4;
+    	if (from.x > points.getFirst().x) {
+    		startNorthString.getBounds().x = from.x - startNorthString.getBounds().width - 4;
+    		startSouthString.getBounds().x = from.x - startSouthString.getBounds().width - 4;
+    	}
+    	else {
+    		startNorthString.getBounds().x = points.getFirst().x + 4;
+    		startSouthString.getBounds().x = points.getFirst().x + 4;
+    	}
+    	startNorthString.getBounds().y = points.getFirst().y - startNorthString.getBounds().height - 4;
+    	startNorthString.getBounds().y = points.getFirst().y + 4;
 	}
 
 	@Override

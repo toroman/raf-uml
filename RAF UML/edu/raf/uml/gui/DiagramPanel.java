@@ -38,12 +38,19 @@ import edu.raf.uml.gui.tool.AddBoxTool;
 import edu.raf.uml.gui.tool.AddRelationTool;
 import edu.raf.uml.gui.tool.DefaultTool;
 import edu.raf.uml.gui.tool.DeleteTool;
+import edu.raf.uml.gui.tool.factory.AggregationRelationFactory;
+import edu.raf.uml.gui.tool.factory.AssociationClassFactory;
+import edu.raf.uml.gui.tool.factory.AssociationRelationFactory;
 import edu.raf.uml.gui.tool.factory.ClassBoxFactory;
 import edu.raf.uml.gui.tool.factory.CommentBoxFactory;
 import edu.raf.uml.gui.tool.factory.CommentRelationFactory;
+import edu.raf.uml.gui.tool.factory.CompositionRelationFactory;
 import edu.raf.uml.gui.tool.factory.InheritanceRelationFactory;
+import edu.raf.uml.gui.tool.factory.InterfaceBoxFactory;
+import edu.raf.uml.gui.tool.factory.RealisationRelationFactory;
 import edu.raf.uml.gui.util.GuiString;
 import edu.raf.uml.model.UMLDiagram;
+import edu.raf.uml.model.UMLObject;
 
 @SuppressWarnings("serial")
 public class DiagramPanel extends JPanel {
@@ -126,6 +133,66 @@ public class DiagramPanel extends JPanel {
                 this.setRefreshOnMove(true);
                 setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                 break;                
+            case ADD_ASSOCIATION_TOOL:
+                currentTool = new AddRelationTool(this, new AssociationRelationFactory());
+                this.addMouseListener(currentTool);
+                this.addMouseMotionListener(currentTool);
+                if (!gui.toolAddAssociationRelation.isSelected()) {
+                    gui.toolAddAssociationRelation.setSelected(true);
+                }
+                this.setRefreshOnMove(true);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                break;                
+            case ADD_AGGREGATION_TOOL:
+                currentTool = new AddRelationTool(this, new AggregationRelationFactory());
+                this.addMouseListener(currentTool);
+                this.addMouseMotionListener(currentTool);
+                if (!gui.toolAddAggregationRelation.isSelected()) {
+                    gui.toolAddAggregationRelation.setSelected(true);
+                }
+                this.setRefreshOnMove(true);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                break;                
+            case ADD_COMPOSITION_TOOL:
+                currentTool = new AddRelationTool(this, new CompositionRelationFactory());
+                this.addMouseListener(currentTool);
+                this.addMouseMotionListener(currentTool);
+                if (!gui.toolAddCompositionRelation.isSelected()) {
+                    gui.toolAddCompositionRelation.setSelected(true);
+                }
+                this.setRefreshOnMove(true);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                break;                
+            case ADD_INTERFACE_TOOL:
+                currentTool = new AddBoxTool(this, new InterfaceBoxFactory());
+                this.addMouseListener(currentTool);
+                this.addMouseMotionListener(currentTool);
+                if (!gui.toolAddInterface.isSelected()) {
+                    gui.toolAddInterface.setSelected(true);
+                }
+                this.setRefreshOnMove(false);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                break;                
+            case ADD_REALISATION_TOOL:
+                currentTool = new AddRelationTool(this, new RealisationRelationFactory());
+                this.addMouseListener(currentTool);
+                this.addMouseMotionListener(currentTool);
+                if (!gui.toolAddRealisationRelation.isSelected()) {
+                    gui.toolAddRealisationRelation.setSelected(true);
+                }
+                this.setRefreshOnMove(true);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                break;
+            case ADD_ASSOCIATION_CLASS_TOOL:
+                currentTool = new AddRelationTool(this, new AssociationClassFactory());
+                this.addMouseListener(currentTool);
+                this.addMouseMotionListener(currentTool);
+                if (!gui.toolAddAssociationClass.isSelected()) {
+                    gui.toolAddAssociationClass.setSelected(true);
+                }
+                this.setRefreshOnMove(true);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                break;
        }
     }
     
@@ -148,6 +215,7 @@ public class DiagramPanel extends JPanel {
 
     public DiagramPanel(ApplicationGui gui) {
         super();
+        this.setFocusable(true);
         motionListener = new MouseMotionAdapter () {
         	@Override
         	public void mouseMoved(MouseEvent e) {
@@ -162,11 +230,26 @@ public class DiagramPanel extends JPanel {
         this.setPreferredSize(UMLDiagram.MAX_DIMENSION);
         this.setLayout(null);
         
+        addKeyListener(new KeyAdapter () {
+        	@Override
+        	public void keyPressed(KeyEvent e) {
+        		if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+        			if (diagram.onFocus != null) {
+        				((UMLObject)diagram.onFocus).delete();
+        				repaint();
+        			}
+        			return;
+        		}
+        	}
+        });
+        
         guiStringEditField = new JTextField ();
         guiStringEditField.addKeyListener(new KeyAdapter () {
         	public void keyPressed(KeyEvent e) {
-        		if (e.getKeyCode() == KeyEvent.VK_ENTER)
+        		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
         			removeGuiStringTextField();
+        			return;
+        		}
         	}
         });
         
@@ -212,4 +295,10 @@ public class DiagramPanel extends JPanel {
     public static final int DELETE_TOOL = 4;
     public static final int ADD_COMMENT_BOX_TOOL = 5;
     public static final int ADD_COMMENT_RELATION_TOOL = 6;
+    public static final int ADD_ASSOCIATION_TOOL = 7;
+    public static final int ADD_AGGREGATION_TOOL = 8;
+    public static final int ADD_COMPOSITION_TOOL = 9;
+    public static final int ADD_INTERFACE_TOOL = 10;
+    public static final int ADD_REALISATION_TOOL = 11;
+    public static final int ADD_ASSOCIATION_CLASS_TOOL = 12;
 }

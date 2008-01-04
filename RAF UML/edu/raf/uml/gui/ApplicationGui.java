@@ -46,10 +46,16 @@ public class ApplicationGui extends JFrame {
 	public DiagramPanel diagramPanel;
 	public JButton toolDefault;
 	public JButton toolAddClass;
+	public JButton toolAddInterface;
 	public JButton toolAddInheritance;
 	public JButton toolDelete;
 	public JButton toolAddCommentBox;
 	public JButton toolAddCommentRelation;
+	public JButton toolAddAssociationRelation;
+	public JButton toolAddAggregationRelation;
+	public JButton toolAddCompositionRelation;
+	public JButton toolAddRealisationRelation;
+	public JButton toolAddAssociationClass;
 	public JScrollPane mainScrollPane;
 	public ArrayList<JButton> toolButtons;
 
@@ -115,7 +121,7 @@ public class ApplicationGui extends JFrame {
 
 		toolAddInheritance = new JButton("",
 				createImageIcon("AddInheritanceToolIcon.PNG"));
-		toolAddInheritance.setToolTipText("Add new Inheritance relationship");
+		toolAddInheritance.setToolTipText("Add new generalisation");
 		toolAddInheritance.setFocusable(false);
 		toolAddInheritance.addActionListener(new ActionListener() {
 
@@ -154,12 +160,80 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
+		toolAddAssociationRelation = new JButton("", createImageIcon("AddAssociationToolIcon.PNG"));
+		toolAddAssociationRelation.setToolTipText("Add new association");
+		toolAddAssociationRelation.setFocusable(false);
+		toolAddAssociationRelation.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.setTool(DiagramPanel.ADD_ASSOCIATION_TOOL);
+			}
+		});
+		
+		toolAddAggregationRelation = new JButton("", createImageIcon("AddAggregationToolIcon.PNG"));
+		toolAddAggregationRelation.setToolTipText("Add new aggregation");
+		toolAddAggregationRelation.setFocusable(false);
+		toolAddAggregationRelation.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.setTool(DiagramPanel.ADD_AGGREGATION_TOOL);
+			}
+		});
+		
+		toolAddCompositionRelation = new JButton("", createImageIcon("AddCompositionToolIcon.PNG"));
+		toolAddCompositionRelation.setToolTipText("Add new composition");
+		toolAddCompositionRelation.setFocusable(false);
+		toolAddCompositionRelation.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.setTool(DiagramPanel.ADD_COMPOSITION_TOOL);
+			}
+		});
+		
+		toolAddInterface = new JButton("", createImageIcon("AddInterfaceToolIcon.PNG"));
+		toolAddInterface.setToolTipText("Add new interface");
+		toolAddInterface.setFocusable(false);
+		toolAddInterface.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.setTool(DiagramPanel.ADD_INTERFACE_TOOL);
+			}
+		});
+		
+		toolAddRealisationRelation = new JButton("", createImageIcon("AddRealizationToolIcon.PNG"));
+		toolAddRealisationRelation.setToolTipText("Add new realization");
+		toolAddRealisationRelation.setFocusable(false);
+		toolAddRealisationRelation.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.setTool(DiagramPanel.ADD_REALISATION_TOOL);
+			}
+		});
+		
+		toolAddAssociationClass = new JButton("", createImageIcon("AddAssociationClassToolIcon.PNG"));
+		toolAddAssociationClass.setToolTipText("Add new association class");
+		toolAddAssociationClass.setFocusable(false);
+		toolAddAssociationClass.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.setTool(DiagramPanel.ADD_ASSOCIATION_CLASS_TOOL);
+			}
+		});
+		
 		toolBar.setFloatable(false);
 		toolBar.add(toolDefault);
 		toolBar.addSeparator();
 		toolBar.add(toolAddClass);
-		toolBar.addSeparator();
 		toolBar.add(toolAddInheritance);
+		toolBar.addSeparator();
+		toolBar.add(toolAddInterface);
+		toolBar.add(toolAddRealisationRelation);
+		toolBar.addSeparator();
+		toolBar.add(toolAddAssociationRelation);
+		toolBar.add(toolAddAggregationRelation);
+		toolBar.add(toolAddCompositionRelation);
+		toolBar.addSeparator();
+		toolBar.add(toolAddAssociationClass);
 		toolBar.addSeparator();
 		toolBar.add(toolDelete);
 		toolBar.addSeparator();
@@ -170,7 +244,13 @@ public class ApplicationGui extends JFrame {
 		toolButtons.add(toolAddInheritance);
 		toolButtons.add(toolDelete);
 		toolButtons.add(toolAddCommentBox);
-		toolButtons.add(toolAddCommentRelation);		
+		toolButtons.add(toolAddCommentRelation);	
+		toolButtons.add(toolAddAssociationRelation);
+		toolButtons.add(toolAddAggregationRelation);
+		toolButtons.add(toolAddCompositionRelation);
+		toolButtons.add(toolAddInterface);
+		toolButtons.add(toolAddRealisationRelation);
+		toolButtons.add(toolAddAssociationClass);
 	}
 
 	public ImageIcon createImageIcon(String path) {

@@ -59,7 +59,7 @@ public class GuiString extends UMLObject implements Draggable {
     public void recalculateBounds () {
     	Dimension kme = calculateStringSize(text);
     	bounds.height = kme.height + 7;
-    	bounds.width = Math.max(kme.width + 8, bounds.width);
+    	bounds.width = kme.width + 8;
     	parent.stringSizeChanged(this);
     }
     
