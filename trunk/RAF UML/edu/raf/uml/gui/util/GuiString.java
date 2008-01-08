@@ -10,6 +10,7 @@ import java.awt.geom.Point2D.Double;
 
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLObject;
+import edu.raf.uml.model.property.Property;
 
 public class GuiString extends UMLObject implements Draggable {
 
@@ -182,6 +183,7 @@ public class GuiString extends UMLObject implements Draggable {
         parent.stringDragStarted(this, bounds.x, bounds.y + bounds.height);
     }
     
+    @Property
     public String getText() {
 		return text;
 	}

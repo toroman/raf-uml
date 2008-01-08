@@ -36,20 +36,21 @@ import edu.raf.uml.model.UMLObject;
  */
 public class GuiPoint extends UMLObject implements Draggable {
 
-    public double x, y;
+    private double x;
+    private double y;
     private boolean isVisible = false;
     private PointContainer parent;
     private double xoffset,  yoffset;
-
+    
     public GuiPoint(UMLDiagram diagram, PointContainer parent, double x, double y) {
         super(diagram);
         this.setParent(parent);
-        this.x = x;
-        this.y = y;
+        this.setX(x);
+        this.setY(y);
     }
 
     public Point2D.Double toPoint() {
-        return new Point2D.Double(x, y);
+        return new Point2D.Double(getX(), getY());
     }
 
     /*
@@ -58,8 +59,8 @@ public class GuiPoint extends UMLObject implements Draggable {
      * @see guiUtil.Draggable#startDrag(int, int)
      */
     public void startDrag(double x, double y) {
-        xoffset = x - this.x;
-        yoffset = y - this.y;
+        xoffset = x - this.getX();
+        yoffset = y - this.getY();
     }
 
     /*
@@ -68,8 +69,8 @@ public class GuiPoint extends UMLObject implements Draggable {
      * @see guiUtil.Draggable#drag(int, int)
      */
     public void drag(double x, double y) {
-        this.x = x - xoffset;
-        this.y = y - yoffset;
+        this.setX(x - xoffset);
+        this.setY(y - yoffset);
         getParent().pointDragged(this, x, y);
     }
 
@@ -109,7 +110,7 @@ public class GuiPoint extends UMLObject implements Draggable {
      */
     @Override
     public boolean contains(Point2D.Double point) {
-        if (isVisible() && Math.abs(point.x - x) <= 2 && Math.abs(point.y - y) <= 2)
+        if (isVisible() && Math.abs(point.x - getX()) <= 2 && Math.abs(point.y - getY()) <= 2)
             return true;
         return false;
     }
@@ -124,7 +125,7 @@ public class GuiPoint extends UMLObject implements Draggable {
         if (isVisible()) {
             Color tempColor = g.getColor();
             g.setColor(Color.BLACK);
-            g.fillRect((int)x - 2, (int)y - 2, 5, 5);
+            g.fillRect((int)getX() - 2, (int)getY() - 2, 5, 5);
             g.setColor(tempColor);
         }
     }
@@ -165,4 +166,20 @@ public class GuiPoint extends UMLObject implements Draggable {
     public Cursor getCursor() {
        	return parent.giveCursorTo(this);
     }
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+	
+	public double getY() {
+		return y;
+	}
 }

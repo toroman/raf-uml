@@ -41,6 +41,8 @@ public class DefaultTool extends AbstractDrawableTool {
 		try {
 			UMLObject object = parentPanel.diagram
 					.getObjectAt(MathUtil.toPoint2D((event.getPoint())));
+			parentPanel.gui.propertiesPanel.setObject(object);
+			
 			if (object == parentPanel.diagram.onFocus) {
 				if (object != null) {
 					if (event.getClickCount() == 1) {

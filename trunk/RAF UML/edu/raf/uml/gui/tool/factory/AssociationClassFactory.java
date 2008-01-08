@@ -25,8 +25,8 @@ public class AssociationClassFactory implements RelationFactory {
 			UMLObject to) {
 		UMLAssociation newAssoc = new UMLAssociation (diagram, from, (UMLBox)to);
 		UMLClass newClass = new UMLClass (diagram,
-				(newAssoc.points.getFirst().x + newAssoc.points.getLast().x)/2 - 40,
-				(newAssoc.points.getLast().y + newAssoc.points.getFirst().y)/2 + 120);
+				(newAssoc.points.getFirst().getX() + newAssoc.points.getLast().getX())/2 - 40,
+				(newAssoc.points.getLast().getY() + newAssoc.points.getFirst().getY())/2 + 120);
 		new UMLClassAssociationLink (diagram, newClass, newAssoc);
 		return newAssoc;
 	}

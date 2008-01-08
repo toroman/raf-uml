@@ -69,7 +69,7 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
             tempPoint1 = point1.next();
             tempPoint2 = point2.next();
             double r = MathUtil.getBetween(MathUtil.getProjectionr(tempPoint1.toPoint(), tempPoint2.toPoint(), point), 0.0d, 1.0d);
-            tempPoint = MathUtil.getProjectionPoint(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y, r);
+            tempPoint = MathUtil.getProjectionPoint(tempPoint1.getX(), tempPoint1.getY(), tempPoint2.getX(), tempPoint2.getY(), r);
             if (MathUtil.pointDistance(tempPoint, point) < bestDistance) {
             	bestDistance = MathUtil.pointDistance(tempPoint, point);
             	bestPoint.x = tempPoint.x;
@@ -118,8 +118,8 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
      */
     @Override
     public void movePoint(GuiPoint guiPoint, double x, double y) {
-        guiPoint.x = x;
-        guiPoint.y = y;
+        guiPoint.setX(x);
+        guiPoint.setY(y);
         calculatePointLocations();
     }
 
@@ -236,7 +236,7 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
         while (point2.hasNext()) {
             tempPoint1 = point1.next();
             tempPoint2 = point2.next();
-            g.drawLine((int)tempPoint1.x, (int)tempPoint1.y, (int)tempPoint2.x, (int)tempPoint2.y);
+            g.drawLine((int)tempPoint1.getX(), (int)tempPoint1.getY(), (int)tempPoint2.getX(), (int)tempPoint2.getY());
         }
  
         g.setColor(tempColor);
@@ -253,8 +253,8 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
         while (point2.hasNext()) {
             tempPoint1 = point1.next();
             tempPoint2 = point2.next();
-            double r = MathUtil.getProjectionr(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y, point.x, point.y);
-            projectionPoint = MathUtil.getProjectionPoint(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y, r);
+            double r = MathUtil.getProjectionr(tempPoint1.getX(), tempPoint1.getY(), tempPoint2.getX(), tempPoint2.getY(), point.x, point.y);
+            projectionPoint = MathUtil.getProjectionPoint(tempPoint1.getX(), tempPoint1.getY(), tempPoint2.getX(), tempPoint2.getY(), r);
             if (r >= 0 && r <= 1 && MathUtil.pointDistance(projectionPoint, point) <= CLICK_MISS_DISTANCE) {
                 points.add(where, new GuiPoint(diagram, this, projectionPoint.x, projectionPoint.y));
                 points.get(where).setVisible(true);
@@ -282,8 +282,8 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
             if (MathUtil.pointDistance(tempPoint1.toPoint(), argumentPoint) <= CLICK_MISS_DISTANCE) {
                 return true;
             }
-            double r = MathUtil.getProjectionr(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y, argumentPoint.x, argumentPoint.y);
-            projectionPoint = MathUtil.getProjectionPoint(tempPoint1.x, tempPoint1.y, tempPoint2.x, tempPoint2.y, r);
+            double r = MathUtil.getProjectionr(tempPoint1.getX(), tempPoint1.getY(), tempPoint2.getX(), tempPoint2.getY(), argumentPoint.x, argumentPoint.y);
+            projectionPoint = MathUtil.getProjectionPoint(tempPoint1.getX(), tempPoint1.getY(), tempPoint2.getX(), tempPoint2.getY(), r);
             if (r >= 0 && r <= 1 && MathUtil.pointDistance(projectionPoint, argumentPoint) <= CLICK_MISS_DISTANCE) {
                 return true;
             }

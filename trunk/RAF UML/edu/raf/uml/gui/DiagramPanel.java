@@ -212,7 +212,7 @@ public class DiagramPanel extends JPanel {
     	editingGuiString = guiString;
     	guiStringEditField.requestFocus();
     }
-
+    
     public DiagramPanel(ApplicationGui gui) {
         super();
         this.setFocusable(true);
