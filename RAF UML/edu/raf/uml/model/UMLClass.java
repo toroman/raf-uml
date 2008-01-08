@@ -24,13 +24,14 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import edu.raf.uml.gui.util.GuiString;
+import edu.raf.uml.model.property.Property;
 
 public class UMLClass extends UMLBox {
 
     public GuiString className;
     public ArrayList<GuiString> methods,  fields;
     public static FontMetrics fontMetrics;
-
+    
     public UMLClass(UMLDiagram diagram, double x, double y) {
         super(diagram, x, y, 0, 0);
         methods = new ArrayList<GuiString>();
@@ -39,6 +40,18 @@ public class UMLClass extends UMLBox {
         className.setText("New Class");
         className.setVisible(true);
         this.movePoint(sePoint, -1, -1);
+    }
+    
+    @Property
+    public String getName() {
+    	return className.getText();
+    }
+    
+    public void setName(String className){
+    	if (!className.matches("[A-z0-9_$]+"))
+    		throw new IllegalArgumentException("Ime klase mora biti od slova, brojeva i _$");
+    	this.className.setText(className);
+    	diagram.panel.repaint();
     }
     
     public void addMethod () {

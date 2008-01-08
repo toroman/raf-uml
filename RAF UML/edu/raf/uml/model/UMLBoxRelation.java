@@ -35,44 +35,44 @@ public abstract class UMLBoxRelation extends UMLRelation {
 		double eastx = from.x + from.width;
 		double midy = from.y + from.height / 2;
 		double southy = from.y + from.height;
-		if ((points.getFirst().y <= midy) && (points.getFirst().x - from.x >= points.getFirst().y - from.y) && (eastx - points.getFirst().x >= points.getFirst().y - from.y)) {
+		if ((points.getFirst().getY() <= midy) && (points.getFirst().getX() - from.x >= points.getFirst().getY() - from.y) && (eastx - points.getFirst().getX() >= points.getFirst().getY() - from.y)) {
 			// Gornji kvadrant
-			points.getFirst().x = (int)MathUtil.getBetween(points.getFirst().x, from.x, eastx);
-			points.getFirst().y = from.y - DISTANCE_FROM_UMLBOX;
-		} else if ((points.getFirst().y >= midy) && (southy - points.getFirst().y <= points.getFirst().x - from.x) && (southy - points.getFirst().y <= eastx - points.getFirst().x)) {
+			points.getFirst().setX((int)MathUtil.getBetween(points.getFirst().getX(), from.x, eastx));
+			points.getFirst().setY(from.y - DISTANCE_FROM_UMLBOX);
+		} else if ((points.getFirst().getY() >= midy) && (southy - points.getFirst().getY() <= points.getFirst().getX() - from.x) && (southy - points.getFirst().getY() <= eastx - points.getFirst().getX())) {
 			// Donji kvadrant
-			points.getFirst().x = (int)MathUtil.getBetween(points.getFirst().x, from.x, eastx);
-			points.getFirst().y = southy + DISTANCE_FROM_UMLBOX;
-		} else if ((points.getFirst().x <= midx) && (points.getFirst().x - from.x <= points.getFirst().y - from.y) && (points.getFirst().x - from.x <= southy - points.getFirst().y)) {
+			points.getFirst().setX((int)MathUtil.getBetween(points.getFirst().getX(), from.x, eastx));
+			points.getFirst().setY(southy + DISTANCE_FROM_UMLBOX);
+		} else if ((points.getFirst().getX() <= midx) && (points.getFirst().getX() - from.x <= points.getFirst().getY() - from.y) && (points.getFirst().getX() - from.x <= southy - points.getFirst().getY())) {
 			// Levi kvadrant
-			points.getFirst().x = from.x - DISTANCE_FROM_UMLBOX;
-			points.getFirst().y = (int)MathUtil.getBetween(points.getFirst().y, from.y, southy);
+			points.getFirst().setX(from.x - DISTANCE_FROM_UMLBOX);
+			points.getFirst().setY((int)MathUtil.getBetween(points.getFirst().getY(), from.y, southy));
 		} else {
 			// Desni kvadrant
-			points.getFirst().x = eastx + DISTANCE_FROM_UMLBOX;
-			points.getFirst().y = (int)MathUtil.getBetween(points.getFirst().y, from.y, southy);
+			points.getFirst().setX(eastx + DISTANCE_FROM_UMLBOX);
+			points.getFirst().setY((int)MathUtil.getBetween(points.getFirst().getY(), from.y, southy));
 		}
 
 		midx = to.x + to.width / 2;
 		eastx = to.x + to.width;
 		midy = to.y + to.height / 2;
 		southy = to.y + to.height;
-		if ((points.getLast().y <= midy) && (points.getLast().x - to.x >= points.getLast().y - to.y) && (eastx - points.getLast().x >= points.getLast().y - to.y)) {
+		if ((points.getLast().getY() <= midy) && (points.getLast().getX() - to.x >= points.getLast().getY() - to.y) && (eastx - points.getLast().getX() >= points.getLast().getY() - to.y)) {
 			// Gornji kvadrant
-			points.getLast().x = (int)MathUtil.getBetween(points.getLast().x, to.x, eastx);
-			points.getLast().y = to.y - DISTANCE_FROM_UMLBOX;
-		} else if ((points.getLast().y >= midy) && (southy - points.getLast().y <= points.getLast().x - to.x) && (southy - points.getLast().y <= eastx - points.getLast().x)) {
+			points.getLast().setX((int)MathUtil.getBetween(points.getLast().getX(), to.x, eastx));
+			points.getLast().setY(to.y - DISTANCE_FROM_UMLBOX);
+		} else if ((points.getLast().getY() >= midy) && (southy - points.getLast().getY() <= points.getLast().getX() - to.x) && (southy - points.getLast().getY() <= eastx - points.getLast().getX())) {
 			// Donji kvadrant
-			points.getLast().x = (int)MathUtil.getBetween(points.getLast().x, to.x, eastx);
-			points.getLast().y = southy + DISTANCE_FROM_UMLBOX;
-		} else if ((points.getLast().x <= midx) && (points.getLast().x - to.x <= points.getLast().y - to.y) && (points.getLast().x - to.x <= southy - points.getLast().y)) {
+			points.getLast().setX((int)MathUtil.getBetween(points.getLast().getX(), to.x, eastx));
+			points.getLast().setY(southy + DISTANCE_FROM_UMLBOX);
+		} else if ((points.getLast().getX() <= midx) && (points.getLast().getX() - to.x <= points.getLast().getY() - to.y) && (points.getLast().getX() - to.x <= southy - points.getLast().getY())) {
 			// Levi kvadrant
-			points.getLast().x = to.x - DISTANCE_FROM_UMLBOX;
-			points.getLast().y = (int)MathUtil.getBetween(points.getLast().y, to.y, southy);
+			points.getLast().setX(to.x - DISTANCE_FROM_UMLBOX);
+			points.getLast().setY((int)MathUtil.getBetween(points.getLast().getY(), to.y, southy));
 		} else {
 			// Desni kvadrant
-			points.getLast().x = eastx + DISTANCE_FROM_UMLBOX;
-			points.getLast().y = (int)MathUtil.getBetween(points.getLast().y, to.y, southy);
+			points.getLast().setX(eastx + DISTANCE_FROM_UMLBOX);
+			points.getLast().setY((int)MathUtil.getBetween(points.getLast().getY(), to.y, southy));
 		}
 		for (UMLRelation relation: relations)
 			relation.calculatePointLocations();
@@ -80,26 +80,26 @@ public abstract class UMLBoxRelation extends UMLRelation {
     	Point2D.Double bestPoint = this.getClosestPoint(new Point2D.Double (middleString.getBounds().x - 4, middleString.getBounds().y + middleString.getBounds().height + 4));
     	middleString.setX(bestPoint.x + 4);
     	middleString.setY(bestPoint.y - middleString.getBounds().height - 4);
-    	if (from.x > points.getFirst().x) {
+    	if (from.x > points.getFirst().getX()) {
     		startNorthString.setX(from.x - startNorthString.getBounds().width - 4);
     		startSouthString.setX(from.x - startSouthString.getBounds().width - 4);
     	}
     	else {
-    		startNorthString.setX(points.getFirst().x + 4);
-    		startSouthString.setX(points.getFirst().x + 4);
+    		startNorthString.setX(points.getFirst().getX() + 4);
+    		startSouthString.setX(points.getFirst().getX() + 4);
     	}
-    	startNorthString.setY(points.getFirst().y - startNorthString.getBounds().height - 4);
-    	startSouthString.setY(points.getFirst().y + 4);
-    	if (to.x > points.getLast().x) {
+    	startNorthString.setY(points.getFirst().getY() - startNorthString.getBounds().height - 4);
+    	startSouthString.setY(points.getFirst().getY() + 4);
+    	if (to.x > points.getLast().getX()) {
     		endNorthString.setX(to.x - endNorthString.getBounds().width - 4);
     		endSouthString.setX(to.x - endSouthString.getBounds().width - 4);
     	}
     	else {
-    		endNorthString.setX(points.getLast().x + 4);
-    		endSouthString.setX(points.getLast().x + 4);
+    		endNorthString.setX(points.getLast().getX() + 4);
+    		endSouthString.setX(points.getLast().getX() + 4);
     	}
-    	endNorthString.setY (points.getLast().y - endNorthString.getBounds().height - 4);
-    	endSouthString.setY (points.getLast().y + 4);
+    	endNorthString.setY (points.getLast().getY() - endNorthString.getBounds().height - 4);
+    	endSouthString.setY (points.getLast().getY() + 4);
 	}
 
 	/*
@@ -124,32 +124,32 @@ public abstract class UMLBoxRelation extends UMLRelation {
 		Color tempColor = g.getColor();
 
 		g.setColor(Color.BLACK);
-		if (from.y > points.getFirst().y) {
+		if (from.y > points.getFirst().getY()) {
 			// Pochinje na gore
-			g.drawLine((int)points.getFirst().x, (int)points.getFirst().y, (int)points.getFirst().x, (int)from.y);
-		} else if (from.x > points.getFirst().x) {
+			g.drawLine((int)points.getFirst().getX(), (int)points.getFirst().getY(), (int)points.getFirst().getX(), (int)from.y);
+		} else if (from.x > points.getFirst().getX()) {
 			// Pochinje na levo
-			g.drawLine((int)points.getFirst().x, (int)points.getFirst().y, (int)from.x, (int)points.getFirst().y);
-		} else if (from.y + from.height < points.getFirst().y) {
+			g.drawLine((int)points.getFirst().getX(), (int)points.getFirst().getY(), (int)from.x, (int)points.getFirst().getY());
+		} else if (from.y + from.height < points.getFirst().getY()) {
 			// Pochinje na dole
-			g.drawLine((int)points.getFirst().x, (int)points.getFirst().y, (int)points.getFirst().x, (int)from.y + (int)from.height);
-		} else if (from.x + from.width < points.getFirst().x) {
+			g.drawLine((int)points.getFirst().getX(), (int)points.getFirst().getY(), (int)points.getFirst().getX(), (int)from.y + (int)from.height);
+		} else if (from.x + from.width < points.getFirst().getX()) {
 			// Pochinje na desno
-			g.drawLine((int)points.getFirst().x, (int)points.getFirst().y, (int)from.x + (int)from.width, (int)points.getFirst().y);
+			g.drawLine((int)points.getFirst().getX(), (int)points.getFirst().getY(), (int)from.x + (int)from.width, (int)points.getFirst().getY());
 		}
 
-		if (to.y > points.getLast().y) {
+		if (to.y > points.getLast().getY()) {
 			// Zavrshava se gore
-			g.drawLine((int)points.getLast().x, (int)points.getLast().y, (int)points.getLast().x, (int)to.y);
-		} else if (to.x > points.getLast().x) {
+			g.drawLine((int)points.getLast().getX(), (int)points.getLast().getY(), (int)points.getLast().getX(), (int)to.y);
+		} else if (to.x > points.getLast().getX()) {
 			// Zavrshava se levo
-			g.drawLine((int)points.getLast().x, (int)points.getLast().y, (int)to.x, (int)points.getLast().y);
-		} else if (to.y + to.height < points.getLast().y) {
+			g.drawLine((int)points.getLast().getX(), (int)points.getLast().getY(), (int)to.x, (int)points.getLast().getY());
+		} else if (to.y + to.height < points.getLast().getY()) {
 			// Zavrshava se na dole
-			g.drawLine((int)points.getLast().x, (int)points.getLast().y, (int)points.getLast().x, (int)to.y + (int)to.height);
+			g.drawLine((int)points.getLast().getX(), (int)points.getLast().getY(), (int)points.getLast().getX(), (int)to.y + (int)to.height);
 		} else {
 			// Zavrshava se desno
-			g.drawLine((int)points.getLast().x, (int)points.getLast().y, (int)to.x + (int)to.width, (int)points.getLast().y);
+			g.drawLine((int)points.getLast().getX(), (int)points.getLast().getY(), (int)to.x + (int)to.width, (int)points.getLast().getY());
 		}
 
 		g.setColor(tempColor); 
@@ -162,46 +162,46 @@ public abstract class UMLBoxRelation extends UMLRelation {
 		if (super.contains(argumentPoint))
 			return true;
 
-		if (from.y > points.getFirst().y) {
+		if (from.y > points.getFirst().getY()) {
 			// Pochinje na gore
-			if (new Rectangle2D.Double(points.getFirst().x - CLICK_MISS_DISTANCE, points.getFirst().y, 2 * CLICK_MISS_DISTANCE + 1, DISTANCE_FROM_UMLBOX).contains(argumentPoint)) {
+			if (new Rectangle2D.Double(points.getFirst().getX() - CLICK_MISS_DISTANCE, points.getFirst().getY(), 2 * CLICK_MISS_DISTANCE + 1, DISTANCE_FROM_UMLBOX).contains(argumentPoint)) {
 				return true;
 			}
-		} else if (from.x > points.getFirst().x) {
+		} else if (from.x > points.getFirst().getX()) {
 			// Pochinje na levo
-			if (new Rectangle2D.Double(points.getFirst().x, points.getFirst().y - CLICK_MISS_DISTANCE, DISTANCE_FROM_UMLBOX, 2 * CLICK_MISS_DISTANCE + 1).contains(argumentPoint)) {
+			if (new Rectangle2D.Double(points.getFirst().getX(), points.getFirst().getY() - CLICK_MISS_DISTANCE, DISTANCE_FROM_UMLBOX, 2 * CLICK_MISS_DISTANCE + 1).contains(argumentPoint)) {
 				return true;
 			}
-		} else if (from.y + from.height < points.getFirst().y) {
+		} else if (from.y + from.height < points.getFirst().getY()) {
 			// Pochinje na dole
-			if (new Rectangle2D.Double(points.getFirst().x - CLICK_MISS_DISTANCE, from.y + from.height, 2 * CLICK_MISS_DISTANCE + 1, DISTANCE_FROM_UMLBOX).contains(argumentPoint)) {
+			if (new Rectangle2D.Double(points.getFirst().getX() - CLICK_MISS_DISTANCE, from.y + from.height, 2 * CLICK_MISS_DISTANCE + 1, DISTANCE_FROM_UMLBOX).contains(argumentPoint)) {
 				return true;
 			}
-		} else if (from.x + from.width < points.getFirst().x) {
+		} else if (from.x + from.width < points.getFirst().getX()) {
 			// Pochinje na desno
-			if (new Rectangle2D.Double(from.x + from.width, points.getFirst().y - CLICK_MISS_DISTANCE, DISTANCE_FROM_UMLBOX, 2 * CLICK_MISS_DISTANCE + 1).contains(argumentPoint)) {
+			if (new Rectangle2D.Double(from.x + from.width, points.getFirst().getY() - CLICK_MISS_DISTANCE, DISTANCE_FROM_UMLBOX, 2 * CLICK_MISS_DISTANCE + 1).contains(argumentPoint)) {
 				return true;
 			}
 		}
 
-		if (to.y > points.getLast().y) {
+		if (to.y > points.getLast().getY()) {
 			// Pochinje na gore
-			if (new Rectangle2D.Double(points.getLast().x - CLICK_MISS_DISTANCE, points.getLast().y, 2 * CLICK_MISS_DISTANCE + 1, DISTANCE_FROM_UMLBOX).contains(argumentPoint)) {
+			if (new Rectangle2D.Double(points.getLast().getX() - CLICK_MISS_DISTANCE, points.getLast().getY(), 2 * CLICK_MISS_DISTANCE + 1, DISTANCE_FROM_UMLBOX).contains(argumentPoint)) {
 				return true;
 			}
-		} else if (to.x > points.getLast().x) {
+		} else if (to.x > points.getLast().getX()) {
 			// Pochinje na levo
-			if (new Rectangle2D.Double(points.getLast().x, points.getLast().y - CLICK_MISS_DISTANCE, DISTANCE_FROM_UMLBOX, 2 * CLICK_MISS_DISTANCE + 1).contains(argumentPoint)) {
+			if (new Rectangle2D.Double(points.getLast().getX(), points.getLast().getY() - CLICK_MISS_DISTANCE, DISTANCE_FROM_UMLBOX, 2 * CLICK_MISS_DISTANCE + 1).contains(argumentPoint)) {
 				return true;
 			}
-		} else if (to.y + to.height < points.getLast().y) {
+		} else if (to.y + to.height < points.getLast().getY()) {
 			// Pochinje na dole
-			if (new Rectangle2D.Double(points.getLast().x - CLICK_MISS_DISTANCE, to.y + to.height, 2 * CLICK_MISS_DISTANCE + 1, DISTANCE_FROM_UMLBOX).contains(argumentPoint)) {
+			if (new Rectangle2D.Double(points.getLast().getX() - CLICK_MISS_DISTANCE, to.y + to.height, 2 * CLICK_MISS_DISTANCE + 1, DISTANCE_FROM_UMLBOX).contains(argumentPoint)) {
 				return true;
 			}
-		} else if (to.x + to.width < points.getLast().x) {
+		} else if (to.x + to.width < points.getLast().getX()) {
 			// Pochinje na desno
-			if (new Rectangle2D.Double(to.x + to.width, points.getLast().y - CLICK_MISS_DISTANCE, DISTANCE_FROM_UMLBOX, 2 * CLICK_MISS_DISTANCE + 1).contains(argumentPoint)) {
+			if (new Rectangle2D.Double(to.x + to.width, points.getLast().getY() - CLICK_MISS_DISTANCE, DISTANCE_FROM_UMLBOX, 2 * CLICK_MISS_DISTANCE + 1).contains(argumentPoint)) {
 				return true;
 			}
 		}

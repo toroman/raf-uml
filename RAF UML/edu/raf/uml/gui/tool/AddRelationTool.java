@@ -69,16 +69,16 @@ public class AddRelationTool extends AbstractDrawableTool {
             if (object == null) return;    		
        		if (factory.canRelate(from, object) == null) {
     			UMLRelation relation = factory.makeRelation(parentPanel.diagram, from, object);
-    			relation.points.getFirst().x = event.getX();
-    			relation.points.getFirst().y = event.getY();
+    			relation.points.getFirst().setX(event.getX());
+    			relation.points.getFirst().setY(event.getY());
         		if (relation instanceof UMLBoxRelation) {
-    				relation.points.getLast().x = lineStart.x;
-    				relation.points.getLast().y = lineStart.y;
+    				relation.points.getLast().setX(lineStart.x);
+    				relation.points.getLast().setY(lineStart.y);
     			}
    				relation.calculatePointLocations();
         		if (relation instanceof UMLBoxRelation) {
-        			relation.middleString.setX((relation.points.getLast().x + relation.points.getFirst().x)/2 + 4);
-        			relation.middleString.setY((relation.points.getLast().y + relation.points.getFirst().y)/2 - relation.middleString.getBounds().height - 4);
+        			relation.middleString.setX((relation.points.getLast().getX() + relation.points.getFirst().getX())/2 + 4);
+        			relation.middleString.setY((relation.points.getLast().getY() + relation.points.getFirst().getY())/2 - relation.middleString.getBounds().height - 4);
                 }
     			parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
     			parentPanel.diagram.giveFocus(relation);

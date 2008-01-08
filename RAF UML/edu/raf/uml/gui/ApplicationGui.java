@@ -35,12 +35,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
+import edu.raf.uml.gui.properties.PropertiesPanel;
 import edu.raf.uml.gui.util.ColorHelper;
 import edu.raf.uml.model.UMLDiagram;
 
 @SuppressWarnings("serial")
 public class ApplicationGui extends JFrame {
-
+	public PropertiesPanel propertiesPanel;
 	public JPanel mainPanel;
 	public JToolBar toolBar;
 	public DiagramPanel diagramPanel;
@@ -66,11 +67,17 @@ public class ApplicationGui extends JFrame {
 				(Toolkit.getDefaultToolkit().getScreenSize().height - this.getPreferredSize().height)/2,
 				this.getPreferredSize().width,
 				this.getPreferredSize().height);
+		createPropertiesPanel();
 		createMainPanel();
 		setContentPane(mainPanel);
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		pack();
+	}
+	
+	private void createPropertiesPanel() {
+		propertiesPanel = new PropertiesPanel();
 	}
 
 	private void createMainPanel() {
@@ -80,6 +87,7 @@ public class ApplicationGui extends JFrame {
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(mainScrollPane, BorderLayout.CENTER);
 		mainPanel.add(toolBar, BorderLayout.PAGE_START);
+		mainPanel.add(propertiesPanel, BorderLayout.EAST);
 	}
 	
 	private void createDiagramPanel() {
