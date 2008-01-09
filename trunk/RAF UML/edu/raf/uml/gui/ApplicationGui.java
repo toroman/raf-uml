@@ -26,7 +26,17 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -40,6 +50,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
+import javax.swing.filechooser.FileFilter;
+
+import com.thoughtworks.xstream.XStream;
 
 import edu.raf.uml.gui.properties.PropertiesPanel;
 import edu.raf.uml.gui.util.ColorHelper;
@@ -77,35 +90,35 @@ public class ApplicationGui extends JFrame {
 	public JMenuItem menuItemAbout;
 	public JFileChooser fileChooserOpen = new JFileChooser();
 	public JFileChooser fileChooserSave = new JFileChooser();
-	
+
 	public ApplicationGui() {
 		super("RAF-UML Editor");
 		setPreferredSize(new Dimension(800, 600));
-		setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - this.getPreferredSize().width)/2,
-				(Toolkit.getDefaultToolkit().getScreenSize().height - this.getPreferredSize().height)/2,
-				this.getPreferredSize().width,
-				this.getPreferredSize().height);
+		setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - this
+				.getPreferredSize().width) / 2, (Toolkit.getDefaultToolkit()
+				.getScreenSize().height - this.getPreferredSize().height) / 2,
+				this.getPreferredSize().width, this.getPreferredSize().height);
 		createPropertiesPanel();
 		createMainPanel();
 		createMenu();
 		setContentPane(mainPanel);
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		pack();
 	}
-	
-	private void createMenu(){
+
+	private void createMenu() {
 		mainMenu = new JMenuBar();
-		
+
 		menuFile = new JMenu("File");
 		menuFile.setMnemonic('f');
 		menuHelp = new JMenu("Help");
 		menuHelp.setMnemonic('h');
-		
+
 		menuItemNew = new JMenuItem("New");
 		menuItemNew.setMnemonic('n');
-		menuItemNew.addActionListener(new ActionListener(){
+		menuItemNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				diagramPanel.diagram = new UMLDiagram(diagramPanel);
@@ -114,23 +127,85 @@ public class ApplicationGui extends JFrame {
 		});
 		menuItemOpen = new JMenuItem("Open");
 		menuItemOpen.setMnemonic('o');
-		menuItemOpen.addActionListener(new ActionListener(){
+		menuItemOpen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fileChooserOpen.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooserOpen.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File f) {
+						if (f.isDirectory() || f.toString().toLowerCase().endsWith(".xml")) {
+							return true;
+						}
+						return false;
+					}
+
+					@Override
+					public String getDescription() {
+						return "XML Files";
+					}
+				});
+				XStream xstream = new XStream();
 				int returnVal = fileChooserOpen.showOpenDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooserOpen.getSelectedFile();
+					FileInputStream fis;
+					try {
+						fis = new FileInputStream(file);
+						FileChannel channel = fis.getChannel();
+						ByteBuffer buf = ByteBuffer.allocateDirect(10000000);
+						buf.clear();
+						while (channel.read(buf) != -1)
+							buf.flip();
+						CharsetDecoder decoder = Charset.forName("UTF-8")
+								.newDecoder();
+						CharBuffer cb = decoder.decode(buf);
+						UMLDiagram openedDiagram = (UMLDiagram) xstream
+								.fromXML(cb.toString());
+						diagramPanel.diagram = openedDiagram;
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					mainPanel.repaint();
 				}
 			}
 		});
 		menuItemSave = new JMenuItem("Save");
-		menuItemSave.addActionListener(new ActionListener(){
+		menuItemSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				fileChooserSave.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File f) {
+						if (f.isDirectory() || f.toString().toLowerCase().endsWith(".xml")) {
+							return true;
+						}
+						return false;
+					}
+
+					@Override
+					public String getDescription() {
+						return "XML Files";
+					}
+				});
 				int returnVal = fileChooserSave.showSaveDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooserSave.getSelectedFile();
+					XStream xstream = new XStream();
+					String xml = xstream.toXML(diagramPanel.diagram);
+					try {
+						FileOutputStream out = new FileOutputStream(file);
+						PrintStream p = new PrintStream(out);
+						p.print(xml);
+						p.close();
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -138,7 +213,7 @@ public class ApplicationGui extends JFrame {
 		menuItemPrint = new JMenuItem("Print");
 		menuItemPrint.setMnemonic('p');
 		menuItemExit = new JMenuItem("Exit");
-		menuItemExit.addActionListener(new ActionListener(){
+		menuItemExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -149,7 +224,7 @@ public class ApplicationGui extends JFrame {
 		menuItemHelpContents.setMnemonic('h');
 		menuItemAbout = new JMenuItem("About");
 		menuItemAbout.setMnemonic('a');
-		
+
 		menuFile.add(menuItemNew);
 		menuFile.add(new JSeparator());
 		menuFile.add(menuItemOpen);
@@ -159,12 +234,13 @@ public class ApplicationGui extends JFrame {
 		menuFile.add(menuItemExit);
 		menuHelp.add(menuItemHelpContents);
 		menuHelp.add(menuItemAbout);
-		
+
 		mainMenu.add(menuFile);
 		mainMenu.add(menuHelp);
 		this.setJMenuBar(mainMenu);
+		
 	}
-	
+
 	private void createPropertiesPanel() {
 		propertiesPanel = new PropertiesPanel();
 	}
@@ -178,19 +254,21 @@ public class ApplicationGui extends JFrame {
 		mainPanel.add(toolBar, BorderLayout.PAGE_START);
 		mainPanel.add(propertiesPanel, BorderLayout.EAST);
 	}
-	
+
 	private void createDiagramPanel() {
 		diagramPanel = new DiagramPanel(this);
 		diagramPanel.setTool(DiagramPanel.DEFAULT_TOOL);
-		mainScrollPane = new JScrollPane (diagramPanel, 
+		mainScrollPane = new JScrollPane(diagramPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		mainScrollPane.setWheelScrollingEnabled(false);
 		mainScrollPane.getHorizontalScrollBar().setUnitIncrement(40);
 		mainScrollPane.getVerticalScrollBar().setUnitIncrement(40);
-		mainScrollPane.getViewport().setViewPosition(new Point (
-				UMLDiagram.MAX_DIMENSION.width/2 - this.getPreferredSize().width/2,
-				UMLDiagram.MAX_DIMENSION.height/2 - this.getPreferredSize().height/2));
+		mainScrollPane.getViewport().setViewPosition(
+				new Point(UMLDiagram.MAX_DIMENSION.width / 2
+						- this.getPreferredSize().width / 2,
+						UMLDiagram.MAX_DIMENSION.height / 2
+								- this.getPreferredSize().height / 2));
 	}
 
 	private void createToolbar() {
@@ -236,8 +314,9 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.DELETE_TOOL);
 			}
 		});
-		
-		toolAddCommentBox = new JButton("", createImageIcon("AddCommentBoxToolIcon.PNG"));
+
+		toolAddCommentBox = new JButton("",
+				createImageIcon("AddCommentBoxToolIcon.PNG"));
 		toolAddCommentBox.setToolTipText("Add comment box");
 		toolAddCommentBox.setFocusable(false);
 		toolAddCommentBox.addActionListener(new ActionListener() {
@@ -246,8 +325,9 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.ADD_COMMENT_BOX_TOOL);
 			}
 		});
-		
-		toolAddCommentRelation = new JButton("", createImageIcon("AddCommentRelationToolIcon.PNG"));
+
+		toolAddCommentRelation = new JButton("",
+				createImageIcon("AddCommentRelationToolIcon.PNG"));
 		toolAddCommentRelation.setToolTipText("Add comment link");
 		toolAddCommentRelation.setFocusable(false);
 		toolAddCommentRelation.addActionListener(new ActionListener() {
@@ -257,7 +337,8 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolAddAssociationRelation = new JButton("", createImageIcon("AddAssociationToolIcon.PNG"));
+		toolAddAssociationRelation = new JButton("",
+				createImageIcon("AddAssociationToolIcon.PNG"));
 		toolAddAssociationRelation.setToolTipText("Add new association");
 		toolAddAssociationRelation.setFocusable(false);
 		toolAddAssociationRelation.addActionListener(new ActionListener() {
@@ -266,8 +347,9 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.ADD_ASSOCIATION_TOOL);
 			}
 		});
-		
-		toolAddAggregationRelation = new JButton("", createImageIcon("AddAggregationToolIcon.PNG"));
+
+		toolAddAggregationRelation = new JButton("",
+				createImageIcon("AddAggregationToolIcon.PNG"));
 		toolAddAggregationRelation.setToolTipText("Add new aggregation");
 		toolAddAggregationRelation.setFocusable(false);
 		toolAddAggregationRelation.addActionListener(new ActionListener() {
@@ -276,8 +358,9 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.ADD_AGGREGATION_TOOL);
 			}
 		});
-		
-		toolAddCompositionRelation = new JButton("", createImageIcon("AddCompositionToolIcon.PNG"));
+
+		toolAddCompositionRelation = new JButton("",
+				createImageIcon("AddCompositionToolIcon.PNG"));
 		toolAddCompositionRelation.setToolTipText("Add new composition");
 		toolAddCompositionRelation.setFocusable(false);
 		toolAddCompositionRelation.addActionListener(new ActionListener() {
@@ -286,8 +369,9 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.ADD_COMPOSITION_TOOL);
 			}
 		});
-		
-		toolAddInterface = new JButton("", createImageIcon("AddInterfaceToolIcon.PNG"));
+
+		toolAddInterface = new JButton("",
+				createImageIcon("AddInterfaceToolIcon.PNG"));
 		toolAddInterface.setToolTipText("Add new interface");
 		toolAddInterface.setFocusable(false);
 		toolAddInterface.addActionListener(new ActionListener() {
@@ -296,8 +380,9 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.ADD_INTERFACE_TOOL);
 			}
 		});
-		
-		toolAddRealisationRelation = new JButton("", createImageIcon("AddRealizationToolIcon.PNG"));
+
+		toolAddRealisationRelation = new JButton("",
+				createImageIcon("AddRealizationToolIcon.PNG"));
 		toolAddRealisationRelation.setToolTipText("Add new realization");
 		toolAddRealisationRelation.setFocusable(false);
 		toolAddRealisationRelation.addActionListener(new ActionListener() {
@@ -306,8 +391,9 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.ADD_REALISATION_TOOL);
 			}
 		});
-		
-		toolAddAssociationClass = new JButton("", createImageIcon("AddAssociationClassToolIcon.PNG"));
+
+		toolAddAssociationClass = new JButton("",
+				createImageIcon("AddAssociationClassToolIcon.PNG"));
 		toolAddAssociationClass.setToolTipText("Add new association class");
 		toolAddAssociationClass.setFocusable(false);
 		toolAddAssociationClass.addActionListener(new ActionListener() {
@@ -316,7 +402,7 @@ public class ApplicationGui extends JFrame {
 				diagramPanel.setTool(DiagramPanel.ADD_ASSOCIATION_CLASS_TOOL);
 			}
 		});
-		
+
 		toolBar.setFloatable(false);
 		toolBar.add(toolDefault);
 		toolBar.addSeparator();
@@ -341,7 +427,7 @@ public class ApplicationGui extends JFrame {
 		toolButtons.add(toolAddInheritance);
 		toolButtons.add(toolDelete);
 		toolButtons.add(toolAddCommentBox);
-		toolButtons.add(toolAddCommentRelation);	
+		toolButtons.add(toolAddCommentRelation);
 		toolButtons.add(toolAddAssociationRelation);
 		toolButtons.add(toolAddAggregationRelation);
 		toolButtons.add(toolAddCompositionRelation);
