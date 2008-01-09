@@ -20,8 +20,9 @@ package edu.raf.uml.gui.properties;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -48,15 +49,10 @@ class StringField extends PropertyField {
 	}
 
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		g.setColor(Color.black);
 		g.drawString(parent.getValue().toString(), 4, 14);
-	}
-
-	@Override
-	public Dimension getPreferredSize() {
-		return PropertyName.DIMENSION;
 	}
 
 	@Override
@@ -67,12 +63,21 @@ class StringField extends PropertyField {
 		text.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
+				System.out.println(e.getKeyCode());
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					setValue(text.getText());
+					textLostFocus();
 				}
 			}
 		});
+		text.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				textLostFocus();
+			}
+		});
 		add(text);
+		text.requestFocus();
 		validate();
 	}
 
@@ -83,5 +88,14 @@ class StringField extends PropertyField {
 			// TODO: prikazi gresku u nekom prozoru
 			System.out.println(ex.getMessage());
 		}
+	}
+
+	public void textLostFocus() {
+		if (text != null) {
+			this.remove(text);
+			text = null;
+		}
+		validate();
+		repaint();
 	}
 }

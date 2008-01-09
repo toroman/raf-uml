@@ -21,9 +21,12 @@ package edu.raf.uml.gui.properties;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -55,10 +58,14 @@ public class PropertiesPanel extends JPanel {
 		table.setBackground(Color.WHITE);
 		tooltipLabel = new JLabel("Tooltip");
 		JLabel propertiesLabel = new JLabel("Properties:");
-
 		BorderLayout layout = new BorderLayout();
 		this.setLayout(layout);
-
+		this.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				relayout();
+			}
+		});
 		this.add(propertiesLabel, BorderLayout.NORTH);
 		this.add(table, BorderLayout.CENTER);
 		this.add(tooltipLabel, BorderLayout.SOUTH);
@@ -72,7 +79,7 @@ public class PropertiesPanel extends JPanel {
 	/**
 	 * Ovom metodom se saopstava panelu cije propertiese da prikaze.
 	 * 
-	 * @param activeObject
+	 * @param activeObject - bilo koji Object sa <tt>@Property</tt> anotacijama
 	 */
 	public void setObject(Object activeObject) {
 		this.object = activeObject;
@@ -89,23 +96,30 @@ public class PropertiesPanel extends JPanel {
 	private void refreshTable() {
 		table.removeAll();
 		if (properties.size() == 0) {
-			table.validate();
-			table.repaint();
+			repaint();
 			return;
 		}
+		for (PropertyPair pair : properties) {
+			table.add(pair.namePanel);
+			table.add(pair.fieldPanel);
+		}
+		relayout();
+		repaint();
+	}
+
+	// rucni layout
+	private void relayout() {
+		Dimension d = PropertyName.DIMENSION;
 		table.setLayout(null);
 		int x = 0;
 		int y = 0;
-		Dimension d = PropertyName.DIMENSION;
 		for (PropertyPair pair : properties) {
-			table.add(pair.namePanel);
 			pair.namePanel.setBounds(x, y, d.width, d.height);
-			table.add(pair.fieldPanel);
-			pair.fieldPanel.setBounds(x + d.width, y, d.width, d.height);
+			pair.fieldPanel.setBounds(x + d.width, y, getWidth() - d.width,
+					d.height);
 			y += d.height;
 		}
-		table.validate();
-		table.repaint();
+		table.updateUI();
 	}
 
 	private void createProperties() {
@@ -118,6 +132,7 @@ public class PropertiesPanel extends JPanel {
 			PropertyPair prop = new PropertyPair((Property) ann, mth, object);
 			properties.add(prop);
 		}
+		Collections.sort(properties);
 	}
 
 }

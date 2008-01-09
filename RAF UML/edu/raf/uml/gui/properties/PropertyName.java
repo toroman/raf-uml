@@ -14,13 +14,15 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package edu.raf.uml.gui.properties;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.JPanel;
@@ -38,23 +40,21 @@ class PropertyName extends JPanel {
 	private static final long serialVersionUID = -3412741687219338139L;
 	static final Dimension DIMENSION = new Dimension(100, 22);
 	private final PropertyPair parent;
-	
+
 	public PropertyName(PropertyPair parent) {
 		super();
 		this.parent = parent;
 	}
 
 	@Override
-	public void paint(Graphics g) {
-		g.setColor(Color.GRAY);
+	public void paint(Graphics g1) {
+		Graphics2D g = (Graphics2D) g1;
+		g.setColor(Color.LIGHT_GRAY);
 		Rectangle c = g.getClipBounds();
-		g.fillRect(0, 0, c.width, c.height);
-		g.setColor(Color.black);
+		g.fill3DRect(0, 0, c.width, c.height, true);
+		g.setColor(Color.BLACK);
+		g.setFont(Font.decode("Monospaced"));
 		g.drawString(parent.getTitle(), 2, 14);
 	}
-	
-	@Override
-	public Dimension getPreferredSize() {
-		return DIMENSION;
-	}
+
 }

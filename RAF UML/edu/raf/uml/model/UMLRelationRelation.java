@@ -81,7 +81,7 @@ public class UMLRelationRelation extends UMLRelation {
 	@Override
 	public void paint(Graphics2D g) {
     	Stroke tempStroke = null;
-    	if (line_dashed) {
+    	if (lineDashed) {
     		tempStroke = ((Graphics2D)g).getStroke();
     		((Graphics2D)g).setStroke(new BasicStroke (
     				1.0f,
@@ -111,7 +111,7 @@ public class UMLRelationRelation extends UMLRelation {
         }
         
         g.setColor(tempColor);
-        if (line_dashed)
+        if (lineDashed)
        		((Graphics2D)g).setStroke(tempStroke);
 	}
 }

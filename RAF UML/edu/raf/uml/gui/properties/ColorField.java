@@ -28,16 +28,21 @@ public class ColorField extends PropertyField {
 	}
 
 	@Override
-	public void paint(Graphics g1) {
-		super.paint(g1);
+	public void paintComponent(Graphics g1) {
+		super.paintComponent(g1);
 		Graphics2D g = (Graphics2D) g1;
-		// Dimension d = PropertyName.DIMENSION;
-		Rectangle c = g.getClipBounds();
-		Color color = (Color) parent.getValue();
 		// da se primeti transparency - moze malo bolje
-		g.setColor(Color.MAGENTA);
-		g.fillRect(c.width - c.height + 1, 1, c.height - 1, c.height - 1);
+		Rectangle c = g.getClipBounds();
+		int step = 4;
+		Color[] colors = { Color.BLACK, Color.WHITE };
+		for (int x = c.width - c.height + 1; x < c.width; x += step) {
+			for (int y = 1; y < c.height; y += step) {
+				g.setColor(colors[(x/step + y/step) % 2]);
+				g.fillRect(x, y, step, step);
+			}
+		}
 		// iscrtaj boju
+		Color color = (Color) parent.getValue();
 		g.setColor(color);
 		g.fill3DRect(c.width - c.height + 1, 1, c.height - 1, c.height - 1,
 				true);
@@ -85,6 +90,7 @@ public class ColorField extends PropertyField {
 			}
 		});
 		add(text);
+		text.requestFocus();
 		validate();
 	}
 

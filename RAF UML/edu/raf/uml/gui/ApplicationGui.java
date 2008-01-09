@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 
 import edu.raf.uml.gui.properties.PropertiesPanel;
@@ -59,7 +60,8 @@ public class ApplicationGui extends JFrame {
 	public JButton toolAddAssociationClass;
 	public JScrollPane mainScrollPane;
 	public ArrayList<JButton> toolButtons;
-
+	private JSplitPane splitPane;
+	
 	public ApplicationGui() {
 		super("RAF-UML Editor");
 		setPreferredSize(new Dimension(800, 600));
@@ -83,11 +85,22 @@ public class ApplicationGui extends JFrame {
 	private void createMainPanel() {
 		createToolbar();
 		createDiagramPanel();
+		createSplitPane();
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(mainScrollPane, BorderLayout.CENTER);
+		mainPanel.add(splitPane, BorderLayout.CENTER);
 		mainPanel.add(toolBar, BorderLayout.PAGE_START);
-		mainPanel.add(propertiesPanel, BorderLayout.EAST);
+	}
+	
+	/*
+	 * TODO: ubaciti neki Docking frejmvork umesto ovog split-a
+	 */
+	private void createSplitPane() {
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setResizeWeight(1.0);
+		splitPane.setDividerLocation(getWidth()-200);
+		splitPane.add(mainScrollPane);
+		splitPane.add(propertiesPanel);
 	}
 	
 	private void createDiagramPanel() {
