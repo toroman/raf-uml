@@ -25,15 +25,20 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
+import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 
 import edu.raf.uml.gui.properties.PropertiesPanel;
@@ -60,7 +65,18 @@ public class ApplicationGui extends JFrame {
 	public JButton toolAddAssociationClass;
 	public JScrollPane mainScrollPane;
 	public ArrayList<JButton> toolButtons;
-	private JSplitPane splitPane;
+	public JMenuBar mainMenu;
+	public JMenu menuFile;
+	public JMenu menuHelp;
+	public JMenuItem menuItemNew;
+	public JMenuItem menuItemOpen;
+	public JMenuItem menuItemSave;
+	public JMenuItem menuItemPrint;
+	public JMenuItem menuItemExit;
+	public JMenuItem menuItemHelpContents;
+	public JMenuItem menuItemAbout;
+	public JFileChooser fileChooserOpen = new JFileChooser();
+	public JFileChooser fileChooserSave = new JFileChooser();
 	
 	public ApplicationGui() {
 		super("RAF-UML Editor");
@@ -71,11 +87,82 @@ public class ApplicationGui extends JFrame {
 				this.getPreferredSize().height);
 		createPropertiesPanel();
 		createMainPanel();
+		createMenu();
 		setContentPane(mainPanel);
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		pack();
+	}
+	
+	private void createMenu(){
+		mainMenu = new JMenuBar();
+		
+		menuFile = new JMenu("File");
+		menuFile.setMnemonic('f');
+		menuHelp = new JMenu("Help");
+		menuHelp.setMnemonic('h');
+		
+		menuItemNew = new JMenuItem("New");
+		menuItemNew.setMnemonic('n');
+		menuItemNew.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.diagram = new UMLDiagram(diagramPanel);
+				mainPanel.repaint();
+			}
+		});
+		menuItemOpen = new JMenuItem("Open");
+		menuItemOpen.setMnemonic('o');
+		menuItemOpen.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fileChooserOpen.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				int returnVal = fileChooserOpen.showOpenDialog(null);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooserOpen.getSelectedFile();
+				}
+			}
+		});
+		menuItemSave = new JMenuItem("Save");
+		menuItemSave.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int returnVal = fileChooserSave.showSaveDialog(null);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooserSave.getSelectedFile();
+				}
+			}
+		});
+		menuItemSave.setMnemonic('s');
+		menuItemPrint = new JMenuItem("Print");
+		menuItemPrint.setMnemonic('p');
+		menuItemExit = new JMenuItem("Exit");
+		menuItemExit.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		menuItemExit.setMnemonic('e');
+		menuItemHelpContents = new JMenuItem("Help Contents");
+		menuItemHelpContents.setMnemonic('h');
+		menuItemAbout = new JMenuItem("About");
+		menuItemAbout.setMnemonic('a');
+		
+		menuFile.add(menuItemNew);
+		menuFile.add(new JSeparator());
+		menuFile.add(menuItemOpen);
+		menuFile.add(menuItemSave);
+		menuFile.add(menuItemPrint);
+		menuFile.add(new JSeparator());
+		menuFile.add(menuItemExit);
+		menuHelp.add(menuItemHelpContents);
+		menuHelp.add(menuItemAbout);
+		
+		mainMenu.add(menuFile);
+		mainMenu.add(menuHelp);
+		this.setJMenuBar(mainMenu);
 	}
 	
 	private void createPropertiesPanel() {
@@ -85,22 +172,11 @@ public class ApplicationGui extends JFrame {
 	private void createMainPanel() {
 		createToolbar();
 		createDiagramPanel();
-		createSplitPane();
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(splitPane, BorderLayout.CENTER);
+		mainPanel.add(mainScrollPane, BorderLayout.CENTER);
 		mainPanel.add(toolBar, BorderLayout.PAGE_START);
-	}
-	
-	/*
-	 * TODO: ubaciti neki Docking frejmvork umesto ovog split-a
-	 */
-	private void createSplitPane() {
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		splitPane.setResizeWeight(1.0);
-		splitPane.setDividerLocation(getWidth()-200);
-		splitPane.add(mainScrollPane);
-		splitPane.add(propertiesPanel);
+		mainPanel.add(propertiesPanel, BorderLayout.EAST);
 	}
 	
 	private void createDiagramPanel() {
