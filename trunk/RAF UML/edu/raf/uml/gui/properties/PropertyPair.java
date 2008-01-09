@@ -31,7 +31,7 @@ import edu.raf.uml.model.property.Property;
  * @author Srecko Toroman
  * 
  */
-public class PropertyPair {
+public class PropertyPair implements Comparable<PropertyPair> {
 	protected final PropertyName namePanel;
 	protected final PropertyField fieldPanel;
 	protected final Method setter;
@@ -68,12 +68,15 @@ public class PropertyPair {
 		this.namePanel = new PropertyName(this);
 		Class<?> type = getter.getReturnType();
 		String typeName = type.getName();
+		//TODO: mozda zameni ovo sa nekim registrom
 		if ("java.lang.String".equals(typeName))
 			this.fieldPanel = new StringField(this);
 		else if ("Double".equals(typeName) || "double".equals(typeName))
 			this.fieldPanel = new DoubleField(this);
 		else if ("java.awt.Color".equals(typeName))
 			this.fieldPanel = new ColorField(this);
+		else if (type.isEnum())
+			this.fieldPanel = new EnumField(this);
 		else {
 			throw new RuntimeException("Type " + type.getName()
 					+ " not supported!");
@@ -112,5 +115,13 @@ public class PropertyPair {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE,
 					"Error setting value", ex);
 		}
+	}
+
+	/**
+	 * Poredi po alfabetu.
+	 */
+	@Override
+	public int compareTo(PropertyPair o) {
+		return getTitle().compareTo(o.getTitle());
 	}
 }

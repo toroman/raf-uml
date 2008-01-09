@@ -29,13 +29,14 @@ import edu.raf.uml.model.property.Property;
 public class UMLClass extends UMLBox {
 
     public GuiString className;
-    public ArrayList<GuiString> methods,  fields;
+    public ArrayList<GuiString> methods;
+    public ArrayList<UMLField> fields;
     public static FontMetrics fontMetrics;
     
     public UMLClass(UMLDiagram diagram, double x, double y) {
         super(diagram, x, y, 0, 0);
         methods = new ArrayList<GuiString>();
-        fields = new ArrayList<GuiString>();
+        fields = new ArrayList<UMLField>();
         className = new GuiString (diagram, this);
         className.setText("New Class");
         className.setVisible(true);
@@ -64,10 +65,12 @@ public class UMLClass extends UMLBox {
     }
 
     public void addField () {
-    	GuiString newString; 
-    	fields.add(newString = new GuiString (diagram, this));
-    	newString.setVisible(true);
-    	newString.setText("New Field");
+    	UMLField field = new UMLField (diagram, this); 
+    	fields.add(field);
+    	field.setVisible(true);
+    	field.setType("int");
+    	field.setModifiers("");
+    	field.setName("value");
     	calculatePointLocations();
     	diagram.giveFocus(this);
     }

@@ -8,7 +8,7 @@ public class UMLRealization extends UMLBoxRelation{
 
     public UMLRealization(UMLDiagram diagram, UMLBox from, UMLBox to) {
         super(diagram, from, to);    
-        line_dashed = true;
+        lineDashed = true;
         middleString.setVisible(true);
         middleString.setText("<< realize >>");
     }

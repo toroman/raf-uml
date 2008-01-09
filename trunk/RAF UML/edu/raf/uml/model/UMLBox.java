@@ -317,7 +317,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable,
 		}
 	}
 
-	@Property
+	@Property(title="BgColor")
 	public Color getBackgroundColor() {
 		return backgroundColor;
 	}

@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -209,6 +210,7 @@ public class DiagramPanel extends JPanel {
     	this.add(guiStringEditField);
     	guiStringEditField.setText(guiString.getText());
     	guiStringEditField.setBounds ((int)guiString.getBounds().x, (int)guiString.getBounds().y, (int)guiString.getBounds().width+2, (int)guiString.getBounds().height+1);
+    	guiStringEditField.setFont(guiString.getFont());
     	editingGuiString = guiString;
     	guiStringEditField.requestFocus();
     }
@@ -260,7 +262,8 @@ public class DiagramPanel extends JPanel {
     public void paintComponent(Graphics g) {
         Color tempColor = g.getColor();
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, 0, UMLDiagram.MAX_DIMENSION.width, UMLDiagram.MAX_DIMENSION.height);
+        Rectangle r = g.getClipBounds();
+        g.fillRect(r.x, r.y, r.width, r.height);
         diagram.paint((Graphics2D)g);
         currentTool.paint(g);
         g.setColor(tempColor);

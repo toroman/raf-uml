@@ -19,7 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package edu.raf.uml.gui.properties;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -50,12 +49,7 @@ abstract class PropertyField extends JPanel implements MouseListener,
 	}
 
 	@Override
-	public Dimension getPreferredSize() {
-		return PropertyName.DIMENSION;
-	}
-
-	@Override
-	public void paint(Graphics g1) {
+	public void paintComponent(Graphics g1) {
 		Graphics2D g = (Graphics2D) g1;
 		Color prethodnaBoja = g.getColor();
 		Rectangle c = g.getClipBounds();
@@ -65,7 +59,7 @@ abstract class PropertyField extends JPanel implements MouseListener,
 		g.draw3DRect(0, 0, c.width, c.height, true);
 		g.setColor(prethodnaBoja);
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub

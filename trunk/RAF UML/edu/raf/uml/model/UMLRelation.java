@@ -39,11 +39,11 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
     public GuiString startNorthString, startSouthString, middleString, endNorthString, endSouthString;
     public static final double CLICK_MISS_DISTANCE = 5;
     public static final int DISTANCE_FROM_UMLBOX = 25;
-    protected boolean line_dashed;
+    protected boolean lineDashed;
     
     public UMLRelation(UMLDiagram diagram) {
         super(diagram);
-        line_dashed = false;
+        lineDashed = false;
         points = new LinkedList<GuiPoint>();
         relations = new ArrayList<UMLRelationRelation>();
         startNorthString = new GuiString (diagram, this);
