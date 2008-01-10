@@ -14,42 +14,36 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.raf.uml.gui.properties;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 
-public class EnumField extends PropertyField {
+import edu.raf.uml.model.property.TypeModel;
+
+public class TypeField extends PropertyField {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8001064617234376832L;
+	private static final long serialVersionUID = -2679461150310004049L;
 
 	private JComboBox combo = null;
 
-	public EnumField(PropertyPair propertyPair) {
+	public TypeField(PropertyPair propertyPair) {
 		super(propertyPair);
 		setLayout(new BorderLayout());
-		Class<?> type = parent.getValue().getClass();
-		Object[] values;
-		try {
-			values = (Object[]) type.getMethod("values").invoke(null);
-			Arrays.sort(values);
-		} catch (Exception ex) {
-			log.log(Level.SEVERE, "Cudna vrsta Enum tipa!", ex);
-			values = new String[] { "" };
-		}
-
-		combo = new JComboBox(values);
-		combo.setEditable(false);
-		combo.setSelectedItem(parent.getValue());
+		TypeModel type = (TypeModel) parent.getValue();
+		String[] types = type.getTypes();
+		combo = new JComboBox(types);
+		combo.setEditable(true);
+		combo.setSelectedItem(type.toString());
 		combo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Object item = combo.getSelectedItem();
@@ -58,16 +52,18 @@ public class EnumField extends PropertyField {
 		});
 		add(combo, BorderLayout.CENTER);
 	}
-	
+
 	protected void setValue(Object choice) {
 		try {
-			parent.setValue(choice);
+			TypeModel model = new TypeModel();
+			model.setType(choice.toString());
+			parent.setValue(model);
 		} catch (Exception ex) {
 			// TODO: prikazi gresku u nekom prozoru
-			System.out.println(ex.getMessage());
+			log.log(Level.SEVERE, "Nisam uspeo da setujem tip!", ex);
 		}
 	}
 
-	private static final Logger log = Logger.getLogger(EnumField.class
+	private static final Logger log = Logger.getLogger(TypeField.class
 			.getName());
 }

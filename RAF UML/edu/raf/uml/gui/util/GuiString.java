@@ -13,7 +13,7 @@ import edu.raf.uml.model.UMLObject;
 import edu.raf.uml.model.property.Property;
 
 public class GuiString extends UMLObject implements Draggable {
-	private Rectangle2D.Double bounds;
+	protected Rectangle2D.Double bounds;
 	private boolean isVisible = false;
 	public boolean isBackgroundRectVisible = false;
 	private StringContainer parent;
@@ -27,7 +27,13 @@ public class GuiString extends UMLObject implements Draggable {
 		this.setParent(parent);
 		bounds = new Rectangle2D.Double(x, y, 0, 0);
 		this.text = text;
-		recalculateBounds();
+		this.recalculateBounds();
+	}
+	/**
+	 * Konstruktor potreban za UMLField
+	 */
+	protected GuiString(UMLDiagram diagram) {
+		super(diagram);
 	}
 
 	public Rectangle2D.Double getBounds() {
@@ -58,7 +64,7 @@ public class GuiString extends UMLObject implements Draggable {
 		this(diagram, parent, "", 0, 0);
 	}
 
-	public void recalculateBounds() {
+	protected void recalculateBounds() {
 		Rectangle2D kme = calculateStringSize(getText());
 		bounds.height = kme.getHeight() + 7;
 		bounds.width = kme.getWidth() + 8;

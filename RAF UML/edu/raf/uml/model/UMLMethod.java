@@ -1,25 +1,23 @@
 package edu.raf.uml.model;
 
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D.Double;
+import java.util.List;
 
 import edu.raf.uml.gui.util.GuiString;
 import edu.raf.uml.gui.util.StringContainer;
+import edu.raf.uml.model.property.ArgumentModel;
 import edu.raf.uml.model.property.Property;
 import edu.raf.uml.model.property.TypeModel;
 
-public class UMLField extends GuiString {
+public class UMLMethod extends GuiString {
 	private TypeModel type;
 	private String name = "";
 	private VisibilityType visibility = VisibilityType.Default;
 	private String modifiers = "";
-
-	public UMLField(UMLDiagram diagram, StringContainer parent) {
-		super(diagram);
-		this.setParent(parent);
-		bounds = new Rectangle2D.Double(0, 0, 0, 0);
-		type = new TypeModel();
-		super.recalculateBounds();
+	private List<ArgumentModel> arguments;
+	
+	public UMLMethod(UMLDiagram diagram, StringContainer parent) {
+		super(diagram, parent);
 	}
 
 	@Override
@@ -29,7 +27,14 @@ public class UMLField extends GuiString {
 
 	@Override
 	public String getText() {
-		return visibility.uml() + " " + type + " " + name + " " + modifiers;
+		/*
+		 * vis moze biti null jer prilikom konstrukcije objekta poziva se
+		 * getText dok visibility jos nije ni inicijalizovan
+		 */
+		String vis = visibility == null ? VisibilityType.Default.uml()
+				: visibility.uml();
+		String t = type == null ? "" : type.toString();
+		return vis + " " + t + " " + name + " " + modifiers;
 	}
 
 	@Override

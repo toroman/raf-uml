@@ -18,11 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package edu.raf.uml.gui.properties;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.raf.uml.model.property.Property;
+import edu.raf.uml.model.property.TypeModel;
 
 /**
  * Kontejner za neki field/property. Sadrzi sve potrebne objekte za rad
@@ -68,7 +70,7 @@ public class PropertyPair implements Comparable<PropertyPair> {
 		this.namePanel = new PropertyName(this);
 		Class<?> type = getter.getReturnType();
 		String typeName = type.getName();
-		//TODO: mozda zameni ovo sa nekim registrom
+		// TODO: mozda zameni ovo sa nekim registrom
 		if ("java.lang.String".equals(typeName))
 			this.fieldPanel = new StringField(this);
 		else if ("Double".equals(typeName) || "double".equals(typeName))
@@ -77,6 +79,8 @@ public class PropertyPair implements Comparable<PropertyPair> {
 			this.fieldPanel = new ColorField(this);
 		else if (type.isEnum())
 			this.fieldPanel = new EnumField(this);
+		else if (TypeModel.class.equals(type))
+			this.fieldPanel = new TypeField(this);
 		else {
 			throw new RuntimeException("Type " + type.getName()
 					+ " not supported!");
@@ -108,13 +112,9 @@ public class PropertyPair implements Comparable<PropertyPair> {
 		}
 	}
 
-	public void setValue(Object value) {
-		try {
-			setter.invoke(this.object, value);
-		} catch (Exception ex) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE,
-					"Error setting value", ex);
-		}
+	public void setValue(Object value) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
+		setter.invoke(this.object, value);
 	}
 
 	/**
