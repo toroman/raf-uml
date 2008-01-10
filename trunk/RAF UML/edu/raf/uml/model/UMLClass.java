@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import edu.raf.uml.gui.util.GuiString;
 import edu.raf.uml.model.property.Property;
+import edu.raf.uml.model.property.TypeModel;
 
 public class UMLClass extends UMLBox {
 
@@ -68,7 +69,7 @@ public class UMLClass extends UMLBox {
     	UMLField field = new UMLField (diagram, this); 
     	fields.add(field);
     	field.setVisible(true);
-    	field.setType("int");
+    	field.setType(new TypeModel());
     	field.setModifiers("");
     	field.setName("value");
     	calculatePointLocations();

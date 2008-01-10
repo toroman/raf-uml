@@ -1,3 +1,20 @@
+/*
+RAF UML - Student project for Object oriented programming and design
+Copyright (C) <2007>  Ivan Bocic, Sasa Sijak, Srecko Toroman
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package edu.raf.uml.gui.properties;
 
 import java.awt.BorderLayout;
@@ -33,7 +50,7 @@ public class ColorField extends PropertyField {
 		Graphics2D g = (Graphics2D) g1;
 		// da se primeti transparency - moze malo bolje
 		Rectangle c = g.getClipBounds();
-		int step = 4;
+		int step = 3;
 		Color[] colors = { Color.BLACK, Color.WHITE };
 		for (int x = c.width - c.height + 1; x < c.width; x += step) {
 			for (int y = 1; y < c.height; y += step) {
@@ -61,7 +78,11 @@ public class ColorField extends PropertyField {
 			Color c = JColorChooser.showDialog(this, "Color", (Color) parent
 					.getValue());
 			if (c != null) {
-				parent.setValue(c);
+				try {
+					parent.setValue(c);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 				repaint();
 			}
 			return;
