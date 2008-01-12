@@ -38,4 +38,5 @@ public @interface Property {
 	public boolean editable() default true;
 	public String title() default "";
 	public String tooltip() default "";
+	public Class<?> type() default Void.class;
 }

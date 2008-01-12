@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.raf.uml.gui.util;
 
 /**
@@ -22,18 +22,18 @@ package edu.raf.uml.gui.util;
  */
 public interface Draggable {
 
-    /**
-     * Ovu metodu poziva gui kada se pochinje drag tog objekta
-     */
-    public void startDrag(double x, double y);
+	/**
+	 * Ovu metodu poziva gui kada se pochinje drag tog objekta
+	 */
+	public void startDrag(double x, double y);
 
-    /**
-     * Ovo gui non-stop poziva dok drag traje
-     */
-    public void drag(double x, double y);
+	/**
+	 * Ovo gui non-stop poziva dok drag traje
+	 */
+	public void drag(double x, double y);
 
-    /**
-     * ovo gui pozove kad se drag zavrshi
-     */
-    public void endDrag();
+	/**
+	 * ovo gui pozove kad se drag zavrshi
+	 */
+	public void endDrag();
 }

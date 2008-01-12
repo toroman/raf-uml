@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.raf.uml.gui.util;
 
 import java.awt.Cursor;
@@ -26,48 +26,49 @@ import java.awt.geom.Point2D;
  */
 public interface PointContainer {
 
-    /**
-     * Kada se jednom klikne na neku tachku, ona prijavi svom parentu da je
-     * kliknuta, i parent obradi taj klik u ovoj metodi.
-     */
-    public void pointClicked(GuiPoint guiPoint, Point2D.Double clickLocation);
+	/**
+	 * Kada se jednom klikne na neku tachku, ona prijavi svom parentu da je
+	 * kliknuta, i parent obradi taj klik u ovoj metodi.
+	 */
+	public void pointClicked(GuiPoint guiPoint, Point2D.Double clickLocation);
 
-    /**
-     * Kada se dvaput klikne na neku tachku, ona prijavi svom parentu da je
-     * kliknuta, i parent obradi taj klik u ovoj metodi.
-     */
-    public void pointDoubleClicked(GuiPoint guiPoint, Point2D.Double clickLocation);
+	/**
+	 * Kada se dvaput klikne na neku tachku, ona prijavi svom parentu da je
+	 * kliknuta, i parent obradi taj klik u ovoj metodi.
+	 */
+	public void pointDoubleClicked(GuiPoint guiPoint,
+			Point2D.Double clickLocation);
 
-    /**
-     * GuiPoint je Draggable, i mora da prijavi svom parentu da je njen drag
-     * otpocheo.
-     */
-    public void pointDragStarted(GuiPoint guiPoint, double x, double y);
+	/**
+	 * GuiPoint je Draggable, i mora da prijavi svom parentu da je njen drag
+	 * otpocheo.
+	 */
+	public void pointDragStarted(GuiPoint guiPoint, double x, double y);
 
-    /**
-     * GuiPoint je Draggable, i mora da prijavi svom parentu da je drag u toku.
-     */
-    public void pointDragged(GuiPoint guiPoint, double x, double y);
+	/**
+	 * GuiPoint je Draggable, i mora da prijavi svom parentu da je drag u toku.
+	 */
+	public void pointDragged(GuiPoint guiPoint, double x, double y);
 
-    /**
-     * GuiPoint je Draggable, i mora da prijavi svom parentu da je drag gotov.
-     */
-    public void pointDragEnded(GuiPoint guiPoint);
+	/**
+	 * GuiPoint je Draggable, i mora da prijavi svom parentu da je drag gotov.
+	 */
+	public void pointDragEnded(GuiPoint guiPoint);
 
-    /**
-     * Kada god GuiPoint promeni koordinate, iz bilo kog razloga, on to javi
-     * parentu.
-     */
-    public void movePoint(GuiPoint guiPoint, double x, double y);
+	/**
+	 * Kada god GuiPoint promeni koordinate, iz bilo kog razloga, on to javi
+	 * parentu.
+	 */
+	public void movePoint(GuiPoint guiPoint, double x, double y);
 
-    /**
-     * Kada tachka treba da se obrishe, ona javi parentu da je upravo obrisana.
-     */
-    public void deletePoint(GuiPoint guiPoint);
-    
-    /**
-     * Kada se kursor stavi na tachku, ona umesto da sebi bira kursor pita parenta
-     * koji joj kursor treba.
-     */
-    public Cursor giveCursorTo (GuiPoint guiPoint);
+	/**
+	 * Kada tachka treba da se obrishe, ona javi parentu da je upravo obrisana.
+	 */
+	public void deletePoint(GuiPoint guiPoint);
+
+	/**
+	 * Kada se kursor stavi na tachku, ona umesto da sebi bira kursor pita
+	 * parenta koji joj kursor treba.
+	 */
+	public Cursor giveCursorTo(GuiPoint guiPoint);
 }

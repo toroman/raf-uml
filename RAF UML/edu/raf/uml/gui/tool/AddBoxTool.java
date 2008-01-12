@@ -35,7 +35,8 @@ public class AddBoxTool extends AbstractDrawableTool {
 	}
 
 	public void mouseReleased(MouseEvent event) {
-		UMLBox newBox = factory.createUMLBox(parentPanel.diagram, event.getX(), event.getY());
+		UMLBox newBox = factory.createUMLBox(parentPanel.diagram, event.getX(),
+				event.getY());
 		parentPanel.diagram.giveFocus(newBox);
 		parentPanel.setTool(DiagramPanel.DEFAULT_TOOL);
 		parentPanel.repaint();

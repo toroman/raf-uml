@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package edu.raf.uml.gui;
 
@@ -57,251 +57,262 @@ import edu.raf.uml.model.UMLObject;
 public class DiagramPanel extends JPanel {
 
 	private MouseMotionListener motionListener;
-	
-    public UMLDiagram diagram;
-    public ApplicationGui gui;
-    public AbstractDrawableTool currentTool;
-    public JTextField guiStringEditField;
-    public GuiString editingGuiString;
-    
-    public void setTool(int toolName) {
-        this.removeMouseListener(currentTool);
-        this.removeMouseMotionListener(currentTool);
+
+	public UMLDiagram diagram;
+	public ApplicationGui gui;
+	public AbstractDrawableTool currentTool;
+	public JTextField guiStringEditField;
+	public GuiString editingGuiString;
+
+	public void setTool(int toolName) {
+		this.removeMouseListener(currentTool);
+		this.removeMouseMotionListener(currentTool);
 		if (editingGuiString != null) {
 			removeGuiStringTextField();
 		}
-        for (JButton toolButton : gui.toolButtons) {
-            toolButton.setSelected(false);
-        }
-        switch (toolName) {
-            case DEFAULT_TOOL:
-                currentTool = new DefaultTool(this);
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolDefault.isSelected()) {
-                    gui.toolDefault.setSelected(true);
-                }
-                this.setRefreshOnMove(false);
-                setCursor(Cursor.getDefaultCursor());
-                break;
-            case ADD_CLASS_TOOL:
-                currentTool = new AddBoxTool(this, new ClassBoxFactory());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddClass.isSelected()) {
-                    gui.toolAddClass.setSelected(true);
-                }
-                this.setRefreshOnMove(false);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;
-            case ADD_INHERITANCE_TOOL:
-                currentTool = new AddRelationTool(this, new InheritanceRelationFactory ());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddInheritance.isSelected()) {
-                    gui.toolAddInheritance.setSelected(true);
-                }
-                this.setRefreshOnMove(true);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;
-            case DELETE_TOOL:
-                currentTool = new DeleteTool(this);
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolDelete.isSelected()) {
-                    gui.toolDelete.setSelected(true);
-                }
-                this.setRefreshOnMove(false);
-                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-               break;
-            case ADD_COMMENT_BOX_TOOL:
-                currentTool = new AddBoxTool(this, new CommentBoxFactory());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddCommentBox.isSelected()) {
-                    gui.toolAddCommentBox.setSelected(true);
-                }
-                this.setRefreshOnMove(false);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;                
-            case ADD_COMMENT_RELATION_TOOL:
-                currentTool = new AddRelationTool(this, new CommentRelationFactory());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddCommentRelation.isSelected()) {
-                    gui.toolAddCommentRelation.setSelected(true);
-                }
-                this.setRefreshOnMove(true);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;                
-            case ADD_ASSOCIATION_TOOL:
-                currentTool = new AddRelationTool(this, new AssociationRelationFactory());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddAssociationRelation.isSelected()) {
-                    gui.toolAddAssociationRelation.setSelected(true);
-                }
-                this.setRefreshOnMove(true);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;                
-            case ADD_AGGREGATION_TOOL:
-                currentTool = new AddRelationTool(this, new AggregationRelationFactory());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddAggregationRelation.isSelected()) {
-                    gui.toolAddAggregationRelation.setSelected(true);
-                }
-                this.setRefreshOnMove(true);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;                
-            case ADD_COMPOSITION_TOOL:
-                currentTool = new AddRelationTool(this, new CompositionRelationFactory());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddCompositionRelation.isSelected()) {
-                    gui.toolAddCompositionRelation.setSelected(true);
-                }
-                this.setRefreshOnMove(true);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;                
-            case ADD_INTERFACE_TOOL:
-                currentTool = new AddBoxTool(this, new InterfaceBoxFactory());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddInterface.isSelected()) {
-                    gui.toolAddInterface.setSelected(true);
-                }
-                this.setRefreshOnMove(false);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;                
-            case ADD_REALISATION_TOOL:
-                currentTool = new AddRelationTool(this, new RealisationRelationFactory());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddRealisationRelation.isSelected()) {
-                    gui.toolAddRealisationRelation.setSelected(true);
-                }
-                this.setRefreshOnMove(true);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;
-            case ADD_ASSOCIATION_CLASS_TOOL:
-                currentTool = new AddRelationTool(this, new AssociationClassFactory());
-                this.addMouseListener(currentTool);
-                this.addMouseMotionListener(currentTool);
-                if (!gui.toolAddAssociationClass.isSelected()) {
-                    gui.toolAddAssociationClass.setSelected(true);
-                }
-                this.setRefreshOnMove(true);
-                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                break;
-       }
-    }
-    
-    public void removeGuiStringTextField () {
-    	this.remove(guiStringEditField);
-    	if (editingGuiString != null) {
-    		editingGuiString.setText(guiStringEditField.getText());
-    		editingGuiString = null;
-    	}
-    	repaint();
-    }
-    
-    public void showGuiStringTextField (GuiString guiString) {
-    	this.add(guiStringEditField);
-    	guiStringEditField.setText(guiString.getText());
-    	guiStringEditField.setBounds ((int)guiString.getBounds().x, (int)guiString.getBounds().y, (int)guiString.getBounds().width+2, (int)guiString.getBounds().height+1);
-    	guiStringEditField.setFont(guiString.getFont());
-    	editingGuiString = guiString;
-    	guiStringEditField.requestFocus();
-    }
-    
-    public DiagramPanel(ApplicationGui gui) {
-        super();
-        this.setFocusable(true);
-        motionListener = new MouseMotionAdapter () {
-        	@Override
-        	public void mouseMoved(MouseEvent e) {
-        		diagram.panel.repaint();
-        	}
-        	@Override
-        	public void mouseDragged(MouseEvent e) {
-        		diagram.panel.repaint();
-        	}
-        };
-        this.gui = gui;
-        this.setPreferredSize(UMLDiagram.MAX_DIMENSION);
-        this.setLayout(null);
-        
-        addKeyListener(new KeyAdapter () {
-        	@Override
-        	public void keyPressed(KeyEvent e) {
-        		if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-        			if (diagram.onFocus != null) {
-        				((UMLObject)diagram.onFocus).delete();
-        				repaint();
-        			}
-        			return;
-        		}
-        	}
-        });
-        
-        guiStringEditField = new JTextField ();
-        guiStringEditField.addKeyListener(new KeyAdapter () {
-        	public void keyPressed(KeyEvent e) {
-        		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-        			removeGuiStringTextField();
-        			return;
-        		}
-        	}
-        });
-        
-        diagram = new UMLDiagram(this);
-    }
+		for (JButton toolButton : gui.toolButtons) {
+			toolButton.setSelected(false);
+		}
+		switch (toolName) {
+		case DEFAULT_TOOL:
+			currentTool = new DefaultTool(this);
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolDefault.isSelected()) {
+				gui.toolDefault.setSelected(true);
+			}
+			this.setRefreshOnMove(false);
+			setCursor(Cursor.getDefaultCursor());
+			break;
+		case ADD_CLASS_TOOL:
+			currentTool = new AddBoxTool(this, new ClassBoxFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddClass.isSelected()) {
+				gui.toolAddClass.setSelected(true);
+			}
+			this.setRefreshOnMove(false);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		case ADD_INHERITANCE_TOOL:
+			currentTool = new AddRelationTool(this,
+					new InheritanceRelationFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddInheritance.isSelected()) {
+				gui.toolAddInheritance.setSelected(true);
+			}
+			this.setRefreshOnMove(true);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		case DELETE_TOOL:
+			currentTool = new DeleteTool(this);
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolDelete.isSelected()) {
+				gui.toolDelete.setSelected(true);
+			}
+			this.setRefreshOnMove(false);
+			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			break;
+		case ADD_COMMENT_BOX_TOOL:
+			currentTool = new AddBoxTool(this, new CommentBoxFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddCommentBox.isSelected()) {
+				gui.toolAddCommentBox.setSelected(true);
+			}
+			this.setRefreshOnMove(false);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		case ADD_COMMENT_RELATION_TOOL:
+			currentTool = new AddRelationTool(this,
+					new CommentRelationFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddCommentRelation.isSelected()) {
+				gui.toolAddCommentRelation.setSelected(true);
+			}
+			this.setRefreshOnMove(true);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		case ADD_ASSOCIATION_TOOL:
+			currentTool = new AddRelationTool(this,
+					new AssociationRelationFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddAssociationRelation.isSelected()) {
+				gui.toolAddAssociationRelation.setSelected(true);
+			}
+			this.setRefreshOnMove(true);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		case ADD_AGGREGATION_TOOL:
+			currentTool = new AddRelationTool(this,
+					new AggregationRelationFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddAggregationRelation.isSelected()) {
+				gui.toolAddAggregationRelation.setSelected(true);
+			}
+			this.setRefreshOnMove(true);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		case ADD_COMPOSITION_TOOL:
+			currentTool = new AddRelationTool(this,
+					new CompositionRelationFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddCompositionRelation.isSelected()) {
+				gui.toolAddCompositionRelation.setSelected(true);
+			}
+			this.setRefreshOnMove(true);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		case ADD_INTERFACE_TOOL:
+			currentTool = new AddBoxTool(this, new InterfaceBoxFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddInterface.isSelected()) {
+				gui.toolAddInterface.setSelected(true);
+			}
+			this.setRefreshOnMove(false);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		case ADD_REALISATION_TOOL:
+			currentTool = new AddRelationTool(this,
+					new RealisationRelationFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddRealisationRelation.isSelected()) {
+				gui.toolAddRealisationRelation.setSelected(true);
+			}
+			this.setRefreshOnMove(true);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		case ADD_ASSOCIATION_CLASS_TOOL:
+			currentTool = new AddRelationTool(this,
+					new AssociationClassFactory());
+			this.addMouseListener(currentTool);
+			this.addMouseMotionListener(currentTool);
+			if (!gui.toolAddAssociationClass.isSelected()) {
+				gui.toolAddAssociationClass.setSelected(true);
+			}
+			this.setRefreshOnMove(true);
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			break;
+		}
+	}
 
-    @Override
-    public void paintComponent(Graphics g) {
-        Color tempColor = g.getColor();
-        g.setColor(Color.LIGHT_GRAY);
-        Rectangle r = g.getClipBounds();
-        g.fillRect(r.x, r.y, r.width, r.height);
-        diagram.paint((Graphics2D)g);
-        currentTool.paint(g);
-        g.setColor(tempColor);
-    }
-    
-    
-    /**
-     * Da li da se panel refreshuje kada se kursor kretje (drag ili move).
-     * Ochekivan performance hit, meni se ni ne ostetja ali tje verovatno Sretjku
-     * dodatno usporiti. Staviti na true samo kada je nepohodno!
-     * 
-     * @param shouldRefreshOnMove - da li da refreshuje
-     */
-    public void setRefreshOnMove (boolean shouldRefreshOnMove) {
-    	if (shouldRefreshOnMove) {
-    		for (MouseListener listener: this.getMouseListeners())
-    			if (listener == motionListener)
-    				return;
-    		this.addMouseMotionListener(motionListener);
-    		return;
-    	} else {
-    		for (MouseListener listener: this.getMouseListeners())
-    			if (listener == motionListener)
-    				return;
-    		this.removeMouseMotionListener(motionListener);
-    	}
-    }
-    
-    public static final int DEFAULT_TOOL = 1;
-    public static final int ADD_CLASS_TOOL = 2;
-    public static final int ADD_INHERITANCE_TOOL = 3;
-    public static final int DELETE_TOOL = 4;
-    public static final int ADD_COMMENT_BOX_TOOL = 5;
-    public static final int ADD_COMMENT_RELATION_TOOL = 6;
-    public static final int ADD_ASSOCIATION_TOOL = 7;
-    public static final int ADD_AGGREGATION_TOOL = 8;
-    public static final int ADD_COMPOSITION_TOOL = 9;
-    public static final int ADD_INTERFACE_TOOL = 10;
-    public static final int ADD_REALISATION_TOOL = 11;
-    public static final int ADD_ASSOCIATION_CLASS_TOOL = 12;
+	public void removeGuiStringTextField() {
+		this.remove(guiStringEditField);
+		if (editingGuiString != null) {
+			editingGuiString.setText(guiStringEditField.getText());
+			editingGuiString = null;
+		}
+		repaint();
+	}
+
+	public void showGuiStringTextField(GuiString guiString) {
+		this.add(guiStringEditField);
+		guiStringEditField.setText(guiString.getText());
+		guiStringEditField.setBounds((int) guiString.getBounds().x,
+				(int) guiString.getBounds().y,
+				(int) guiString.getBounds().width + 2, (int) guiString
+						.getBounds().height + 1);
+		guiStringEditField.setFont(guiString.getFont());
+		editingGuiString = guiString;
+		guiStringEditField.requestFocus();
+	}
+
+	public DiagramPanel(ApplicationGui gui) {
+		super();
+		this.setFocusable(true);
+		motionListener = new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				diagram.panel.repaint();
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				diagram.panel.repaint();
+			}
+		};
+		this.gui = gui;
+		this.setPreferredSize(UMLDiagram.MAX_DIMENSION);
+		this.setLayout(null);
+
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					if (diagram.onFocus != null) {
+						((UMLObject) diagram.onFocus).delete();
+						repaint();
+					}
+					return;
+				}
+			}
+		});
+
+		guiStringEditField = new JTextField();
+		guiStringEditField.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					removeGuiStringTextField();
+					return;
+				}
+			}
+		});
+
+		diagram = new UMLDiagram(this);
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		Color tempColor = g.getColor();
+		g.setColor(Color.LIGHT_GRAY);
+		Rectangle r = g.getClipBounds();
+		g.fillRect(r.x, r.y, r.width, r.height);
+		diagram.paint((Graphics2D) g);
+		currentTool.paint(g);
+		g.setColor(tempColor);
+	}
+
+	/**
+	 * Da li da se panel refreshuje kada se kursor kretje (drag ili move).
+	 * Ochekivan performance hit, meni se ni ne ostetja ali tje verovatno
+	 * Sretjku dodatno usporiti. Staviti na true samo kada je nepohodno!
+	 * 
+	 * @param shouldRefreshOnMove -
+	 *            da li da refreshuje
+	 */
+	public void setRefreshOnMove(boolean shouldRefreshOnMove) {
+		if (shouldRefreshOnMove) {
+			for (MouseListener listener : this.getMouseListeners())
+				if (listener == motionListener)
+					return;
+			this.addMouseMotionListener(motionListener);
+			return;
+		} else {
+			for (MouseListener listener : this.getMouseListeners())
+				if (listener == motionListener)
+					return;
+			this.removeMouseMotionListener(motionListener);
+		}
+	}
+
+	public static final int DEFAULT_TOOL = 1;
+	public static final int ADD_CLASS_TOOL = 2;
+	public static final int ADD_INHERITANCE_TOOL = 3;
+	public static final int DELETE_TOOL = 4;
+	public static final int ADD_COMMENT_BOX_TOOL = 5;
+	public static final int ADD_COMMENT_RELATION_TOOL = 6;
+	public static final int ADD_ASSOCIATION_TOOL = 7;
+	public static final int ADD_AGGREGATION_TOOL = 8;
+	public static final int ADD_COMPOSITION_TOOL = 9;
+	public static final int ADD_INTERFACE_TOOL = 10;
+	public static final int ADD_REALISATION_TOOL = 11;
+	public static final int ADD_ASSOCIATION_CLASS_TOOL = 12;
 }

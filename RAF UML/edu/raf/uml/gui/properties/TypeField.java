@@ -55,8 +55,7 @@ public class TypeField extends PropertyField {
 
 	protected void setValue(Object choice) {
 		try {
-			TypeModel model = new TypeModel();
-			model.setType(choice.toString());
+			TypeModel model = new TypeModel(choice.toString());
 			parent.setValue(model);
 		} catch (Exception ex) {
 			// TODO: prikazi gresku u nekom prozoru

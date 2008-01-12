@@ -49,6 +49,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileFilter;
 
@@ -90,9 +91,23 @@ public class ApplicationGui extends JFrame {
 	public JMenuItem menuItemAbout;
 	public JFileChooser fileChooserOpen = new JFileChooser();
 	public JFileChooser fileChooserSave = new JFileChooser();
+	private JSplitPane splitPane;
+
+	private static ApplicationGui instance = null;
+
+	/**
+	 * Ovo nije singleton i ne treba da bude, vec je nacin da komponente iz
+	 * unutrasnjosti dobiju referencu na aplikaciju.
+	 * 
+	 * @return
+	 */
+	public static ApplicationGui getInstance() {
+		return instance;
+	}
 
 	public ApplicationGui() {
 		super("RAF-UML Editor");
+		instance = this;
 		setPreferredSize(new Dimension(800, 600));
 		setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - this
 				.getPreferredSize().width) / 2, (Toolkit.getDefaultToolkit()
@@ -134,7 +149,8 @@ public class ApplicationGui extends JFrame {
 				fileChooserOpen.setFileFilter(new FileFilter() {
 					@Override
 					public boolean accept(File f) {
-						if (f.isDirectory() || f.toString().toLowerCase().endsWith(".xml")) {
+						if (f.isDirectory()
+								|| f.toString().toLowerCase().endsWith(".xml")) {
 							return true;
 						}
 						return false;
@@ -181,7 +197,8 @@ public class ApplicationGui extends JFrame {
 				fileChooserSave.setFileFilter(new FileFilter() {
 					@Override
 					public boolean accept(File f) {
-						if (f.isDirectory() || f.toString().toLowerCase().endsWith(".xml")) {
+						if (f.isDirectory()
+								|| f.toString().toLowerCase().endsWith(".xml")) {
 							return true;
 						}
 						return false;
@@ -238,7 +255,7 @@ public class ApplicationGui extends JFrame {
 		mainMenu.add(menuFile);
 		mainMenu.add(menuHelp);
 		this.setJMenuBar(mainMenu);
-		
+
 	}
 
 	private void createPropertiesPanel() {
@@ -248,11 +265,22 @@ public class ApplicationGui extends JFrame {
 	private void createMainPanel() {
 		createToolbar();
 		createDiagramPanel();
+		createSplitPane();
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(mainScrollPane, BorderLayout.CENTER);
+		mainPanel.add(splitPane, BorderLayout.CENTER);
 		mainPanel.add(toolBar, BorderLayout.PAGE_START);
-		mainPanel.add(propertiesPanel, BorderLayout.EAST);
+	}
+
+	/*
+	 * TODO: ubaciti neki Docking frejmvork umesto ovog split-a
+	 */
+	private void createSplitPane() {
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setResizeWeight(1.0);
+		splitPane.setDividerLocation(getWidth() - 200);
+		splitPane.add(mainScrollPane);
+		splitPane.add(propertiesPanel);
 	}
 
 	private void createDiagramPanel() {
