@@ -42,7 +42,12 @@ public class TypeModel {
 
 	private String type = "";
 
+	public TypeModel(String type) {
+		this.type = type;
+	}
+	
 	public TypeModel() {
+		this("");
 	}
 
 	/**

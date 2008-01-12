@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.raf.uml.gui.util;
 
 import java.awt.Color;
@@ -26,25 +26,25 @@ import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 
 /**
- *
+ * 
  * 
  */
 public class ColorHelper {
 
-    public static Image makeColorTransparent(Image im, final Color color) {
-        ImageFilter filter = new RGBImageFilter() {
+	public static Image makeColorTransparent(Image im, final Color color) {
+		ImageFilter filter = new RGBImageFilter() {
 
-            public int markerRGB = color.getRGB() | 0xFF000000;
+			public int markerRGB = color.getRGB() | 0xFF000000;
 
-            public final int filterRGB(int x, int y, int rgb) {
-                if ((rgb | 0xFF000000) == markerRGB) {
-                    return 0x00FFFFFF & rgb;
-                } else {
-                    return rgb;
-                }
-            }
-        };
-        ImageProducer ip = new FilteredImageSource(im.getSource(), filter);
-        return Toolkit.getDefaultToolkit().createImage(ip);
-    }
+			public final int filterRGB(int x, int y, int rgb) {
+				if ((rgb | 0xFF000000) == markerRGB) {
+					return 0x00FFFFFF & rgb;
+				} else {
+					return rgb;
+				}
+			}
+		};
+		ImageProducer ip = new FilteredImageSource(im.getSource(), filter);
+		return Toolkit.getDefaultToolkit().createImage(ip);
+	}
 }

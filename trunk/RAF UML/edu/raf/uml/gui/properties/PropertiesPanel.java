@@ -47,8 +47,8 @@ public class PropertiesPanel extends JPanel {
 	private ArrayList<PropertyPair> properties;
 	private Object object;
 	private JPanel table;
-	private JLabel tooltipLabel;
-
+	public JLabel tooltipLabel;
+	public JLabel propertiesLabel;
 	public PropertiesPanel() {
 		super();
 		properties = new ArrayList<PropertyPair>();
@@ -57,7 +57,7 @@ public class PropertiesPanel extends JPanel {
 		table.setFocusable(true);
 		table.setBackground(Color.WHITE);
 		tooltipLabel = new JLabel("Tooltip");
-		JLabel propertiesLabel = new JLabel("Properties:");
+		propertiesLabel = new JLabel("Properties:");
 		BorderLayout layout = new BorderLayout();
 		this.setLayout(layout);
 		this.addComponentListener(new ComponentAdapter() {
@@ -73,7 +73,10 @@ public class PropertiesPanel extends JPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(200, 100);
+		int s = properties.size();
+		int w = PropertyName.DIMENSION.width * 2;
+		int h = PropertyName.DIMENSION.height * s;
+		return new Dimension(w,h);
 	}
 
 	/**

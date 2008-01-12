@@ -18,7 +18,7 @@ public class UMLField extends GuiString {
 		super(diagram);
 		this.setParent(parent);
 		bounds = new Rectangle2D.Double(0, 0, 0, 0);
-		type = new TypeModel();
+		type = new TypeModel("");
 		super.recalculateBounds();
 	}
 

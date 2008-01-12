@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.raf.uml.gui.tool;
 
 import java.awt.Graphics;
@@ -23,38 +23,42 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
 
 public abstract class AbstractDrawableTool implements MouseInputListener {
-	public void paint (Graphics g) {
-		
+	public void paint(Graphics g) {
+
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		
+
 	}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
+
 	}
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		
+
 	}
-	
+
 	@Override
 	public void mouseExited(MouseEvent e) {
-		
+
 	}
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		
+
 	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+
 	}
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+
 	}
 }

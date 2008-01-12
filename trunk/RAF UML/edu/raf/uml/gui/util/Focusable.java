@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.raf.uml.gui.util;
 
 import edu.raf.uml.model.UMLDiagram;
@@ -24,15 +24,15 @@ import edu.raf.uml.model.UMLDiagram;
  */
 public interface Focusable {
 
-    /**
-     * Ovo gui pozove kada taj objekat treba da dobije fokus. Taj objekat sam
-     * dizhe z-order tog objekta, prikazuje anchor pointove itd.
-     */
-    public void gainFocus(UMLDiagram diagram);
+	/**
+	 * Ovo gui pozove kada taj objekat treba da dobije fokus. Taj objekat sam
+	 * dizhe z-order tog objekta, prikazuje anchor pointove itd.
+	 */
+	public void gainFocus(UMLDiagram diagram);
 
-    /**
-     * Ovo gui pozove kada objekat gubi fokus. U principu treba da sakrije sve
-     * anchor pointove
-     */
-    public void loseFocus(UMLDiagram diagram);
+	/**
+	 * Ovo gui pozove kada objekat gubi fokus. U principu treba da sakrije sve
+	 * anchor pointove
+	 */
+	public void loseFocus(UMLDiagram diagram);
 }

@@ -49,6 +49,7 @@ public class UMLDiagram {
 	}
 
 	public void giveFocus(Focusable fobject) {
+		panel.gui.propertiesPanel.setObject(fobject);
 		if (onFocus != null) {
 			onFocus.loseFocus(this);
 		}

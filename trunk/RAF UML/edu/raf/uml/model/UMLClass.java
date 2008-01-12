@@ -25,18 +25,17 @@ import java.util.ArrayList;
 
 import edu.raf.uml.gui.util.GuiString;
 import edu.raf.uml.model.property.Property;
-import edu.raf.uml.model.property.TypeModel;
 
 public class UMLClass extends UMLBox {
 
     public GuiString className;
-    public ArrayList<GuiString> methods;
+    public ArrayList<UMLMethod> methods;
     public ArrayList<UMLField> fields;
     public static FontMetrics fontMetrics;
     
     public UMLClass(UMLDiagram diagram, double x, double y) {
         super(diagram, x, y, 0, 0);
-        methods = new ArrayList<GuiString>();
+        methods = new ArrayList<UMLMethod>();
         fields = new ArrayList<UMLField>();
         className = new GuiString (diagram, this);
         className.setText("New Class");
@@ -56,11 +55,11 @@ public class UMLClass extends UMLBox {
     	diagram.panel.repaint();
     }
     
-    public void addMethod () {
-    	GuiString newString; 
-    	methods.add(newString = new GuiString (diagram, this));
-    	newString.setVisible(true);
-    	newString.setText("New Method");
+    public void addMethod () { 
+    	UMLMethod method = new UMLMethod(diagram, this);
+    	methods.add(method);
+    	method.setVisible(true);
+    	method.setName("method");
     	calculatePointLocations();
     	diagram.giveFocus(this);
     }
@@ -69,9 +68,7 @@ public class UMLClass extends UMLBox {
     	UMLField field = new UMLField (diagram, this); 
     	fields.add(field);
     	field.setVisible(true);
-    	field.setType(new TypeModel());
-    	field.setModifiers("");
-    	field.setName("value");
+    	field.setName("field");
     	calculatePointLocations();
     	diagram.giveFocus(this);
     }

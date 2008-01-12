@@ -81,6 +81,8 @@ public class PropertyPair implements Comparable<PropertyPair> {
 			this.fieldPanel = new EnumField(this);
 		else if (TypeModel.class.equals(type))
 			this.fieldPanel = new TypeField(this);
+		else if (java.util.List.class.isAssignableFrom(type))
+			this.fieldPanel = new ListField(this);
 		else {
 			throw new RuntimeException("Type " + type.getName()
 					+ " not supported!");
