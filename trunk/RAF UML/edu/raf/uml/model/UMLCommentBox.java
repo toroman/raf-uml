@@ -1,12 +1,15 @@
 package edu.raf.uml.model;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.util.ArrayList;
 
 public class UMLCommentBox extends UMLBox {
 
-    public String text;
+    public ArrayList <String> text;
     private Polygon shapePolygon, edgeTriangle;
 
     /*
@@ -26,20 +29,30 @@ public class UMLCommentBox extends UMLBox {
         		new int [3],
         		new int [3], 
         		3);
-        text = "";
+        text = new ArrayList<String> ();
+        text.add("Asdasdasd");
+        text.add("Asdasdasdasdasda");
         this.movePoint(sePoint, -1, -1);
     }
-
+    
     @Override
     public double calculateMinHeight() {
-        return 100;
+        return Math.max(text.size(), 1)*16 + 18;
     }
 
     @Override
     public double calculateMinWidth() {
-        return 100;
+		Graphics2D g = (Graphics2D) diagram.panel.getGraphics();
+		FontMetrics metrics = g.getFontMetrics(Font.decode("Monospaced"));
+		double minw = -1;
+		for (String str: text) {
+			double strWidth = metrics.stringWidth(str);
+			if (strWidth > minw)
+				minw = strWidth;
+		}
+        return Math.max(minw - 15, 80);
     }
-
+    
     @Override
     public void paint(Graphics2D g) {
         Color tempColor = g.getColor();
@@ -53,7 +66,8 @@ public class UMLCommentBox extends UMLBox {
         g.drawPolygon(edgeTriangle);
          
         g.setColor(Color.BLACK);
-        g.drawString(text, (int)x + 3, (int)y + 15);
+        for (int i = 0; i < text.size(); i++)
+        	g.drawString(text.get(i), (int)x + 3, (int)y + 28 + i*16);
         g.setColor(tempColor);
     }
     
