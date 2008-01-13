@@ -243,7 +243,7 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
     }
     
     @Override
-    public void DoubleclickOn(Point2D.Double point) {
+    public void dblClickOn(Point2D.Double point) {
         GuiPoint tempPoint1, tempPoint2;
         Point2D.Double projectionPoint;
         Iterator<GuiPoint> point1 = points.iterator();

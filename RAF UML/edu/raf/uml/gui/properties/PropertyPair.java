@@ -24,11 +24,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.raf.uml.model.property.Property;
+import edu.raf.uml.model.property.StringProperty;
 import edu.raf.uml.model.property.TypeModel;
 
 /**
  * Kontejner za neki field/property. Sadrzi sve potrebne objekte za rad
- * propertyja tj refleksije.
+ * propertyja tj refleksije. Ponasa se kao factory :)
  * 
  * @author Srecko Toroman
  * 
@@ -71,9 +72,13 @@ public class PropertyPair implements Comparable<PropertyPair> {
 		Class<?> type = getter.getReturnType();
 		String typeName = type.getName();
 		// TODO: mozda zameni ovo sa nekim registrom
-		if ("java.lang.String".equals(typeName))
-			this.fieldPanel = new StringField(this);
-		else if ("Double".equals(typeName) || "double".equals(typeName))
+		if ("java.lang.String".equals(typeName)) {
+			StringProperty strProp = getter.getAnnotation(StringProperty.class);
+			if (strProp != null && strProp.multiline())
+				this.fieldPanel = new MultilineField(this);
+			else
+				this.fieldPanel = new StringField(this);
+		} else if ("Double".equals(typeName) || "double".equals(typeName))
 			this.fieldPanel = new DoubleField(this);
 		else if ("java.awt.Color".equals(typeName))
 			this.fieldPanel = new ColorField(this);

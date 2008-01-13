@@ -24,6 +24,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
@@ -33,28 +37,55 @@ import javax.swing.JPanel;
  * @author Srecko Toroman
  * 
  */
-class PropertyName extends JPanel {
+class PropertyName extends JPanel implements FocusListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3412741687219338139L;
 	static final Dimension DIMENSION = new Dimension(100, 22);
 	private final PropertyPair parent;
+	private Font font = Font.decode("Courier");
+	private boolean focused = false;
 
 	public PropertyName(PropertyPair parent) {
 		super();
 		this.parent = parent;
+		this.setFocusable(true);
+		this.addFocusListener(this);
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				requestFocus();
+			}
+		});
 	}
 
 	@Override
 	public void paint(Graphics g1) {
 		Graphics2D g = (Graphics2D) g1;
-		g.setColor(Color.LIGHT_GRAY);
+		if (focused)
+			g.setColor(Color.WHITE);
+		else
+			g.setColor(Color.LIGHT_GRAY);
 		Rectangle c = g.getClipBounds();
 		g.fill3DRect(0, 0, c.width, c.height, true);
 		g.setColor(Color.BLACK);
-		g.setFont(Font.decode("Monospaced"));
+		g.setFont(font);
 		g.drawString(parent.getTitle(), 2, 14);
+	}
+
+	public void focusGained(FocusEvent e) {
+		focused = true;
+		repaint();
+	}
+
+	public void focusLost(FocusEvent e) {
+		focused = false;
+		repaint();
+	}
+
+	public boolean isFocused() {
+		return focused;
 	}
 
 }

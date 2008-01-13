@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -54,8 +55,8 @@ public class ListField extends PropertyField {
 	@SuppressWarnings("unchecked")
 	protected void onShowEditor() {
 		args = new ArrayList<Object>((List) parent.getValue());
-		final JDialog dlg = new JDialog(ApplicationGui.getInstance(), "List editor",
-				true);
+		final JDialog dlg = new JDialog(ApplicationGui.getInstance(),
+				"List editor", true);
 		dlg.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -69,16 +70,16 @@ public class ListField extends PropertyField {
 		JPanel komande = new JPanel();
 		komande.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		c.add(komande, BorderLayout.SOUTH);
-		
+
 		JButton cancel = new JButton("Odustani");
 		cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dlg.setVisible(false);
 				dlg.dispose();
-			}			
+			}
 		});
 		komande.add(cancel);
-		
+
 		JButton add = new JButton("Dodaj");
 		add.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -92,41 +93,74 @@ public class ListField extends PropertyField {
 			}
 		});
 		komande.add(add);
-		
+
 		JButton ok = new JButton("OK");
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					parent.setValue(args);
 				} catch (Exception ex) {
-					log.log(Level.SEVERE, "Nisam uspeo da setujem vrednost!", ex);
+					log.log(Level.SEVERE, "Nisam uspeo da setujem vrednost!",
+							ex);
 				} finally {
 					dlg.setVisible(false);
 					dlg.dispose();
-				}				
-			}			
+				}
+			}
 		});
 		komande.add(ok);
-		
+
 		komande.updateUI();
 		editori = new JPanel();
 		c.add(editori, BorderLayout.CENTER);
 		refreshList(dlg);
 		dlg.pack();
 		dlg.setVisible(true);
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void refreshList(JDialog dlg) {
+	protected void refreshList(final JDialog dlg) {
 		editori.removeAll();
-		editori.setLayout(new GridLayout(args.size(), 1));
+		GridBagLayout layout = new GridBagLayout();
+		layout.columnWidths = new int[] {16, 200};
+		editori.setLayout(layout);
+		GridBagConstraints gbcDelete = new GridBagConstraints();
+		GridBagConstraints gbcPanel = new GridBagConstraints();
+		gbcDelete.gridx = 0;
+		gbcDelete.fill = GridBagConstraints.VERTICAL;
+		gbcDelete.gridy = -1;
+		
+		gbcPanel.gridx = 1;
+		gbcPanel.fill = GridBagConstraints.HORIZONTAL;
+		gbcPanel.weightx = 1.0;
+		gbcPanel.gridy = -1;
+		
+		
 		for (Object each : args) {
-			PropertiesPanel prop = new PropertiesPanel();
+			gbcPanel.gridy++;
+			gbcDelete.gridy++;
+			final PropertiesPanel prop = new PropertiesPanel();
 			prop.remove(prop.propertiesLabel);
 			prop.remove(prop.tooltipLabel);
 			prop.setObject(each);
-			editori.add(prop);
+
+			final JButton delete = new JButton("X");
+			ActionListener deleteListener = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					args.remove(prop.getObject());
+					editori.remove(prop);
+					editori.remove(delete);
+					editori.updateUI();
+					Rectangle r = dlg.getBounds();
+					r.height = dlg.getPreferredSize().height;
+					dlg.setBounds(r);
+				}
+			};
+			delete.addActionListener(deleteListener);
+
+			editori.add(delete, gbcDelete.clone());
+			editori.add(prop, gbcPanel.clone());
 		}
 		editori.updateUI();
 		dlg.pack();

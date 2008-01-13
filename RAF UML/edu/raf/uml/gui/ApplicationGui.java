@@ -77,6 +77,8 @@ public class ApplicationGui extends JFrame {
 	public JButton toolAddCompositionRelation;
 	public JButton toolAddRealisationRelation;
 	public JButton toolAddAssociationClass;
+	public JButton toolZoomIn;
+	public JButton toolZoomOut;
 	public JScrollPane mainScrollPane;
 	public ArrayList<JButton> toolButtons;
 	public JMenuBar mainMenu;
@@ -302,6 +304,23 @@ public class ApplicationGui extends JFrame {
 	private void createToolbar() {
 		toolBar = new JToolBar();
 		toolButtons = new ArrayList<JButton>();
+		
+		toolZoomIn = new JButton("+");
+		toolZoomIn.setFocusable(false);
+		toolZoomIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.zoomIn();
+			}			
+		});
+		
+		toolZoomOut = new JButton("-");
+		toolZoomOut.setFocusable(false);
+		toolZoomOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				diagramPanel.zoomOut();
+			}			
+		});
+		
 		toolDefault = new JButton("", createImageIcon("SelectionToolIcon.PNG"));
 		toolDefault.setToolTipText("Selection Tool");
 		toolDefault.setFocusable(false);
@@ -450,6 +469,8 @@ public class ApplicationGui extends JFrame {
 		toolBar.addSeparator();
 		toolBar.add(toolAddCommentBox);
 		toolBar.add(toolAddCommentRelation);
+		toolBar.add(toolZoomIn);
+		toolBar.add(toolZoomOut);
 		toolButtons.add(toolDefault);
 		toolButtons.add(toolAddClass);
 		toolButtons.add(toolAddInheritance);
@@ -462,6 +483,8 @@ public class ApplicationGui extends JFrame {
 		toolButtons.add(toolAddInterface);
 		toolButtons.add(toolAddRealisationRelation);
 		toolButtons.add(toolAddAssociationClass);
+		toolButtons.add(toolZoomIn);
+		toolButtons.add(toolZoomOut);
 	}
 
 	public ImageIcon createImageIcon(String path) {

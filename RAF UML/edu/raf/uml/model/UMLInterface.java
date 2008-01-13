@@ -7,15 +7,16 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import edu.raf.uml.gui.util.GuiString;
+import edu.raf.uml.model.property.Property;
 
 public class UMLInterface extends UMLBox {
     public GuiString interfaceName;
-    public ArrayList<GuiString> methods;
+    public ArrayList<UMLMethod> methods;
     public static FontMetrics fontMetrics;
 
     public UMLInterface(UMLDiagram diagram, double x, double y) {
         super(diagram, x, y, 0, 0);
-        methods = new ArrayList<GuiString>();
+        methods = new ArrayList<UMLMethod>();
         interfaceName = new GuiString (diagram, this);
         interfaceName.setText("New Interface");
         interfaceName.setVisible(true);
@@ -23,10 +24,10 @@ public class UMLInterface extends UMLBox {
     }
     
     public void addMethod () {
-    	GuiString newString; 
-    	methods.add(newString = new GuiString (diagram, this));
-    	newString.setVisible(true);
-    	newString.setText("New Method");
+    	UMLMethod method = new UMLMethod(diagram, this);
+    	methods.add(method);
+    	method.setVisible(true);
+    	method.setName("method");
     	calculatePointLocations();
     	diagram.giveFocus(this);
     }
@@ -107,10 +108,10 @@ public class UMLInterface extends UMLBox {
     }
     
     @Override
-    public void DoubleclickOn(Point2D.Double point) {
+    public void dblClickOn(Point2D.Double point) {
     	if (point.y > y + interfaceName.getBounds().height + 22)
     		addMethod ();
-    	super.DoubleclickOn(point);
+    	super.dblClickOn(point);
     }
     
     @Override
@@ -131,6 +132,18 @@ public class UMLInterface extends UMLBox {
     		guiString.delete();
     	super.stringTextChanged(guiString);
     }
+    
+    @Property
+    public String getName() {
+    	return this.interfaceName.getText();
+	}
+    
+    public void setName(String name) {
+    	if (!name.matches("[A-z0-9_$]+"))
+    		throw new IllegalArgumentException("Ime klase mora biti od slova, brojeva i _$");
+    	this.interfaceName.setText(name);
+    	diagram.panel.repaint();
+	}
     
     protected static final int RIGHT_BLANK_SPACE_WIDTH = 17;
 

@@ -294,7 +294,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable,
 	}
 
 	@Override
-	public void DoubleclickOn(Point2D.Double point) {
+	public void dblClickOn(Point2D.Double point) {
 
 	}
 

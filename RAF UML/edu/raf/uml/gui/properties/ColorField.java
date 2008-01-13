@@ -54,7 +54,7 @@ public class ColorField extends PropertyField {
 		Color[] colors = { Color.BLACK, Color.WHITE };
 		for (int x = c.width - c.height + 1; x < c.width; x += step) {
 			for (int y = 1; y < c.height; y += step) {
-				g.setColor(colors[(x/step + y/step) % 2]);
+				g.setColor(colors[Math.abs((x/step + y/step) % 2)]);
 				g.fillRect(x, y, step, step);
 			}
 		}
