@@ -218,6 +218,7 @@ public abstract class UMLRelation extends UMLObject implements PointContainer, S
     @Override
     public void stringTextChanged(GuiString guiString) {
     	calculatePointLocations();
+    	diagram.panel.repaint();
     }
 
     /*

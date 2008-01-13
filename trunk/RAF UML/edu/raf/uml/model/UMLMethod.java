@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package edu.raf.uml.model;
 
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class UMLMethod extends GuiString {
 	private String modifiers = "";
 	private List<ArgumentModel> arguments;
 	private String textCache = null;
-	
+
 	public UMLMethod(UMLDiagram diagram, StringContainer parent) {
 		super(diagram);
 		this.setParent(parent);
@@ -44,22 +43,12 @@ public class UMLMethod extends GuiString {
 		type = new TypeModel("");
 		super.recalculateBounds();
 	}
-	
-	@Override
-	public void dblClickOn(Double point) {
-		getParent().stringClicked(this, point);
-	}
-	
-	@Override
-	public void clickOn(Double point) {
-		getParent().stringClicked(this, point);
-	}
-	
+
 	@Override
 	public String getText() {
 		if (textCache != null)
 			return textCache;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(visibility.uml());
 		sb.append(' ');
@@ -73,7 +62,7 @@ public class UMLMethod extends GuiString {
 			sb.append(',');
 		}
 		if (arguments.size() > 0)
-			sb.setCharAt(sb.length()-1, ')');
+			sb.setCharAt(sb.length() - 1, ')');
 		else
 			sb.append(')');
 		sb.append(modifiers);
@@ -132,12 +121,12 @@ public class UMLMethod extends GuiString {
 		super.recalculateBounds();
 		super.diagram.panel.repaint();
 	}
-	
-	@Property(type=ArgumentModel.class)
+
+	@Property(type = ArgumentModel.class)
 	public List<ArgumentModel> getArguments() {
 		return arguments;
 	}
-	
+
 	public void setArguments(List<ArgumentModel> arguments) {
 		textCache = null;
 		this.arguments = arguments;

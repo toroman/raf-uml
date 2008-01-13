@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="RAF UML Editor" default="rafuml-binary.jar">
+	<property name="binary.jar" value="rafuml-bin-v1.1.jar"/>
+	<target name="rafuml-binary.jar">
+		<jar destfile="${binary.jar}">
+			<manifest>
+				<attribute name="main-class" value="edu.raf.uml.Main" />
+			</manifest>
+			<zipfileset dir="bin" includes="**" />
+		</jar>
+	</target>
+</project>

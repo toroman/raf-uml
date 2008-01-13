@@ -37,6 +37,8 @@ public class GuiString extends UMLObject implements Draggable {
 	private double xoffset, yoffset;
 	private Font defaultFont = Font.decode("Monospaced");
 	private String text;
+	private boolean focusable = true;
+	
 
 	public GuiString(UMLDiagram diagram, StringContainer parent, String text,
 			double x, double y) {
@@ -47,6 +49,14 @@ public class GuiString extends UMLObject implements Draggable {
 		this.recalculateBounds();
 	}
 
+	public void setFocusable(boolean focusable) {
+		this.focusable = focusable;
+	}
+	
+	public boolean isFocusable() {
+		return focusable;
+	}
+	
 	/**
 	 * Konstruktor potreban za UMLField
 	 */
@@ -105,7 +115,7 @@ public class GuiString extends UMLObject implements Draggable {
 		parent.stringDragStarted(this, bounds.x, bounds.y + bounds.height);
 	}
 
-	@Property(editable = false)
+	@Property(editable = true)
 	public String getText() {
 		return text;
 	}
@@ -144,7 +154,7 @@ public class GuiString extends UMLObject implements Draggable {
 	@Override
 	public void clickOn(Point2D.Double point) {
 		getParent().stringClicked(this, point);
-		if (parent instanceof Focusable)
+		if (!focusable && parent instanceof Focusable)
 			diagram.giveFocus((Focusable) parent);
 	}
 
@@ -156,7 +166,7 @@ public class GuiString extends UMLObject implements Draggable {
 	@Override
 	public void dblClickOn(Double point) {
 		getParent().stringDoubleClicked(this, point);
-		if (parent instanceof Focusable)
+		if (!focusable && parent instanceof Focusable)
 			diagram.giveFocus((Focusable) parent);
 	}
 

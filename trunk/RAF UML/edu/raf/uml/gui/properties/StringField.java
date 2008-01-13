@@ -63,7 +63,6 @@ class StringField extends PropertyField {
 		text.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				System.out.println(e.getKeyCode());
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					setValue(text.getText());
 					textLostFocus();

@@ -1,7 +1,6 @@
 package edu.raf.uml.model;
 
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D.Double;
 
 import edu.raf.uml.gui.util.GuiString;
 import edu.raf.uml.gui.util.StringContainer;
@@ -20,16 +19,6 @@ public class UMLField extends GuiString {
 		bounds = new Rectangle2D.Double(0, 0, 0, 0);
 		type = new TypeModel("");
 		super.recalculateBounds();
-	}
-
-	@Override
-	public void dblClickOn(Double point) {
-		getParent().stringClicked(this, point);
-	}
-	
-	@Override
-	public void clickOn(Double point) {
-		getParent().stringClicked(this, point);
 	}
 
 	@Override
