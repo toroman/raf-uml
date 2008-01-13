@@ -7,11 +7,15 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
+import edu.raf.uml.model.property.Property;
+import edu.raf.uml.model.property.StringProperty;
+
 public class UMLCommentBox extends UMLBox {
 
     public ArrayList <String> text;
     private Polygon shapePolygon, edgeTriangle;
-
+    private String textStringCached = null;
+    
     /*
      * 0--1
      * |   \
@@ -30,8 +34,7 @@ public class UMLCommentBox extends UMLBox {
         		new int [3], 
         		3);
         text = new ArrayList<String> ();
-        text.add("Asdasdasd");
-        text.add("Asdasdasdasdasda");
+        text.add("Komentar...");
         this.movePoint(sePoint, -1, -1);
     }
     
@@ -96,6 +99,7 @@ public class UMLCommentBox extends UMLBox {
     }
     
     public void setText (String newText) {
+    	textStringCached = null; // invalidate cache
     	String[] array = newText.split("\\n");
     	text = new ArrayList<String> ();
     	for (String str: array)
@@ -104,13 +108,18 @@ public class UMLCommentBox extends UMLBox {
     	diagram.panel.repaint();
     }
     
+    @Property
+    @StringProperty(multiline=true)
     public String getText () {
-    	String result = "";
-    	for (int i = 0; i < text.size() - 1; i++)
-    		result += text.get(i) + "\n";
-    	if (text.size() > 0)
-    		result += text.get(text.size() - 1);
-    	return result;
+    	if (textStringCached == null) {
+    		StringBuilder sb = new StringBuilder();
+        	for (int i = 0; i < text.size() - 1; i++)
+        		sb.append(text.get(i)).append('\n');
+        	if (text.size() > 0)
+        		sb.append(text.get(text.size() - 1));
+        	textStringCached = sb.toString();;
+    	}    	
+    	return textStringCached;
     }
     
     /**

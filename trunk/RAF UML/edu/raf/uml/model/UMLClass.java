@@ -38,7 +38,7 @@ public class UMLClass extends UMLBox {
         methods = new ArrayList<UMLMethod>();
         fields = new ArrayList<UMLField>();
         className = new GuiString (diagram, this);
-        className.setText("New Class");
+        className.setText("NovaKlasa");
         className.setVisible(true);
         this.movePoint(sePoint, -1, -1);
     }
@@ -113,14 +113,11 @@ public class UMLClass extends UMLBox {
     @Override
     public void gainFocus(UMLDiagram diagram) {
     	super.gainFocus(diagram);
-    	className.isBackgroundRectVisible = true;
     	diagram.moveForward(className);
     	for (GuiString kme: fields) {
-        	kme.isBackgroundRectVisible = true;
         	diagram.moveForward(kme);
     	}
     	for (GuiString kme: methods) {
-        	kme.isBackgroundRectVisible = true;
         	diagram.moveForward(kme);
     	}
     }
@@ -129,12 +126,6 @@ public class UMLClass extends UMLBox {
     public void loseFocus(UMLDiagram diagram) {
     	super.loseFocus(diagram);
        	className.isBackgroundRectVisible = false;
-    	for (GuiString kme: fields) {
-        	kme.isBackgroundRectVisible = false;
-    	}
-    	for (GuiString kme: methods) {
-        	kme.isBackgroundRectVisible = false;
-    	}
     }
     
     @Override

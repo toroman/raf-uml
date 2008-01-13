@@ -24,7 +24,12 @@ public class UMLField extends GuiString {
 
 	@Override
 	public void dblClickOn(Double point) {
-		// nista ne radi
+		getParent().stringClicked(this, point);
+	}
+	
+	@Override
+	public void clickOn(Double point) {
+		getParent().stringClicked(this, point);
 	}
 
 	@Override

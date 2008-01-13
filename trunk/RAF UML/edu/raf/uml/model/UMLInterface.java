@@ -66,10 +66,8 @@ public class UMLInterface extends UMLBox {
     @Override
     public void gainFocus(UMLDiagram diagram) {
     	super.gainFocus(diagram);
-    	interfaceName.isBackgroundRectVisible = true;
     	diagram.moveForward(interfaceName);
     	for (GuiString kme: methods) {
-        	kme.isBackgroundRectVisible = true;
         	diagram.moveForward(kme);
     	}
     }
@@ -77,10 +75,6 @@ public class UMLInterface extends UMLBox {
     @Override
     public void loseFocus(UMLDiagram diagram) {
     	super.loseFocus(diagram);
-       	interfaceName.isBackgroundRectVisible = false;
-    	for (GuiString kme: methods) {
-        	kme.isBackgroundRectVisible = false;
-    	}
     }
     
     @Override

@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +37,6 @@ public class ListField extends PropertyField {
 		super(propertyPair);
 		JButton btn = new JButton("...");
 		setLayout(new GridBagLayout());
-		// btn.setPreferredSize(new Dimension(getHeight(), getHeight()));
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.EAST;
 		gbc.weightx = 1.0;
@@ -123,20 +121,19 @@ public class ListField extends PropertyField {
 	protected void refreshList(final JDialog dlg) {
 		editori.removeAll();
 		GridBagLayout layout = new GridBagLayout();
-		layout.columnWidths = new int[] {16, 200};
+		layout.columnWidths = new int[] { 16, 200 };
 		editori.setLayout(layout);
 		GridBagConstraints gbcDelete = new GridBagConstraints();
 		GridBagConstraints gbcPanel = new GridBagConstraints();
 		gbcDelete.gridx = 0;
 		gbcDelete.fill = GridBagConstraints.VERTICAL;
 		gbcDelete.gridy = -1;
-		
+
 		gbcPanel.gridx = 1;
 		gbcPanel.fill = GridBagConstraints.HORIZONTAL;
 		gbcPanel.weightx = 1.0;
 		gbcPanel.gridy = -1;
-		
-		
+
 		for (Object each : args) {
 			gbcPanel.gridy++;
 			gbcDelete.gridy++;

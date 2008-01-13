@@ -21,7 +21,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -294,33 +293,36 @@ public class ApplicationGui extends JFrame {
 		mainScrollPane.setWheelScrollingEnabled(false);
 		mainScrollPane.getHorizontalScrollBar().setUnitIncrement(40);
 		mainScrollPane.getVerticalScrollBar().setUnitIncrement(40);
-		mainScrollPane.getViewport().setViewPosition(
-				new Point(UMLDiagram.MAX_DIMENSION.width / 2
-						- this.getPreferredSize().width / 2,
-						UMLDiagram.MAX_DIMENSION.height / 2
-								- this.getPreferredSize().height / 2));
+		// mainScrollPane.getViewport().setViewPosition(
+		// new Point(UMLDiagram.MAX_DIMENSION.width / 2
+		// - this.getPreferredSize().width / 2,
+		// UMLDiagram.MAX_DIMENSION.height / 2
+		// - this.getPreferredSize().height / 2));
+
 	}
 
 	private void createToolbar() {
 		toolBar = new JToolBar();
 		toolButtons = new ArrayList<JButton>();
-		
-		toolZoomIn = new JButton("+");
+
+		toolZoomIn = new JButton("", createImageIcon("ZoomInToolIcon.PNG"));
+		toolZoomIn.setToolTipText("Zoom in");
 		toolZoomIn.setFocusable(false);
 		toolZoomIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				diagramPanel.zoomIn();
-			}			
+			}
 		});
-		
-		toolZoomOut = new JButton("-");
+
+		toolZoomOut = new JButton("", createImageIcon("ZoomOutToolIcon.PNG"));
 		toolZoomOut.setFocusable(false);
+		toolZoomOut.setToolTipText("Zoom out");
 		toolZoomOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				diagramPanel.zoomOut();
-			}			
+			}
 		});
-		
+
 		toolDefault = new JButton("", createImageIcon("SelectionToolIcon.PNG"));
 		toolDefault.setToolTipText("Selection Tool");
 		toolDefault.setFocusable(false);
