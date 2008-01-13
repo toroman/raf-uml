@@ -275,12 +275,12 @@ public class DiagramPanel extends JPanel implements MouseListener,
 	public void drawDots (Graphics g) {
 		Color tempColor = g.getColor();
 		g.setColor(dotsColor);
-		double minx = gui.mainScrollPane.getViewport().getBounds().getMinX();
+		double minx = gui.mainScrollPane.getViewport().getViewRect().getMinX();
 		minx = minx - (minx%(gridDensity*zoomLevel));
-		double miny = gui.mainScrollPane.getViewport().getBounds().getMinY();
+		double miny = gui.mainScrollPane.getViewport().getViewRect().getMinY();
 		miny = miny - (miny%(gridDensity*zoomLevel));
-		double maxx = gui.mainScrollPane.getViewport().getBounds().getMaxX();
-		double maxy = gui.mainScrollPane.getViewport().getBounds().getMaxY();
+		double maxx = gui.mainScrollPane.getViewport().getViewRect().getMaxX();
+		double maxy = gui.mainScrollPane.getViewport().getViewRect().getMaxY();
 		for (double x = minx; x <= maxx; x += (gridDensity*zoomLevel))
 			for (double y = miny; y <= maxy; y += (gridDensity*zoomLevel))
 				g.drawLine((int)x, (int)y, (int)x, (int)y);
