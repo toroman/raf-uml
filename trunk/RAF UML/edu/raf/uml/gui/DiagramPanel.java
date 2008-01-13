@@ -79,6 +79,7 @@ public class DiagramPanel extends JPanel implements MouseListener,
 	public GuiString editingGuiString;
 	private double gridDensity;
 	private Color gridColor;
+	private Color dotsColor;
 
 	private double zoomLevel = 1.0;
 
@@ -127,6 +128,7 @@ public class DiagramPanel extends JPanel implements MouseListener,
 		});
 
 		gridColor = new Color (175, 175, 175);
+		dotsColor = Color.DARK_GRAY;
 		gridDensity = 16;
 		diagram = new UMLDiagram(this);
 	}
@@ -272,7 +274,7 @@ public class DiagramPanel extends JPanel implements MouseListener,
 	
 	public void drawDots (Graphics g) {
 		Color tempColor = g.getColor();
-		g.setColor(gridColor);
+		g.setColor(dotsColor);
 		double minx = gui.mainScrollPane.getViewport().getBounds().getMinX();
 		minx = minx - (minx%(gridDensity*zoomLevel));
 		double miny = gui.mainScrollPane.getViewport().getBounds().getMinY();
@@ -292,7 +294,7 @@ public class DiagramPanel extends JPanel implements MouseListener,
 		g.setColor(Color.LIGHT_GRAY);
 		Rectangle r = g.getClipBounds();
 		g.fillRect(r.x, r.y, r.width, r.height);
-		drawGrid (g2);		
+		drawDots (g2);		
 		AffineTransform tf = g2.getTransform();
 		tf.scale(zoomLevel, zoomLevel);
 		g2.setTransform(tf);
