@@ -89,13 +89,14 @@ public class PropertiesPanel extends JPanel {
 		properties.clear();
 		if (activeObject != null) {
 			createProperties();
-			System.out.println("PropertiesPanel: " + properties.size());
-		} else {
-			System.out.println("PropertiesPanel: deselected");
 		}
 		refreshTable();
 	}
 
+	public Object getObject() {
+		return object;
+	}
+	
 	private void refreshTable() {
 		table.removeAll();
 		if (properties.size() == 0) {

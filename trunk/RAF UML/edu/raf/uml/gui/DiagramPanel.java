@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -63,6 +64,8 @@ public class DiagramPanel extends JPanel {
 	public AbstractDrawableTool currentTool;
 	public JTextField guiStringEditField;
 	public GuiString editingGuiString;
+
+	private double zoomLevel = 1.0;
 
 	public void setTool(int toolName) {
 		this.removeMouseListener(currentTool);
@@ -258,6 +261,7 @@ public class DiagramPanel extends JPanel {
 
 		guiStringEditField = new JTextField();
 		guiStringEditField.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					removeGuiStringTextField();
@@ -271,6 +275,10 @@ public class DiagramPanel extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		AffineTransform tf = g2.getTransform();
+		tf.scale(zoomLevel, zoomLevel);
+		g2.setTransform(tf);
 		Color tempColor = g.getColor();
 		g.setColor(Color.LIGHT_GRAY);
 		Rectangle r = g.getClipBounds();
@@ -315,4 +323,14 @@ public class DiagramPanel extends JPanel {
 	public static final int ADD_INTERFACE_TOOL = 10;
 	public static final int ADD_REALISATION_TOOL = 11;
 	public static final int ADD_ASSOCIATION_CLASS_TOOL = 12;
+
+	public void zoomIn() {
+		zoomLevel  *= 1.2;
+		repaint();
+	}
+
+	public void zoomOut() {
+		zoomLevel *= 5.0/6.0;
+		repaint();
+	}
 }

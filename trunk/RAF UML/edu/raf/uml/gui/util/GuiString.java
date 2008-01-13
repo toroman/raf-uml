@@ -154,7 +154,7 @@ public class GuiString extends UMLObject implements Draggable {
 	 * @see uml.UMLObject#DoubleclickOn(java.awt.Point)
 	 */
 	@Override
-	public void DoubleclickOn(Double point) {
+	public void dblClickOn(Double point) {
 		getParent().stringDoubleClicked(this, point);
 		diagram.panel.showGuiStringTextField(this);
 		if (parent instanceof Focusable)

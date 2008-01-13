@@ -73,7 +73,7 @@ public abstract class UMLObject {
     /**
      * Sve shto treba uraditi kada se dvaput klikne na taj objekat.
      */
-    public abstract void DoubleclickOn(Point2D.Double point);
+    public abstract void dblClickOn(Point2D.Double point);
     
     public Cursor getCursor () {
     	return DEFAULT_CURSOR;

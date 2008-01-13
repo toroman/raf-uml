@@ -171,14 +171,14 @@ public class UMLClass extends UMLBox {
     }
     
     @Override
-    public void DoubleclickOn(Point2D.Double point) {
+    public void dblClickOn(Point2D.Double point) {
         double linemody = Math.max(1, fields.size()) * (className.getBounds().height + 2) + 10 + (int)className.getBounds().height
         		+ (height - calculateMinHeight()) / 2;
     	if (point.y > y + linemody)
     		addMethod ();
     	else if (point.y > y + className.getBounds().height + 6)
     		addField();
-    	super.DoubleclickOn(point);
+    	super.dblClickOn(point);
     }
     
     @Override

@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package edu.raf.uml.model;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -26,9 +27,10 @@ import java.util.ArrayList;
 
 import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.gui.util.Focusable;
+import edu.raf.uml.model.property.Property;
 
 public class UMLDiagram {
-
+	private String title = "Untitled";
 	public ArrayList<UMLObject> objects;
 	public Focusable onFocus;
 	public Graphics graphics;
@@ -49,19 +51,41 @@ public class UMLDiagram {
 	}
 
 	public void giveFocus(Focusable fobject) {
-		panel.gui.propertiesPanel.setObject(fobject);
-		if (onFocus != null) {
-			onFocus.loseFocus(this);
+		if (fobject == null) {
+			panel.gui.propertiesPanel.setObject(this);
+			if (onFocus != null) {
+				onFocus.loseFocus(this);
+			}
+			onFocus = null;
+		} else {
+			panel.gui.propertiesPanel.setObject(fobject);
+			if (onFocus != null) {
+				onFocus.loseFocus(this);
+			}
+			if (fobject != null) {
+				fobject.gainFocus(this);
+			}
+			onFocus = fobject;
 		}
-		if (fobject != null) {
-			fobject.gainFocus(this);
-		}
-		onFocus = fobject;
+	}
+
+	@Property
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+		panel.repaint();
 	}
 
 	public void paint(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setColor(Color.BLACK);
+		g.drawString("RAFUML v0.1", 10, 20);
+		g.drawString("Authors: Ivan Bocic, Srecko Toroman, Sasa Sijak", 10, 40);
+		g.drawString("Title: " + getTitle(), 10, 60);
 		for (int i = 0; i < objects.size(); i++) {
 			objects.get(i).paint(g);
 		}

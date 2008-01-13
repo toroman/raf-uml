@@ -99,7 +99,7 @@ public class GuiPoint extends UMLObject implements Draggable {
      * @see uml.UMLObject#DoubleclickOn(java.awt.Point)
      */
     @Override
-    public void DoubleclickOn(Point2D.Double point) {
+    public void dblClickOn(Point2D.Double point) {
         getParent().pointDoubleClicked(this, point);
     }
 

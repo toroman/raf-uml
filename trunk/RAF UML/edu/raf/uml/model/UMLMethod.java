@@ -45,7 +45,7 @@ public class UMLMethod extends GuiString {
 	}
 
 	@Override
-	public void DoubleclickOn(Double point) {
+	public void dblClickOn(Double point) {
 		// nista ne radi
 	}
 
@@ -53,6 +53,7 @@ public class UMLMethod extends GuiString {
 	public String getText() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(visibility.uml());
+		sb.append(' ');
 		sb.append(type.toString());
 		sb.append(' ');
 		sb.append(name);

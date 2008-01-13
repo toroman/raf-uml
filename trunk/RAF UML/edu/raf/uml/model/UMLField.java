@@ -23,7 +23,7 @@ public class UMLField extends GuiString {
 	}
 
 	@Override
-	public void DoubleclickOn(Double point) {
+	public void dblClickOn(Double point) {
 		// nista ne radi
 	}
 
