@@ -18,8 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package edu.raf.uml.model;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
@@ -33,9 +31,10 @@ public class UMLDiagram {
 	private String title = "Untitled";
 	public ArrayList<UMLObject> objects;
 	public Focusable onFocus;
-	public Graphics graphics;
 	public DiagramPanel panel;
-
+	private int maxWidth = 3000;
+	private int maxHeight = 3000;
+	
 	public UMLDiagram(DiagramPanel panel) {
 		objects = new ArrayList<UMLObject>();
 		onFocus = null;
@@ -115,5 +114,20 @@ public class UMLDiagram {
 		objects.remove(object);
 	}
 
-	public static final Dimension MAX_DIMENSION = new Dimension(4500, 3000);
+	public int getMaxHeight() {
+		return maxHeight;
+	}
+	
+	public void setMaxHeight(int maxHeight) {
+		this.maxHeight = maxHeight;
+	}
+	
+	public int getMaxWidth() {
+		return maxWidth;
+	}
+	
+	public void setMaxWidth(int maxWidth) {
+		this.maxWidth = maxWidth;
+	}
+	
 }

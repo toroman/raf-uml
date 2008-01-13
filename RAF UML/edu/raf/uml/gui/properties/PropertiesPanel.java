@@ -49,6 +49,7 @@ public class PropertiesPanel extends JPanel {
 	private JPanel table;
 	public JLabel tooltipLabel;
 	public JLabel propertiesLabel;
+	
 	public PropertiesPanel() {
 		super();
 		properties = new ArrayList<PropertyPair>();
@@ -110,7 +111,7 @@ public class PropertiesPanel extends JPanel {
 		relayout();
 		repaint();
 	}
-
+	
 	// rucni layout
 	private void relayout() {
 		Dimension d = PropertyName.DIMENSION;

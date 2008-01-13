@@ -30,6 +30,7 @@ public abstract class UMLBoxRelation extends UMLRelation {
 		calculatePointLocations();
 }
 
+	@Override
 	public void calculatePointLocations() {
 		double midx = from.x + from.width / 2;
 		double eastx = from.x + from.width;

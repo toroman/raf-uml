@@ -34,6 +34,7 @@ public class UMLMethod extends GuiString {
 	private VisibilityType visibility = VisibilityType.Default;
 	private String modifiers = "";
 	private List<ArgumentModel> arguments;
+	private String textCache = null;
 	
 	public UMLMethod(UMLDiagram diagram, StringContainer parent) {
 		super(diagram);
@@ -43,14 +44,22 @@ public class UMLMethod extends GuiString {
 		type = new TypeModel("");
 		super.recalculateBounds();
 	}
-
+	
 	@Override
 	public void dblClickOn(Double point) {
-		// nista ne radi
+		getParent().stringClicked(this, point);
 	}
-
+	
+	@Override
+	public void clickOn(Double point) {
+		getParent().stringClicked(this, point);
+	}
+	
 	@Override
 	public String getText() {
+		if (textCache != null)
+			return textCache;
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append(visibility.uml());
 		sb.append(' ');
@@ -68,7 +77,7 @@ public class UMLMethod extends GuiString {
 		else
 			sb.append(')');
 		sb.append(modifiers);
-		return sb.toString();
+		return textCache = sb.toString();
 	}
 
 	@Override
@@ -82,6 +91,7 @@ public class UMLMethod extends GuiString {
 	}
 
 	public void setType(TypeModel type) {
+		textCache = null;
 		this.type = type;
 		super.recalculateBounds();
 		super.diagram.panel.repaint();
@@ -93,6 +103,7 @@ public class UMLMethod extends GuiString {
 	}
 
 	public void setName(String name) {
+		textCache = null;
 		this.name = name;
 		super.recalculateBounds();
 		super.diagram.panel.repaint();
@@ -104,6 +115,7 @@ public class UMLMethod extends GuiString {
 	}
 
 	public void setVisibility(VisibilityType visibilityType) {
+		textCache = null;
 		this.visibility = visibilityType;
 		super.recalculateBounds();
 		super.diagram.panel.repaint();
@@ -115,6 +127,7 @@ public class UMLMethod extends GuiString {
 	}
 
 	public void setModifiers(String modifiers) {
+		textCache = null;
 		this.modifiers = modifiers;
 		super.recalculateBounds();
 		super.diagram.panel.repaint();
@@ -126,6 +139,7 @@ public class UMLMethod extends GuiString {
 	}
 	
 	public void setArguments(List<ArgumentModel> arguments) {
+		textCache = null;
 		this.arguments = arguments;
 		super.recalculateBounds();
 		super.diagram.panel.repaint();

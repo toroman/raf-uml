@@ -76,6 +76,7 @@ public class MultilineField extends PropertyField {
 				dialog.dispose();
 			}
 		});
+		dialog.pack();
 		dialog.setVisible(true);
 		repaint();
 	}

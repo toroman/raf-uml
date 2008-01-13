@@ -37,6 +37,7 @@ public class DefaultTool extends AbstractDrawableTool {
 		this.parentPanel = parentPanel;
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent event) {
 		try {
 			UMLObject object = parentPanel.diagram
@@ -79,6 +80,7 @@ public class DefaultTool extends AbstractDrawableTool {
 		}
 	}
 	
+	@Override
 	public void mouseDragged(MouseEvent event) {
 		if (mouseDownPoint != null) {
 			UMLObject kme = parentPanel.diagram.getObjectAt(mouseDownPoint);
@@ -95,6 +97,7 @@ public class DefaultTool extends AbstractDrawableTool {
 		parentPanel.repaint();
 	}
 	
+	@Override
 	public void mouseReleased(MouseEvent event) {
 		if (draggingObject != null) {
 			draggingObject.endDrag();
