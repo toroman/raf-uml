@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="RAF UML Editor" default="rafuml-binary.jar">
-	<property name="binary.jar" value="rafuml-bin-v1.1.jar"/>
-	<target name="rafuml-binary.jar">
-		<jar destfile="${binary.jar}">
+<project name="RAF UML Editor" default="sve">
+	<property name="dist" value="dist" />
+
+	<property name="bin" value="bin" />
+
+	<property name="lib" value="lib" />
+	
+	<property name="binary.jar" value="rafuml-bin-v1.0.jar" />
+
+	<property name="key-alias" value="insist" />
+
+	<property name="keystore-location" value="docs/srecko.keys" />
+
+	<property name="keystore-password" value="insist" />
+
+	<target name="sve" description="Sabija sve i pravi JWS" depends="clean.dist, jar.binary, jar.webstart">
+		<!-- task koji poziva ostale -->
+	</target>
+
+	<target name="clean.dist" description="Brise sve jarove iz dist foldera">
+		<delete>
+			<fileset dir="${dist}" includes="*.jar" />
+		</delete>
+	</target>
+
+	<target name="jar.binary" description="JAR">
+		<jar destfile="${dist}/${binary.jar}">
 			<manifest>
 				<attribute name="main-class" value="edu.raf.uml.Main" />
 			</manifest>
-			<zipfileset dir="bin" includes="**" />
+			<zipfileset dir="${bin}" includes="**" />
 		</jar>
+	</target>
+
+	<target name="jar.webstart" description="Web start">
+		<copy todir="${dist}" description="Kopiraj sve biblioteke">
+			<fileset dir="${lib}" includes="*.jar" />
+		</copy>
+		<signjar alias="${key-alias}" keystore="${keystore-location}" storepass="${keystore-password}">
+			<fileset dir="${dist}" includes="*.jar" />
+			<!-- ovde po potrebi ignorisati vec potpisane jarove -->
+		</signjar>
 	</target>
 </project>
