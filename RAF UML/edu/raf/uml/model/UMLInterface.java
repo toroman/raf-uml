@@ -100,7 +100,7 @@ public class UMLInterface extends UMLBox {
     		interfaceName.setY (y + 18);
             for (int i = 0; i < methods.size(); i++) {
             	methods.get(i).setX (x + 3);
-            	methods.get(i).setY (y + 40 + i*(interfaceName.getBounds().height+2) + 3); 
+            	methods.get(i).setY (y + 44 + i*(interfaceName.getBounds().height+2) + 3); 
             	methods.get(i).setWidth (width - RIGHT_BLANK_SPACE_WIDTH);
             }            
     	}
