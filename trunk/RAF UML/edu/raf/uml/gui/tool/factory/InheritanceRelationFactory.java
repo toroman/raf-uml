@@ -17,7 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package edu.raf.uml.gui.tool.factory;
 
+import java.util.ArrayList;
+
 import edu.raf.uml.model.UMLBox;
+import edu.raf.uml.model.UMLBoxRelation;
 import edu.raf.uml.model.UMLClass;
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLInheritance;
@@ -36,11 +39,33 @@ public class InheritanceRelationFactory implements RelationFactory {
 		if (!(to instanceof UMLBox))
 			return "Can only inherit a "
 					+ (from instanceof UMLInterface ? "interface." : "class");
-		if (from instanceof UMLInterface && to instanceof UMLInterface)
-			return null;
-		if (from instanceof UMLClass && to instanceof UMLClass)
-			return null;
-		return "Incompatibile types. Whatever.";
+		if (from instanceof UMLInterface && !(to instanceof UMLInterface))
+			return "Incompatibile types. Whatever.";
+		if (from instanceof UMLClass && !(to instanceof UMLClass))
+			return "Incompatibile types. Whatever.";
+		
+		ArrayList <UMLBox> boxesRelatedToFrom = new ArrayList<UMLBox> ();
+		boxesRelatedToFrom.add(from);
+		int i = 0;
+		while (i < boxesRelatedToFrom.size()) {
+			int searchTo = boxesRelatedToFrom.size();
+			for (; i < searchTo; i++) {
+				if (boxesRelatedToFrom.get(i) == to)
+					return "Those boxes are already related";
+				for (UMLRelation relation: boxesRelatedToFrom.get(i).relations) {
+					if (relation instanceof UMLBoxRelation) {
+						if (boxesRelatedToFrom.get(i) == ((UMLBoxRelation)relation).from)
+							if (!boxesRelatedToFrom.contains(((UMLBoxRelation)relation).to))
+								boxesRelatedToFrom.add(((UMLBoxRelation)relation).to);
+						if (boxesRelatedToFrom.get(i) == ((UMLBoxRelation)relation).to)
+							if (!boxesRelatedToFrom.contains(((UMLBoxRelation)relation).from))
+								boxesRelatedToFrom.add(((UMLBoxRelation)relation).from);
+					}
+				}
+			}
+			
+		}		
+		return null;
 	}
 
 	/**
