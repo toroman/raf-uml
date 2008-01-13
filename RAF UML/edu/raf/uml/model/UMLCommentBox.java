@@ -95,6 +95,24 @@ public class UMLCommentBox extends UMLBox {
 		edgeTriangle.ypoints[2] = (int)(y+EDGE_TRIM_SIZE);    
     }
     
+    public void setText (String newText) {
+    	String[] array = newText.split("\\n");
+    	text = new ArrayList<String> ();
+    	for (String str: array)
+    		text.add (str);
+    	calculatePointLocations();
+    	diagram.panel.repaint();
+    }
+    
+    public String getText () {
+    	String result = "";
+    	for (int i = 0; i < text.size() - 1; i++)
+    		result += text.get(i) + "\n";
+    	if (text.size() > 0)
+    		result += text.get(text.size() - 1);
+    	return result;
+    }
+    
     /**
      * Velichina trougle u tjoshku, merena u pixelima.
      */
