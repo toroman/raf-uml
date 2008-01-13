@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="$$codebase" href="$$name">
+	<information>
+		<title>RAF UML</title>
+		<vendor>Ivan Bocic, Srecko Toroman, Sasa Sijak</vendor>
+		<description>Student project - UML editor.</description>
+	</information>
+
+	<resources>
+		<property name="jnlp.publish-url" value="$$codebase/publish" />
+		<j2se version="1.6+"
+			href="http://java.sun.com/products/autodl/j2se" />
+		<jar href="rafuml-jws.jar" version="1.1-1" />
+	</resources>
+	<application-desc main-class="edu.raf.uml.Main" />
+</jnlp>
