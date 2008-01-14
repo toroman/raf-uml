@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jnlp spec="1.0+" codebase="http://raf-uml.googlecode.com/files/">
+<jnlp spec="1.0+" codebase="http://raf-uml.googlecode.com/files/" href="WebStart.jnlp">
 	<information>
 		<title>RAF UML</title>
 		<vendor>Ivan Bocic, Srecko Toroman, Sasa Sijak</vendor>
 		<description>Student project - UML editor.</description>
+		<offline-allowed />
 	</information>
 
 	<resources>
