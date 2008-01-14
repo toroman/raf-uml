@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jnlp spec="1.0+" codebase="$$codebase" href="$$name">
+<jnlp spec="1.0+" codebase="http://raf-uml.googlecode.com/files/">
 	<information>
 		<title>RAF UML</title>
 		<vendor>Ivan Bocic, Srecko Toroman, Sasa Sijak</vendor>
@@ -10,7 +10,8 @@
 		<property name="jnlp.publish-url" value="$$codebase/publish" />
 		<j2se version="1.6+"
 			href="http://java.sun.com/products/autodl/j2se" />
-		<jar href="rafuml-jws.jar" version="1.1-1" />
+		<jar href="rafuml-bin__V1.0rc1.jar" />
+		<jar href="xstream__V1.2.2.jar" />
 	</resources>
 	<application-desc main-class="edu.raf.uml.Main" />
 </jnlp>

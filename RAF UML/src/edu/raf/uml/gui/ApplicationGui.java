@@ -490,7 +490,7 @@ public class ApplicationGui extends JFrame {
 	}
 
 	public ImageIcon createImageIcon(String path) {
-		URL url = getClass().getClassLoader().getResource("res/" + path);
+		URL url = getClass().getClassLoader().getResource(path);
 		Image image = Toolkit.getDefaultToolkit().getImage(url);
 		return new ImageIcon(ColorHelper.makeColorTransparent(image, new Color(
 				255, 0, 255)));

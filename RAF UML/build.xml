@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="RAF UML Editor" default="sve">
+	<property name="ver" value="v1.0rc1" />
+
 	<property name="dist" value="dist" />
+
+	<property name="src" value="src" />
 
 	<property name="bin" value="bin" />
 
 	<property name="lib" value="lib" />
-	
-	<property name="binary.jar" value="rafuml-bin-v1.0.jar" />
+
+	<property name="res" value="res" />
+
+	<property name="binary.jar" value="rafuml-bin-${ver}.jar" />
+
+	<property name="download.zip" value="rafuml-${ver}.zip" />
+
+	<property name="src.jar" value="rafuml-src-${ver}.jar" />
 
 	<property name="key-alias" value="insist" />
 
@@ -14,7 +24,9 @@
 
 	<property name="keystore-password" value="insist" />
 
-	<target name="sve" description="Sabija sve i pravi JWS" depends="clean.dist, jar.binary, jar.webstart">
+	<property name="license" value="docs/license.txt" />
+
+	<target name="sve" description="Sabija sve i pravi JWS" depends="clean.dist, jar.binary, jar.res, jar.source, downloadbundle, jar.webstart">
 		<!-- task koji poziva ostale -->
 	</target>
 
@@ -33,10 +45,25 @@
 		</jar>
 	</target>
 
-	<target name="jar.webstart" description="Web start">
+	<target name="jar.res" description="Biblioteke">
 		<copy todir="${dist}" description="Kopiraj sve biblioteke">
 			<fileset dir="${lib}" includes="*.jar" />
 		</copy>
+	</target>
+
+	<target name="jar.source" description="JAR">
+		<jar destfile="${dist}/${src.jar}">
+			<zipfileset dir="${src}" includes="**/*.java" />
+		</jar>
+	</target>
+
+	<target name="downloadbundle" description="Pravi release za download">
+		<copy todir="${dist}" file="${license}" />
+		<zip basedir="${dist}" destfile="${dist}/${download.zip}" includes="**/*.jar,**/*.txt">
+		</zip>
+	</target>
+
+	<target name="jar.webstart" description="Web start">
 		<signjar alias="${key-alias}" keystore="${keystore-location}" storepass="${keystore-password}">
 			<fileset dir="${dist}" includes="*.jar" />
 			<!-- ovde po potrebi ignorisati vec potpisane jarove -->
