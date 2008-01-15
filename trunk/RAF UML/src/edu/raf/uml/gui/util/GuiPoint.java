@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLObject;
@@ -53,6 +54,11 @@ public class GuiPoint extends UMLObject implements Draggable {
         return new Point2D.Double(getX(), getY());
     }
 
+    @Override
+    public Rectangle2D getBounds() {
+    	return new Rectangle2D.Double(x,y,0,0);
+    }
+    
     /*
      * (non-Javadoc)
      * 

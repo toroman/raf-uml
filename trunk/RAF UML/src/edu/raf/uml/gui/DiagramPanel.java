@@ -70,7 +70,7 @@ public class DiagramPanel extends JPanel implements MouseListener,
 	public static final int ADD_INTERFACE_TOOL = 10;
 	public static final int ADD_REALISATION_TOOL = 11;
 	public static final int ADD_ASSOCIATION_CLASS_TOOL = 12;
-	
+
 	private MouseMotionListener motionListener;
 	public UMLDiagram diagram;
 	public ApplicationGui gui;
@@ -88,7 +88,7 @@ public class DiagramPanel extends JPanel implements MouseListener,
 		this.setFocusable(true);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		
+
 		motionListener = new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -127,12 +127,12 @@ public class DiagramPanel extends JPanel implements MouseListener,
 			}
 		});
 
-		gridColor = new Color (175, 175, 175);
+		gridColor = new Color(175, 175, 175);
 		dotsColor = Color.DARK_GRAY;
 		gridDensity = 16;
 		diagram = new UMLDiagram(this);
 	}
-	
+
 	public void setTool(int toolName) {
 		if (editingGuiString != null) {
 			removeGuiStringTextField();
@@ -255,36 +255,36 @@ public class DiagramPanel extends JPanel implements MouseListener,
 		}
 		repaint();
 	}
-	
-	public void drawGrid (Graphics g) {
+
+	public void drawGrid(Graphics g) {
 		Color tempColor = g.getColor();
 		g.setColor(gridColor);
 		double minx = gui.mainScrollPane.getViewport().getViewRect().getMinX();
-		minx = minx - (minx%(gridDensity*zoomLevel));
+		minx = minx - (minx % (gridDensity * zoomLevel));
 		double miny = gui.mainScrollPane.getViewport().getViewRect().getMinY();
-		miny = miny - (miny%(gridDensity*zoomLevel));
+		miny = miny - (miny % (gridDensity * zoomLevel));
 		double maxx = gui.mainScrollPane.getViewport().getViewRect().getMaxX();
 		double maxy = gui.mainScrollPane.getViewport().getViewRect().getMaxY();
-		for (double x = minx; x <= maxx; x += (gridDensity*zoomLevel))
-			g.drawLine((int)x, (int)miny, (int)x, (int)maxy);
-		for (double y = miny; y <= maxy; y += (gridDensity*zoomLevel))
-			g.drawLine((int)minx, (int)y, (int)maxx, (int)y);
-		g.setColor (tempColor);
+		for (double x = minx; x <= maxx; x += (gridDensity * zoomLevel))
+			g.drawLine((int) x, (int) miny, (int) x, (int) maxy);
+		for (double y = miny; y <= maxy; y += (gridDensity * zoomLevel))
+			g.drawLine((int) minx, (int) y, (int) maxx, (int) y);
+		g.setColor(tempColor);
 	}
-	
-	public void drawDots (Graphics g) {
+
+	public void drawDots(Graphics g) {
 		Color tempColor = g.getColor();
 		g.setColor(dotsColor);
 		double minx = gui.mainScrollPane.getViewport().getViewRect().getMinX();
-		minx = minx - (minx%(gridDensity*zoomLevel));
+		minx = minx - (minx % (gridDensity * zoomLevel));
 		double miny = gui.mainScrollPane.getViewport().getViewRect().getMinY();
-		miny = miny - (miny%(gridDensity*zoomLevel));
+		miny = miny - (miny % (gridDensity * zoomLevel));
 		double maxx = gui.mainScrollPane.getViewport().getViewRect().getMaxX();
 		double maxy = gui.mainScrollPane.getViewport().getViewRect().getMaxY();
-		for (double x = minx; x <= maxx; x += (gridDensity*zoomLevel))
-			for (double y = miny; y <= maxy; y += (gridDensity*zoomLevel))
-				g.drawLine((int)x, (int)y, (int)x, (int)y);
-		g.setColor (tempColor);
+		for (double x = minx; x <= maxx; x += (gridDensity * zoomLevel))
+			for (double y = miny; y <= maxy; y += (gridDensity * zoomLevel))
+				g.drawLine((int) x, (int) y, (int) x, (int) y);
+		g.setColor(tempColor);
 	}
 
 	@Override
@@ -294,7 +294,7 @@ public class DiagramPanel extends JPanel implements MouseListener,
 		g.setColor(Color.LIGHT_GRAY);
 		Rectangle r = g.getClipBounds();
 		g.fillRect(r.x, r.y, r.width, r.height);
-		drawDots (g2);		
+		drawGrid(g2);
 		AffineTransform tf = g2.getTransform();
 		tf.scale(zoomLevel, zoomLevel);
 		g2.setTransform(tf);
@@ -350,7 +350,7 @@ public class DiagramPanel extends JPanel implements MouseListener,
 	 * Ovi listeneri transformisu kordinate iz View-a u "UML" koordinate (time
 	 * omogucavaju zoom) a zatim ih proslede listeneru (currentTool)
 	 */
-	
+
 	private MouseEvent transformCoordinates(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
@@ -359,56 +359,64 @@ public class DiagramPanel extends JPanel implements MouseListener,
 		return new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e
 				.getModifiersEx(), x, y, e.getClickCount(), e.isPopupTrigger());
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (currentTool == null)
 			return;
-		((MouseListener) currentTool).mouseClicked(transformCoordinates(e));;
+		((MouseListener) currentTool).mouseClicked(transformCoordinates(e));
+		;
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (currentTool == null)
 			return;
-		((MouseListener) currentTool).mouseEntered(transformCoordinates(e));;
-	}	
-	
+		((MouseListener) currentTool).mouseEntered(transformCoordinates(e));
+		;
+	}
+
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (currentTool == null)
 			return;
-		((MouseListener) currentTool).mouseExited(transformCoordinates(e));;
+		((MouseListener) currentTool).mouseExited(transformCoordinates(e));
+		;
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (currentTool == null)
 			return;
-		((MouseListener) currentTool).mousePressed(transformCoordinates(e));;
+		((MouseListener) currentTool).mousePressed(transformCoordinates(e));
+		;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (currentTool == null)
 			return;
-		((MouseListener) currentTool).mouseReleased(transformCoordinates(e));;
+		((MouseListener) currentTool).mouseReleased(transformCoordinates(e));
+		;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (currentTool == null)
 			return;
-		((MouseMotionListener) currentTool).mouseDragged(transformCoordinates(e));;
+		((MouseMotionListener) currentTool)
+				.mouseDragged(transformCoordinates(e));
+		;
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (currentTool == null)
 			return;
-		((MouseMotionListener) currentTool).mouseMoved(transformCoordinates(e));;
+		((MouseMotionListener) currentTool).mouseMoved(transformCoordinates(e));
+		;
 	}
-	
+
 	public double getGridDensity() {
 		return gridDensity;
 	}

@@ -20,10 +20,12 @@ package edu.raf.uml.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,7 +39,10 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -56,7 +61,9 @@ import com.thoughtworks.xstream.XStream;
 
 import edu.raf.uml.gui.properties.PropertiesPanel;
 import edu.raf.uml.gui.util.ColorHelper;
+import edu.raf.uml.gui.util.GuiPoint;
 import edu.raf.uml.model.UMLDiagram;
+import edu.raf.uml.model.UMLObject;
 
 @SuppressWarnings("serial")
 public class ApplicationGui extends JFrame {
@@ -86,6 +93,7 @@ public class ApplicationGui extends JFrame {
 	public JMenuItem menuItemNew;
 	public JMenuItem menuItemOpen;
 	public JMenuItem menuItemSave;
+	public JMenuItem menuItemExport;
 	public JMenuItem menuItemPrint;
 	public JMenuItem menuItemExit;
 	public JMenuItem menuItemHelpContents;
@@ -131,14 +139,22 @@ public class ApplicationGui extends JFrame {
 		menuFile.setMnemonic('f');
 		menuHelp = new JMenu("Help");
 		menuHelp.setMnemonic('h');
-
 		menuItemNew = new JMenuItem("New");
 		menuItemNew.setMnemonic('n');
+		
 		menuItemNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				diagramPanel.diagram = new UMLDiagram(diagramPanel);
 				mainPanel.repaint();
+			}
+		});
+		menuItemExport = new JMenuItem("Export to PNG...");
+		menuItemExport.setMnemonic('e');
+		menuItemExport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				onMenuItemExportClicked();
 			}
 		});
 		menuItemOpen = new JMenuItem("Open");
@@ -247,6 +263,7 @@ public class ApplicationGui extends JFrame {
 		menuFile.add(new JSeparator());
 		menuFile.add(menuItemOpen);
 		menuFile.add(menuItemSave);
+		menuFile.add(menuItemExport);
 		menuFile.add(menuItemPrint);
 		menuFile.add(new JSeparator());
 		menuFile.add(menuItemExit);
@@ -257,6 +274,63 @@ public class ApplicationGui extends JFrame {
 		mainMenu.add(menuHelp);
 		this.setJMenuBar(mainMenu);
 
+	}
+
+	protected void onMenuItemExportClicked() {
+		fileChooserSave.setFileFilter(new FileFilter() {
+			@Override
+			public boolean accept(File f) {
+				if (f.isDirectory())
+					return true;
+				if (!f.canWrite())
+					return false;
+				return f.toString().toLowerCase().endsWith(".png");
+			}
+
+			@Override
+			public String getDescription() {
+				return "PNG files";
+			}
+		});
+		fileChooserSave.setName("untitled.png");
+		int returnVal = fileChooserSave.showSaveDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooserSave.getSelectedFile();
+			if (!file.getName().toLowerCase().endsWith(".png")) {
+				file = new File(file.getAbsolutePath() + ".png");
+			}
+			int sx = Integer.MAX_VALUE;
+			int sy = Integer.MAX_VALUE;
+			int ex = Integer.MIN_VALUE;
+			int ey = Integer.MIN_VALUE;
+
+			for (UMLObject obj : diagramPanel.diagram.objects) {
+				if (obj instanceof GuiPoint) {
+					GuiPoint p = (GuiPoint) obj;
+					sx = Math.min(sx, (int) p.getX());
+					sy = Math.min(sy, (int) p.getY());
+					ex = Math.max(ex, (int) p.getX());
+					ey = Math.max(ey, (int) p.getY());
+				}
+			}
+
+			int width = ex - sx + 40;
+			int height = ey - sy + 40;
+			sx -= 20;
+			sy -= 20;
+			if (diagramPanel.diagram.onFocus != null)
+				diagramPanel.diagram.onFocus.loseFocus(diagramPanel.diagram);
+			BufferedImage image = new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D) image.getGraphics();
+			g.translate(sx, sy);
+			diagramPanel.diagram.paint(g);
+			try {
+				ImageIO.write(image, "PNG", file);
+			} catch (IOException e) {
+				log.log(Level.SEVERE, "Greska pri snimanju slike!", e);
+			}
+		}
 	}
 
 	private void createPropertiesPanel() {
@@ -495,4 +569,7 @@ public class ApplicationGui extends JFrame {
 		return new ImageIcon(ColorHelper.makeColorTransparent(image, new Color(
 				255, 0, 255)));
 	}
+
+	private static final Logger log = Logger.getLogger(ApplicationGui.class
+			.getName());
 }

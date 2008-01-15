@@ -82,9 +82,10 @@ public class UMLDiagram {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(Color.BLACK);
-		g.drawString("RAFUML v0.1", 10, 20);
-		g.drawString("Authors: Ivan Bocic, Srecko Toroman, Sasa Sijak", 10, 40);
-		g.drawString("Title: " + getTitle(), 10, 60);
+		// g.drawString("RAFUML v0.1", 10, 20);
+		// g.drawString("Authors: Ivan Bocic, Srecko Toroman, Sasa Sijak", 10,
+		// 40);
+		// g.drawString("Title: " + getTitle(), 10, 60);
 		for (int i = 0; i < objects.size(); i++) {
 			objects.get(i).paint(g);
 		}

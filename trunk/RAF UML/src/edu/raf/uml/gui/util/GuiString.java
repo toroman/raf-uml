@@ -64,6 +64,7 @@ public class GuiString extends UMLObject implements Draggable {
 		super(diagram);
 	}
 
+	@Override
 	public Rectangle2D.Double getBounds() {
 		return bounds;
 	}

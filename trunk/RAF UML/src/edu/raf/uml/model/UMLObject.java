@@ -20,6 +20,7 @@ package edu.raf.uml.model;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Sve shto mozhe da postoji u dijagramu je UML object.
@@ -78,4 +79,6 @@ public abstract class UMLObject {
     public Cursor getCursor () {
     	return DEFAULT_CURSOR;
     }
+    
+    public abstract Rectangle2D getBounds();
 }
