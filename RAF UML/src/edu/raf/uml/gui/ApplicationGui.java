@@ -25,6 +25,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -62,7 +63,6 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import edu.raf.uml.gui.properties.PropertiesPanel;
 import edu.raf.uml.gui.util.ColorHelper;
-import edu.raf.uml.gui.util.GuiPoint;
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLObject;
 import edu.raf.uml.serialization.FontConverter;
@@ -143,7 +143,7 @@ public class ApplicationGui extends JFrame {
 		menuHelp.setMnemonic('h');
 		menuItemNew = new JMenuItem("New");
 		menuItemNew.setMnemonic('n');
-		
+
 		menuItemNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -232,7 +232,7 @@ public class ApplicationGui extends JFrame {
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooserSave.getSelectedFile();
 					if (!file.getName().toLowerCase().endsWith(".xml"))
-						file = new File(file.getAbsolutePath()+".xml");
+						file = new File(file.getAbsolutePath() + ".xml");
 					XStream xstream = createXstream();
 					String xml = xstream.toXML(diagramPanel.diagram);
 					try {
@@ -287,7 +287,7 @@ public class ApplicationGui extends JFrame {
 		return xstream;
 	}
 
-protected void onMenuItemExportClicked() {
+	protected void onMenuItemExportClicked() {
 		fileChooserSave.setFileFilter(new FileFilter() {
 			@Override
 			public boolean accept(File f) {
@@ -316,13 +316,18 @@ protected void onMenuItemExportClicked() {
 			int ey = Integer.MIN_VALUE;
 
 			for (UMLObject obj : diagramPanel.diagram.objects) {
-				if (obj instanceof GuiPoint) {
-					GuiPoint p = (GuiPoint) obj;
-					sx = Math.min(sx, (int) p.getX());
-					sy = Math.min(sy, (int) p.getY());
-					ex = Math.max(ex, (int) p.getX());
-					ey = Math.max(ey, (int) p.getY());
-				}
+				// if (obj instanceof GuiPoint) {
+				// GuiPoint p = (GuiPoint) obj;
+				// sx = Math.min(sx, (int) p.getX());
+				// sy = Math.min(sy, (int) p.getY());
+				// ex = Math.max(ex, (int) p.getX());
+				// ey = Math.max(ey, (int) p.getY());
+				// }
+				Rectangle2D b = obj.getBounds();
+				sx = Math.min(sx, (int) b.getX());
+				sy = Math.min(sy, (int) b.getY());
+				ex = Math.max(ex, (int) b.getMaxX());
+				ey = Math.max(ey, (int) b.getMaxY());
 			}
 
 			int width = ex - sx + 40;
@@ -332,9 +337,11 @@ protected void onMenuItemExportClicked() {
 			if (diagramPanel.diagram.onFocus != null)
 				diagramPanel.diagram.onFocus.loseFocus(diagramPanel.diagram);
 			BufferedImage image = new BufferedImage(width, height,
-					BufferedImage.TYPE_INT_ARGB);
+					BufferedImage.TYPE_INT_RGB);
 			Graphics2D g = (Graphics2D) image.getGraphics();
-			g.translate(sx, sy);
+			g.setColor(Color.WHITE);
+			g.fillRect(0, 0, width, height);
+			g.translate(-sx, -sy);
 			diagramPanel.diagram.paint(g);
 			try {
 				ImageIO.write(image, "PNG", file);
@@ -343,7 +350,6 @@ protected void onMenuItemExportClicked() {
 			}
 		}
 	}
-
 
 	private void createPropertiesPanel() {
 		propertiesPanel = new PropertiesPanel();
