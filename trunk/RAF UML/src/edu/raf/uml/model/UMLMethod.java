@@ -33,7 +33,7 @@ public class UMLMethod extends GuiString {
 	private VisibilityType visibility = VisibilityType.Default;
 	private String modifiers = "";
 	private List<ArgumentModel> arguments;
-	private String textCache = null;
+	transient private String textCache = null;
 
 	public UMLMethod(UMLDiagram diagram, StringContainer parent) {
 		super(diagram);

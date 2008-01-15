@@ -19,9 +19,11 @@ package edu.raf.uml.gui.properties;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -77,6 +79,9 @@ public class MultilineField extends PropertyField {
 			}
 		});
 		dialog.pack();
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		dialog.setLocation(screen.width / 2 - dialog.getWidth() / 2, screen.height / 2
+				- dialog.getHeight() / 2);
 		dialog.setVisible(true);
 		repaint();
 	}

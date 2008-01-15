@@ -13,7 +13,8 @@ public class UMLInterface extends UMLBox {
     public GuiString interfaceName;
     public ArrayList<UMLMethod> methods;
     public static FontMetrics fontMetrics;
-
+    private transient int titleWidth = -1; // ;) 
+    
     public UMLInterface(UMLDiagram diagram, double x, double y) {
         super(diagram, x, y, 0, 0);
         methods = new ArrayList<UMLMethod>();
@@ -50,7 +51,7 @@ public class UMLInterface extends UMLBox {
     	for (GuiString kme: methods)
     		if (kme.getBounds().width > minw)
     			minw = kme.calculateMinWidth();
-        return (minw < 80 ? 80 : minw) + RIGHT_BLANK_SPACE_WIDTH;
+        return (minw < titleWidth ? titleWidth : minw) + RIGHT_BLANK_SPACE_WIDTH;
     }
 
     @Override
@@ -58,7 +59,10 @@ public class UMLInterface extends UMLBox {
         super.paint(g);
         Color tempColor = g.getColor();
         g.setColor(Color.BLACK);
-        g.drawString("<< interface >>", (int)(x + width/2) - 40, (int)y + 15);
+        String s = "<< interface >>";
+        if (titleWidth < 0)
+        	titleWidth = g.getFontMetrics().stringWidth(s);
+        g.drawString(s, (int)(x + width/2) - titleWidth/2, (int)y + 15);
         g.drawLine((int)x, (int)y + (int)interfaceName.getBounds().height + 22, (int)x + (int)width, (int)y + (int)interfaceName.getBounds().height + 22);
         g.setColor(tempColor);
     }
@@ -88,7 +92,6 @@ public class UMLInterface extends UMLBox {
     
     @Override
     public void calculatePointLocations() {
-		//TODO djoksi
     	super.calculatePointLocations();
     	if (interfaceName != null) {
     		interfaceName.setX (x + (width - interfaceName.getBounds().width)/2);

@@ -58,12 +58,14 @@ import javax.swing.JToolBar;
 import javax.swing.filechooser.FileFilter;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import edu.raf.uml.gui.properties.PropertiesPanel;
 import edu.raf.uml.gui.util.ColorHelper;
 import edu.raf.uml.gui.util.GuiPoint;
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLObject;
+import edu.raf.uml.serialization.FontConverter;
 
 @SuppressWarnings("serial")
 public class ApplicationGui extends JFrame {
@@ -178,7 +180,7 @@ public class ApplicationGui extends JFrame {
 						return "XML Files";
 					}
 				});
-				XStream xstream = new XStream();
+				XStream xstream = createXstream();
 				int returnVal = fileChooserOpen.showOpenDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooserOpen.getSelectedFile();
@@ -229,7 +231,9 @@ public class ApplicationGui extends JFrame {
 				int returnVal = fileChooserSave.showSaveDialog(null);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooserSave.getSelectedFile();
-					XStream xstream = new XStream();
+					if (!file.getName().toLowerCase().endsWith(".xml"))
+						file = new File(file.getAbsolutePath()+".xml");
+					XStream xstream = createXstream();
 					String xml = xstream.toXML(diagramPanel.diagram);
 					try {
 						FileOutputStream out = new FileOutputStream(file);
@@ -276,7 +280,14 @@ public class ApplicationGui extends JFrame {
 
 	}
 
-	protected void onMenuItemExportClicked() {
+	private XStream createXstream() {
+		XStream xstream = new XStream(new DomDriver());
+		xstream.registerConverter(diagramPanel.getConverter());
+		xstream.registerConverter(new FontConverter());
+		return xstream;
+	}
+
+protected void onMenuItemExportClicked() {
 		fileChooserSave.setFileFilter(new FileFilter() {
 			@Override
 			public boolean accept(File f) {
@@ -332,6 +343,7 @@ public class ApplicationGui extends JFrame {
 			}
 		}
 	}
+
 
 	private void createPropertiesPanel() {
 		propertiesPanel = new PropertiesPanel();

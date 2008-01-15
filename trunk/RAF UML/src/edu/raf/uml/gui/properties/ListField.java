@@ -2,12 +2,14 @@ package edu.raf.uml.gui.properties;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -113,6 +115,9 @@ public class ListField extends PropertyField {
 		c.add(editori, BorderLayout.CENTER);
 		refreshList(dlg);
 		dlg.pack();
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		dlg.setLocation(screen.width / 2 - dlg.getWidth() / 2, screen.height
+				/ 2 - dlg.getHeight() / 2);
 		dlg.setVisible(true);
 
 	}

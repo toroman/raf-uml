@@ -12,6 +12,7 @@ public class UMLField extends GuiString {
 	private String name = "";
 	private VisibilityType visibility = VisibilityType.Default;
 	private String modifiers = "";
+	transient private String textCache = null;
 
 	public UMLField(UMLDiagram diagram, StringContainer parent) {
 		super(diagram);
@@ -23,7 +24,9 @@ public class UMLField extends GuiString {
 
 	@Override
 	public String getText() {
-		return visibility.uml() + " " + type + " " + name + " " + modifiers;
+		if (textCache == null)
+			textCache = visibility.uml() + " " + type + " " + name + " " + modifiers;
+		return textCache ;
 	}
 
 	@Override
@@ -37,6 +40,7 @@ public class UMLField extends GuiString {
 	}
 
 	public void setType(TypeModel type) {
+		textCache = null;
 		this.type = type;
 		super.recalculateBounds();
 		super.diagram.panel.repaint();
@@ -48,6 +52,7 @@ public class UMLField extends GuiString {
 	}
 
 	public void setName(String name) {
+		textCache = null;
 		this.name = name;
 		super.recalculateBounds();
 		super.diagram.panel.repaint();
@@ -70,6 +75,7 @@ public class UMLField extends GuiString {
 	}
 
 	public void setModifiers(String modifiers) {
+		textCache = null;
 		this.modifiers = modifiers;
 		super.recalculateBounds();
 		super.diagram.panel.repaint();

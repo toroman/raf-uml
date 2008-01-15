@@ -39,7 +39,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable,
 	public double x, y, width, height;
 	public GuiPoint nwPoint, nePoint, sePoint, swPoint;
 	public ArrayList<UMLRelation> relations;
-	private double xoffset, yoffset;
+	transient private double xoffset, yoffset;
 	private Color backgroundColor = Color.WHITE;
 
 	public UMLBox(UMLDiagram diagram, double x, double y, double width,
