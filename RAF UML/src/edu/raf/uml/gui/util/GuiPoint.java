@@ -36,12 +36,12 @@ import edu.raf.uml.model.UMLObject;
  * direktno iz Gui-a parent je obaveshtoen i odradi sav posao umesto tachke.
  */
 public class GuiPoint extends UMLObject implements Draggable {
-
+	
     private double x;
     private double y;
     private boolean isVisible = false;
     private PointContainer parent;
-    private double xoffset,  yoffset;
+    private transient double xoffset,  yoffset;
     
     public GuiPoint(UMLDiagram diagram, PointContainer parent, double x, double y) {
         super(diagram);

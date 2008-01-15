@@ -36,6 +36,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+
 import edu.raf.uml.gui.tool.AbstractDrawableTool;
 import edu.raf.uml.gui.tool.AddBoxTool;
 import edu.raf.uml.gui.tool.AddRelationTool;
@@ -431,5 +437,27 @@ public class DiagramPanel extends JPanel implements MouseListener,
 
 	public void setGridColor(Color gridColor) {
 		this.gridColor = gridColor;
+	}
+
+	public Converter getConverter() {
+		return new XStreamConverter();
+	}
+
+	private class XStreamConverter implements Converter {
+		public void marshal(Object value, HierarchicalStreamWriter writer,
+				MarshallingContext context) {
+		}
+
+		public Object unmarshal(HierarchicalStreamReader arg0,
+				UnmarshallingContext arg1) {
+			return ApplicationGui.getInstance().diagramPanel;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public boolean canConvert(Class type) {
+			return type.getName().equals(DiagramPanel.class.getName());
+		}
+
 	}
 }
