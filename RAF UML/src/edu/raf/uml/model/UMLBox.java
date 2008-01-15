@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 
@@ -55,6 +56,11 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable,
 		sePoint = new GuiPoint(diagram, this, x + width, y + height);
 	}
 
+	@Override
+	public Rectangle2D getBounds() {
+		return new Rectangle2D.Double(x, y, width, height);
+	}
+	
 	public void addRelation(UMLRelation relation) {
 		relations.add(relation);
 	}
