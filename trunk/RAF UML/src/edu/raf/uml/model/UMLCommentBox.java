@@ -44,6 +44,10 @@ public class UMLCommentBox extends UMLBox {
 
 	@Override
 	public void paint(Graphics2D g) {
+		if (shapePolygon == null) {
+			shapePolygon = new Polygon(new int[5], new int[5], 5);
+			edgeTriangle = new Polygon(new int[3], new int[3], 3);
+		}
 		Color tempColor = g.getColor();
 		g.setColor(getBackgroundColor());
 		g.fillPolygon(shapePolygon);
