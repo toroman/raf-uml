@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="RAF UML Editor" default="sve">
-	<property name="ver" value="v1.0rc2" />
+	<property name="ver" value="v1.0rc3" />
 
 	<property name="dist" value="dist" />
 
