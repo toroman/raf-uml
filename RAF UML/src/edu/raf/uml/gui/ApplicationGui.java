@@ -152,7 +152,7 @@ public class ApplicationGui extends JFrame {
 				mainPanel.repaint();
 			}
 		});
-		menuItemExport = new JMenuItem("Export to PNG");
+		menuItemExport = new JMenuItem("Export...");
 		menuItemExport.setMnemonic('e');
 		menuItemExport.addActionListener(new ActionListener() {
 			@Override
@@ -160,7 +160,7 @@ public class ApplicationGui extends JFrame {
 				onMenuItemExportClicked();
 			}
 		});
-		menuItemOpen = new JMenuItem("Open");
+		menuItemOpen = new JMenuItem("Open...");
 		menuItemOpen.setMnemonic('o');
 		menuItemOpen.addActionListener(new ActionListener() {
 			@Override
@@ -210,7 +210,7 @@ public class ApplicationGui extends JFrame {
 				}
 			}
 		});
-		menuItemSave = new JMenuItem("Save");
+		menuItemSave = new JMenuItem("Save As...");
 		menuItemSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -262,27 +262,7 @@ public class ApplicationGui extends JFrame {
 		menuItemHelpContents.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showConfirmDialog(null,
-						"<html><h1>Meni</h1><hr />" +
-						"<p><strong><em>New </em></strong>- Uklanja trenutni dijagram kako bi korisnik mogao da pravi novi.</p>"+
-						"<p><strong><em>Open/Save </em></strong>- Ove opcije služe za snimanje i učitavanje trenutnog dijagrama na tvrdi disk. <br />Snimaju se u formatu prepoznatljivom za program, kako bi ih mogao lako učitati.</p>"+
-						"<p><em><strong>Export to PNG</strong></em> - Snima ceo dijagram na izabranu lokaciju na tvrdom disku u sliku formata png.</p>"+
-						"<p><em><strong>Exit</strong></em> - Izlazi iz programa.</p>"+
-						"<p><strong><em>Help contents</em></strong> - Prikazuje pomoć za korišćenje programa.</p>"+
-						"<p><strong><em>About</em></strong> - Prikazuje informacije o autorima programa.</p>"+
-						"<h1>Kutija sa alatkama</h1><hr />"+
-						"<p>Kutija sa alatkama je podeljena na nekoliko delova, tako da su alatke grupisane po svrsi.</p>"+
-						"<p><strong><em>Selection tool</em></strong> - Služi za selektovanje svih elemenata na dijagramu.</p>"+
-						"<p><strong><em>Delete object</em></strong> - Služi za brisanje objekata sa dijagrama.</p>"+
-						"<p><strong><em>Add new class</em></strong> - Dodaje novu klasu na dijagram.</p>"+
-						"<p><strong><em>Add new interface</em></strong> - Dodaje novi interfejs na dijagram</p>"+
-						"<p><strong><em>Add comment box</em></strong> - Dodaje novu kutiju sa komentarom na dijagram.</p>"+
-						"<p>Za prikazivanje odnosa između klasa i interfejsa i komentara na dijagramu imamo više alatki <br /><strong><em>Add new generalization</em></strong>, <strong><em>realization</em></strong>, <strong><em>agregation</em></strong>, <strong><em>association</em></strong>, <strong><em>composition</em></strong> i <strong><em>comment link</em></strong>.</p>"+
-						"<p><strong><em>Zoom in</em></strong> - Zumira dijagram.</p>"+
-						"<p><strong><em>Zoom out</em></strong> - Od zumira dijagram.</p>"+
-						"<h1>Properties panel</h1><hr />"+
-						"<p>Svaki objekat na dijagramu ima svoje osobine. Da bi prikazali te osobine napravili smo <br />properties panel koji se nalazi u desnom delu programa. Svaki put kada selektujemo neki <br />objekat njegove osobine se prikažu u tom panelu. U zavisnosti od selektovanog objekta <br />prikazaće se različite osobine koje možemo podešavati. Na primer, ako selektujemo klasu, <br />nećemo videti podešavanje za tip, koje vidimo ako selektujemo metod klase. Dodavanje <br />atributa i metoda klasi se vrši duplim klikom miša u odgovarajući deo grafičkog prikaza klase.</p>"+
-						"<p>&nbsp;</p>", "Help contents", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
+				new HelpFrame().setVisible(true);
 			}
 		});
 		menuItemAbout = new JMenuItem("About");
