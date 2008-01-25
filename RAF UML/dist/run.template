@@ -1,0 +1,1 @@
+java -cp "BINARY;XSTREAM" edu.raf.uml.Main
