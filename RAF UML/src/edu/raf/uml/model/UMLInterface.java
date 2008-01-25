@@ -19,7 +19,7 @@ public class UMLInterface extends UMLBox {
         super(diagram, x, y, 0, 0);
         methods = new ArrayList<UMLMethod>();
         interfaceName = new GuiString (diagram, this);
-        interfaceName.setText("New Interface");
+        interfaceName.setText("NewInterface");
         interfaceName.setVisible(true);
         this.movePoint(sePoint, -1, -1);
     }

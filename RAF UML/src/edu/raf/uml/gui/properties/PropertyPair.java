@@ -35,6 +35,7 @@ import edu.raf.uml.model.property.TypeModel;
  * 
  */
 public class PropertyPair implements Comparable<PropertyPair> {
+    protected final PropertiesPanel parentPanel;
 	protected final PropertyName namePanel;
 	protected final PropertyField fieldPanel;
 	protected final Method setter;
@@ -63,7 +64,8 @@ public class PropertyPair implements Comparable<PropertyPair> {
 		return getName();
 	}
 
-	public PropertyPair(Property property, Method getter, Object object) {
+	public PropertyPair(Property property, Method getter, Object object, PropertiesPanel parent) {
+	    this.parentPanel = parent;
 		this.object = object;
 		this.property = property;
 		this.getter = getter;

@@ -46,8 +46,8 @@ public class ColorField extends PropertyField {
 
 	@Override
 	public void paintComponent(Graphics g1) {
-		super.paintComponent(g1);
-		Graphics2D g = (Graphics2D) g1;
+	    super.paintComponent(g1);
+	    Graphics2D g = (Graphics2D) g1;
 		// da se primeti transparency - moze malo bolje
 		Rectangle c = g.getClipBounds();
 		int step = 3;

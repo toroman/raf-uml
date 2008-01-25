@@ -1,7 +1,6 @@
 package edu.raf.uml.model;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -32,14 +31,14 @@ public class UMLCommentBox extends UMLBox {
 	@Override
 	public double calculateMinWidth() {
 		Graphics2D g = (Graphics2D) diagram.panel.getGraphics();
-		FontMetrics metrics = g.getFontMetrics(Font.decode("Monospaced"));
+		FontMetrics metrics = g.getFontMetrics(diagram.panel.font);
 		double minw = -1;
 		for (String str : text) {
 			double strWidth = metrics.stringWidth(str);
 			if (strWidth > minw)
 				minw = strWidth;
 		}
-		return Math.max(minw - 15, 80);
+		return Math.max(minw + 10, 40);
 	}
 
 	@Override

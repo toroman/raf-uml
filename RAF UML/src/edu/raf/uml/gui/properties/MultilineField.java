@@ -79,6 +79,9 @@ public class MultilineField extends PropertyField {
 			}
 		});
 		dialog.pack();
+		int width = Math.max(dialog.getWidth(), 300);
+		int height = Math.max(dialog.getHeight(), 200);
+		dialog.setSize(width, height);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		dialog.setLocation(screen.width / 2 - dialog.getWidth() / 2, screen.height / 2
 				- dialog.getHeight() / 2);

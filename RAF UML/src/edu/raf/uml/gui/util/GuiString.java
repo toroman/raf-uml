@@ -38,6 +38,7 @@ public class GuiString extends UMLObject implements Draggable {
 	private Font defaultFont = Font.decode("Monospaced");
 	private String text;
 	private boolean focusable = true;
+    private Color foregroundColor = Color.BLACK;
 	
 
 	public GuiString(UMLDiagram diagram, StringContainer parent, String text,
@@ -198,7 +199,7 @@ public class GuiString extends UMLObject implements Draggable {
 				g.drawRect((int) bounds.x, (int) bounds.y, (int) bounds.width,
 						(int) bounds.height);
 			}
-			g.setColor(Color.BLACK);
+			g.setColor(foregroundColor);
 			g.setFont(defaultFont);
 			g.drawString(getText(), (int) bounds.x + 3, (int) bounds.y
 					+ (int) bounds.height - 6);
@@ -250,5 +251,15 @@ public class GuiString extends UMLObject implements Draggable {
 
 	public void setFont(Font f) {
 
+	}
+	
+	@Property(title="Color")
+	public Color getForegroundColor() {
+	    return foregroundColor;
+	}
+	
+	public void setForegroundColor(Color c) {
+	    foregroundColor = c;
+	    this.diagram.panel.repaint();
 	}
 }
