@@ -42,9 +42,8 @@ class PropertyName extends JPanel implements FocusListener {
 	 * 
 	 */
 	private static final long serialVersionUID = -3412741687219338139L;
-	static final Dimension DIMENSION = new Dimension(100, 22);
 	private final PropertyPair parent;
-	private Font font = Font.decode("Courier");
+	private Font font = Font.decode("Sans");
 	private boolean focused = false;
 
 	public PropertyName(PropertyPair parent) {
@@ -70,13 +69,25 @@ class PropertyName extends JPanel implements FocusListener {
 		Rectangle c = g.getClipBounds();
 		g.fill3DRect(0, 0, c.width, c.height, true);
 		g.setColor(Color.BLACK);
+		Font oldFont = g.getFont();
 		g.setFont(font);
 		g.drawString(parent.getTitle(), 2, 14);
+		g.setFont(oldFont);
 	}
 
 	public void focusGained(FocusEvent e) {
 		focused = true;
 		repaint();
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+	    return this.parent.parentPanel.nameDimension;
+	}
+	
+	@Override
+	public Dimension getMinimumSize() {
+	    return this.parent.parentPanel.nameDimension;
 	}
 
 	public void focusLost(FocusEvent e) {
