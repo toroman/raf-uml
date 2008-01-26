@@ -34,7 +34,6 @@ import java.awt.geom.AffineTransform;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import edu.raf.uml.gui.tool.AbstractDrawableTool;
 import edu.raf.uml.gui.tool.AddBoxTool;
@@ -51,7 +50,6 @@ import edu.raf.uml.gui.tool.factory.CompositionRelationFactory;
 import edu.raf.uml.gui.tool.factory.InheritanceRelationFactory;
 import edu.raf.uml.gui.tool.factory.InterfaceBoxFactory;
 import edu.raf.uml.gui.tool.factory.RealisationRelationFactory;
-import edu.raf.uml.gui.util.GuiString;
 import edu.raf.uml.model.UMLDiagram;
 import edu.raf.uml.model.UMLObject;
 
@@ -74,8 +72,6 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
     public UMLDiagram diagram;
     public ApplicationGui gui;
     public AbstractDrawableTool currentTool;
-    public JTextField guiStringEditField;
-    public GuiString editingGuiString;
     private double gridDensity;
     private Color gridColor;
     private Color dotsColor;
@@ -120,17 +116,6 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
             }
         });
 
-        guiStringEditField = new JTextField();
-        guiStringEditField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    removeGuiStringTextField();
-                    return;
-                }
-            }
-        });
-
         gridColor = new Color(175, 175, 175);
         dotsColor = Color.DARK_GRAY;
         gridDensity = 16;
@@ -138,9 +123,6 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
     public void setTool(int toolName) {
-        if (editingGuiString != null) {
-            removeGuiStringTextField();
-        }
         for (JButton toolButton : gui.toolButtons) {
             toolButton.setSelected(false);
         }
@@ -242,15 +224,6 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
             setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
             break;
         }
-    }
-
-    public void removeGuiStringTextField() {
-        this.remove(guiStringEditField);
-        if (editingGuiString != null) {
-            editingGuiString.setText(guiStringEditField.getText());
-            editingGuiString = null;
-        }
-        repaint();
     }
 
     public void drawGrid(Graphics g) {
@@ -370,7 +343,6 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
         if (currentTool == null)
             return;
         ((MouseListener)currentTool).mouseClicked(transformCoordinates(e));
-        ;
     }
 
     @Override

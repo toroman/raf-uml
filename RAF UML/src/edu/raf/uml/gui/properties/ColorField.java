@@ -137,6 +137,12 @@ public class ColorField extends PropertyField {
 
 	public void textLostFocus() {
 		if (text != null) {
+			try {
+				parent.setValue(hexRgbaToColor(text.getText()));
+			} catch (Exception ex) {
+				// TODO Prikazhi greshku
+				ex.printStackTrace();
+			}
 			this.remove(text);
 			text = null;
 		}

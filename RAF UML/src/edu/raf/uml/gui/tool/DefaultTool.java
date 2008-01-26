@@ -42,9 +42,6 @@ public class DefaultTool extends AbstractDrawableTool {
 		try {
 			UMLObject object = parentPanel.diagram
 					.getObjectAt(MathUtil.toPoint2D((event.getPoint())));
-			if (object != null)
-				parentPanel.gui.propertiesPanel.setObject(object);
-			
 			if (object == parentPanel.diagram.onFocus) {
 				if (object != null) {
 					if (event.getClickCount() == 1) {
@@ -53,9 +50,6 @@ public class DefaultTool extends AbstractDrawableTool {
 						object.dblClickOn(MathUtil.toPoint2D(event.getPoint()));
 					}
 				}
-				return;
-			} else if (object instanceof Focusable) {
-				parentPanel.diagram.giveFocus((Focusable) object);
 				return;
 			} else if (object != null) {
 				if (event.getClickCount() == 1) {
@@ -73,10 +67,15 @@ public class DefaultTool extends AbstractDrawableTool {
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e) {
-		mouseDownPoint = new Point2D.Double (e.getX(), e.getY());
-		if (parentPanel.editingGuiString != null && !parentPanel.guiStringEditField.getBounds().contains(e.getPoint())) {
-			parentPanel.removeGuiStringTextField();
+	public void mousePressed(MouseEvent event) {
+		mouseDownPoint = new Point2D.Double (event.getX(), event.getY());
+		UMLObject object = parentPanel.diagram
+				.getObjectAt(MathUtil.toPoint2D((event.getPoint())));
+        if (object != null)
+        	parentPanel.gui.propertiesPanel.setObject(object);
+		if (object instanceof Focusable) {
+			parentPanel.diagram.giveFocus((Focusable) object);
+			parentPanel.repaint();
 		}
 	}
 	

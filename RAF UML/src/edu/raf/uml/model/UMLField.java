@@ -64,6 +64,7 @@ public class UMLField extends GuiString {
 	}
 
 	public void setVisibility(VisibilityType visibilityType) {
+		textCache = null;
 		this.visibility = visibilityType;
 		super.recalculateBounds();
 		super.diagram.panel.repaint();
