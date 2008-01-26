@@ -74,7 +74,7 @@ public class DiagramWindow extends JInternalFrame implements InternalFrameListen
 
     @Override
     public void internalFrameOpened(InternalFrameEvent e) {
-        
+        gui.setActiveWindow(this);
     }
         
 }
