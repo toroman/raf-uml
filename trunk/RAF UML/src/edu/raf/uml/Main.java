@@ -31,7 +31,7 @@ public class Main {
 	 * @param args
 	 *            the command line arguments
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
@@ -42,7 +42,7 @@ public class Main {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				new ApplicationGui().setVisible(true);
+				new ApplicationGui(args).setVisible(true);
 			}
 		});
 	}

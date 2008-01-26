@@ -42,13 +42,13 @@ class PropertyName extends JPanel implements FocusListener {
 	 * 
 	 */
 	private static final long serialVersionUID = -3412741687219338139L;
-	private final PropertyPair parent;
+	private final PropertyPair parentPair;
 	private Font font = Font.decode("Sans");
 	private boolean focused = false;
 
 	public PropertyName(PropertyPair parent) {
 		super();
-		this.parent = parent;
+		this.parentPair = parent;
 		this.setFocusable(true);
 		this.addFocusListener(this);
 		this.addMouseListener(new MouseAdapter() {
@@ -71,7 +71,7 @@ class PropertyName extends JPanel implements FocusListener {
 		g.setColor(Color.BLACK);
 		Font oldFont = g.getFont();
 		g.setFont(font);
-		g.drawString(parent.getTitle(), 2, 14);
+		g.drawString(parentPair.getTitle(), 2, 14);
 		g.setFont(oldFont);
 	}
 
@@ -82,12 +82,12 @@ class PropertyName extends JPanel implements FocusListener {
 	
 	@Override
 	public Dimension getPreferredSize() {
-	    return this.parent.parentPanel.nameDimension;
+	    return this.parentPair.parentPanel.nameDimension;
 	}
 	
 	@Override
 	public Dimension getMinimumSize() {
-	    return this.parent.parentPanel.nameDimension;
+	    return this.parentPair.parentPanel.nameDimension;
 	}
 
 	public void focusLost(FocusEvent e) {

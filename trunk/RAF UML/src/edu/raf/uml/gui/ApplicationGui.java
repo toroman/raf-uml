@@ -15,7 +15,7 @@
  */
 package edu.raf.uml.gui;
 
-import java.awt.BorderLayout; 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -27,7 +27,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -113,7 +112,7 @@ public class ApplicationGui extends JFrame {
         return instance;
     }
 
-    public ApplicationGui() {
+    public ApplicationGui(String[] args) {
         super("RAF-UML Editor");
         try {
             this.setIconImage(ImageIO.read(getClass().getClassLoader().getResource("icon.png")));
@@ -133,8 +132,15 @@ public class ApplicationGui extends JFrame {
         setContentPane(mainPanel);
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         pack();
+        if (args.length > 0) {
+            try {
+                File file = new File(args[0]);
+                onOpenDocument(file);
+            } catch (Exception ex) {
+                log.log(Level.WARNING, "Couldn't open file: " + args[0], ex);
+            }
+        }
     }
 
     private void createMenu() {
@@ -166,43 +172,7 @@ public class ApplicationGui extends JFrame {
         menuItemOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                fileChooserOpen.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fileChooserOpen.setFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        if (f.isDirectory() || f.toString().toLowerCase().endsWith(".rml")) {
-                            return true;
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return "Raf UML Files (*.rml)";
-                    }
-                });
-                int returnVal = fileChooserOpen.showOpenDialog(null);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooserOpen.getSelectedFile();
-                    try {
-                        DiagramWindow wnd = onCreateNewDocument();
-                        XStream xstream = createXstreamLoad(wnd.panel);
-                        ZipInputStream zis = new ZipInputStream(new FileInputStream(file));
-                        while (!zis.getNextEntry().getName().equals("uml.xml"))
-                            ; // just loop
-                        wnd.panel.diagram = (UMLDiagram)xstream.fromXML(zis);
-                        zis.close();
-                    }
-                    catch (FileNotFoundException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                    catch (IOException e2) {
-                        // TODO Auto-generated catch block
-                        e2.printStackTrace();
-                    }
-                    mainPanel.repaint();
-                }
+                onOpenDocument(null);
             }
         });
         /*
@@ -212,39 +182,7 @@ public class ApplicationGui extends JFrame {
         menuItemSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                fileChooserSave.setFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        if (f.isDirectory() || f.toString().toLowerCase().endsWith(".rml")) {
-                            return true;
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return "Raf UML Files (*.rml)";
-                    }
-                });
-                int returnVal = fileChooserSave.showSaveDialog(null);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooserSave.getSelectedFile();
-                    if (!file.getName().toLowerCase().endsWith(".rml"))
-                        file = new File(file.getAbsolutePath() + ".rml");
-                    XStream xstream = createXstreamStore();
-                    try {
-                        ZipOutputStream output = new ZipOutputStream(new FileOutputStream(file));
-                        output.putNextEntry(new ZipEntry("uml.xml"));
-                        xstream.toXML(getActiveWindow().panel.diagram, output);
-                        output.closeEntry();
-                        output.finish();
-                        output.close();
-                    }
-                    catch (IOException ioex) {
-                        // TODO Auto-generated catch block
-                        ioex.printStackTrace();
-                    }
-                }
+                onSaveDocument(null);
             }
         });
         menuItemSave.setMnemonic('s');
@@ -293,6 +231,83 @@ public class ApplicationGui extends JFrame {
 
     }
 
+    protected void onSaveDocument(File file) {
+        if (file == null) {
+            fileChooserSave.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    if (f.isDirectory() || f.toString().toLowerCase().endsWith(".rml")) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Raf UML Files (*.rml)";
+                }
+            });
+            int returnVal = fileChooserSave.showSaveDialog(null);
+            if (returnVal != JFileChooser.APPROVE_OPTION)
+                return;
+            file = fileChooserSave.getSelectedFile();
+            if (!file.getName().toLowerCase().endsWith(".rml"))
+                file = new File(file.getAbsolutePath() + ".rml");
+        }
+
+        XStream xstream = createXstreamStore();
+        try {
+            ZipOutputStream output = new ZipOutputStream(new FileOutputStream(file));
+            output.putNextEntry(new ZipEntry("uml.xml"));
+            xstream.toXML(getActiveWindow().panel.diagram, output);
+            output.closeEntry();
+            output.finish();
+            output.close();
+        }
+        catch (IOException ioex) {
+            log.log(Level.WARNING, "Document couldn't be saved.", ioex);
+        }
+
+    }
+
+    protected void onOpenDocument(File file) {
+        if (file == null) {
+            fileChooserOpen.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChooserOpen.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    if (f.isDirectory() || f.toString().toLowerCase().endsWith(".rml")) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Raf UML Files (*.rml)";
+                }
+            });
+            int returnVal = fileChooserOpen.showOpenDialog(null);
+            if (returnVal != JFileChooser.APPROVE_OPTION)
+                return;
+            file = fileChooserOpen.getSelectedFile();
+        }
+
+        try {
+            DiagramWindow wnd = onCreateNewDocument();
+            XStream xstream = createXstreamLoad(wnd.panel);
+            ZipInputStream zis = new ZipInputStream(new FileInputStream(file));
+            while (!zis.getNextEntry().getName().equals("uml.xml"))
+                ; // just loop
+            wnd.panel.diagram = (UMLDiagram)xstream.fromXML(zis);
+            zis.close();
+        }
+        catch (IOException ioex) {
+            log.log(Level.WARNING, "Document couldn't be read.", ioex);
+        }
+        mainPanel.repaint();
+    }
+
     protected DiagramWindow onCreateNewDocument(UMLDiagram diagram) {
         DiagramPanel panel = createDiagramPanel();
         if (diagram == null)
@@ -300,8 +315,8 @@ public class ApplicationGui extends JFrame {
         DiagramWindow wnd = new DiagramWindow(this, panel);
         this.setActiveWindow(wnd);
         wnd.setSize(600, 400);
-        wnd.setVisible(true);
         desktopPane.add(wnd);
+        wnd.setVisible(true);
         return wnd;
     }
 
