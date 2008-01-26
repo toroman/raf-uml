@@ -1,1 +1,1 @@
-java -cp "BINARY;XSTREAM" edu.raf.uml.Main
+java -splash:splash.jpg -cp "BINARY;XSTREAM" edu.raf.uml.Main

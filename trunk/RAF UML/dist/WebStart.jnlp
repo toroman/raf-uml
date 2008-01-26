@@ -2,7 +2,7 @@
 <jnlp spec="1.0+" codebase="http://raf-uml.googlecode.com/files/"
 	href="WebStart.jnlp">
 	<information>
-		<title>RAF UML</title>
+		<title>RAF UML v1.0 - Final</title>
 		<vendor>Ivan Bocic, Srecko Toroman, Sasa Sijak</vendor>
 		<description>Student project - UML editor.</description>
 		<offline-allowed />
