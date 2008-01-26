@@ -6,17 +6,23 @@
 		<vendor>Ivan Bocic, Srecko Toroman, Sasa Sijak</vendor>
 		<description>Student project - UML editor.</description>
 		<offline-allowed />
+		<shortcut online="true">
+			<desktop />
+			<menu submenu="Application" />
+		</shortcut>
+		<icon kind="shortcut" href="icon.png" />
+		<icon kind="splash" href="splash.jpg" />
+		<association extensions="rml" mime-type="x-application/rafuml" />
 	</information>
-	
+
 	<security>
 		<all-permissions />
 	</security>
-	
+
 	<resources>
-		<property name="jnlp.publish-url" value="$$codebase/publish" />
 		<j2se version="1.6+"
 			href="http://java.sun.com/products/autodl/j2se" />
-		<jar href="rafuml-bin-v1.0rc3.jar" />
+		<jar href="rafuml-bin-v1.0.jar" />
 		<jar href="xstream-1.2.2.jar" />
 	</resources>
 	<application-desc main-class="edu.raf.uml.Main" />

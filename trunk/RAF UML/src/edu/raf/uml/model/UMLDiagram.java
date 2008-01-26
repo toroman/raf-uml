@@ -82,7 +82,7 @@ public class UMLDiagram {
     public void paint(Graphics2D g) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(new Color(0, 0, 120, 80));
-        g.drawString("RAFUML v0.1", 10, 20);
+        g.drawString("RAFUML v1.0", 10, 20);
         g.drawString("Authors: Ivan Bocic, Srecko Toroman, Sasa Sijak", 10, 40);
         g.drawString("Title: " + getTitle(), 10, 60);
         Font orgFont = g.getFont();

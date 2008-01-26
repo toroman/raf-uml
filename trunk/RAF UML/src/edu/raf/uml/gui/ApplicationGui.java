@@ -30,16 +30,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -118,6 +115,12 @@ public class ApplicationGui extends JFrame {
 
     public ApplicationGui() {
         super("RAF-UML Editor");
+        try {
+            this.setIconImage(ImageIO.read(getClass().getClassLoader().getResource("icon.png")));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         instance = this;
         setPreferredSize(new Dimension(800, 600));
         setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - this.getPreferredSize().width) / 2,
@@ -167,7 +170,7 @@ public class ApplicationGui extends JFrame {
                 fileChooserOpen.setFileFilter(new FileFilter() {
                     @Override
                     public boolean accept(File f) {
-                        if (f.isDirectory() || f.toString().toLowerCase().endsWith(".xml")) {
+                        if (f.isDirectory() || f.toString().toLowerCase().endsWith(".rml")) {
                             return true;
                         }
                         return false;
@@ -175,25 +178,20 @@ public class ApplicationGui extends JFrame {
 
                     @Override
                     public String getDescription() {
-                        return "XML Files";
+                        return "Raf UML Files (*.rml)";
                     }
                 });
                 int returnVal = fileChooserOpen.showOpenDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooserOpen.getSelectedFile();
-                    FileInputStream fis;
                     try {
                         DiagramWindow wnd = onCreateNewDocument();
                         XStream xstream = createXstreamLoad(wnd.panel);
-                        fis = new FileInputStream(file);
-                        FileChannel channel = fis.getChannel();
-                        ByteBuffer buf = ByteBuffer.allocateDirect(10000000);
-                        buf.clear();
-                        while (channel.read(buf) != -1)
-                            buf.flip();
-                        CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
-                        CharBuffer cb = decoder.decode(buf);
-                        wnd.panel.diagram = (UMLDiagram)xstream.fromXML(cb.toString());
+                        ZipInputStream zis = new ZipInputStream(new FileInputStream(file));
+                        while (!zis.getNextEntry().getName().equals("uml.xml"))
+                            ; // just loop
+                        wnd.panel.diagram = (UMLDiagram)xstream.fromXML(zis);
+                        zis.close();
                     }
                     catch (FileNotFoundException e1) {
                         // TODO Auto-generated catch block
@@ -207,6 +205,9 @@ public class ApplicationGui extends JFrame {
                 }
             }
         });
+        /*
+         * 
+         */
         menuItemSave = new JMenuItem("Save As...");
         menuItemSave.addActionListener(new ActionListener() {
             @Override
@@ -214,7 +215,7 @@ public class ApplicationGui extends JFrame {
                 fileChooserSave.setFileFilter(new FileFilter() {
                     @Override
                     public boolean accept(File f) {
-                        if (f.isDirectory() || f.toString().toLowerCase().endsWith(".xml")) {
+                        if (f.isDirectory() || f.toString().toLowerCase().endsWith(".rml")) {
                             return true;
                         }
                         return false;
@@ -222,25 +223,26 @@ public class ApplicationGui extends JFrame {
 
                     @Override
                     public String getDescription() {
-                        return "XML Files";
+                        return "Raf UML Files (*.rml)";
                     }
                 });
                 int returnVal = fileChooserSave.showSaveDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooserSave.getSelectedFile();
-                    if (!file.getName().toLowerCase().endsWith(".xml"))
-                        file = new File(file.getAbsolutePath() + ".xml");
+                    if (!file.getName().toLowerCase().endsWith(".rml"))
+                        file = new File(file.getAbsolutePath() + ".rml");
                     XStream xstream = createXstreamStore();
-                    String xml = xstream.toXML(getActiveWindow().panel.diagram);
                     try {
-                        FileOutputStream out = new FileOutputStream(file);
-                        PrintStream p = new PrintStream(out);
-                        p.print(xml);
-                        p.close();
+                        ZipOutputStream output = new ZipOutputStream(new FileOutputStream(file));
+                        output.putNextEntry(new ZipEntry("uml.xml"));
+                        xstream.toXML(getActiveWindow().panel.diagram, output);
+                        output.closeEntry();
+                        output.finish();
+                        output.close();
                     }
-                    catch (FileNotFoundException e1) {
+                    catch (IOException ioex) {
                         // TODO Auto-generated catch block
-                        e1.printStackTrace();
+                        ioex.printStackTrace();
                     }
                 }
             }
