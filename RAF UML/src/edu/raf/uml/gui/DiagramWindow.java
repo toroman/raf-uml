@@ -28,6 +28,7 @@ public class DiagramWindow extends JInternalFrame implements InternalFrameListen
         getContentPane().add(scrollPane, BorderLayout.CENTER);
         panelToWrap.setWindow(this);
         this.addInternalFrameListener(this);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     public JScrollPane getScrollPane() {
@@ -49,22 +50,22 @@ public class DiagramWindow extends JInternalFrame implements InternalFrameListen
 
     @Override
     public void internalFrameClosed(InternalFrameEvent e) {
-        
-    }
-
-    @Override
-    public void internalFrameClosing(InternalFrameEvent e) {
         gui.setActiveWindow(null);
     }
 
     @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {
+    public void internalFrameClosing(InternalFrameEvent e) {
         
     }
 
     @Override
+    public void internalFrameDeactivated(InternalFrameEvent e) {
+        gui.setActiveWindow(null);
+    }
+
+    @Override
     public void internalFrameDeiconified(InternalFrameEvent e) {
-                
+        gui.setActiveWindow(this);        
     }
 
     @Override
