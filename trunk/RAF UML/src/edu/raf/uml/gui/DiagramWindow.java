@@ -7,7 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
-public class DiagramWindow extends JInternalFrame implements InternalFrameListener {
+public class DiagramWindow extends JInternalFrame implements InternalFrameListener { 
     /**
      * 
      */
