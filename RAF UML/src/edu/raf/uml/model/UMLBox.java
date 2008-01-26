@@ -225,7 +225,7 @@ public abstract class UMLBox extends UMLObject implements Focusable, Draggable, 
 
     @Override
     public void stringTextChanged(GuiString guiString) {
-
+        diagram.panel.repaint();
     }
 
     /*

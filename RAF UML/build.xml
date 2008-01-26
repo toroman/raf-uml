@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="RAF UML Editor" default="sve">
-	<property name="ver" value="v1.0rc4" />
+	<property name="ver" value="v1.0" />
 
 	<property name="dist" value="dist" />
 
@@ -27,7 +27,7 @@
 	<property name="keystore-password" value="insist" />
 
 	<property name="license" value="docs/license.txt" />
-
+	
 	<target name="sve" description="Sabija sve i pravi JWS" depends="clean.dist, compile.all, jar.binary, jar.res, jar.source, launchers, downloadbundle, jar.webstart">
 		<!-- task koji poziva ostale -->
 	</target>
@@ -84,7 +84,7 @@
 
 	<target name="downloadbundle" description="Pravi release za download">
 		<copy todir="${dist}" file="${license}" />
-		<zip basedir="${dist}" destfile="${dist}/${download.zip}" includes="**/*.jar,**/*.txt,run.bat,run.sh">
+		<zip basedir="${dist}" destfile="${dist}/${download.zip}" includes="**/*.jar,**/*.txt,run.bat,run.sh,splash.jpg,icon.png">
 		</zip>
 	</target>
 
