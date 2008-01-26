@@ -156,8 +156,9 @@ public class GuiString extends UMLObject implements Draggable {
 	@Override
 	public void clickOn(Point2D.Double point) {
 		getParent().stringClicked(this, point);
-		if (!focusable && parent instanceof Focusable)
+		if (!focusable && parent instanceof Focusable) {
 			diagram.giveFocus((Focusable) parent);
+		}
 	}
 
 	/*

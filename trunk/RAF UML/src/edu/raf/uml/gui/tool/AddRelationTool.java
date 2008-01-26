@@ -68,8 +68,12 @@ public class AddRelationTool extends AbstractDrawableTool {
 		if (from != null) {
 			UMLObject object = parentPanel.diagram
 					.getContainerObjectAt(MathUtil.toPoint2D(event.getPoint()));
-			if (object == null)
+			if (object == null) {
+				from = null;
+				lineStart = null;
+				parentPanel.repaint();
 				return;
+			}
 			if (factory.canRelate(from, object) == null) {
 				UMLRelation relation = factory.makeRelation(
 						parentPanel.diagram, from, object);

@@ -20,6 +20,8 @@ package edu.raf.uml.gui.properties;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +54,13 @@ public class EnumField extends PropertyField {
 		combo.setSelectedItem(parent.getValue());
 		combo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Object item = combo.getSelectedItem();
+				setValue(item);
+			}
+		});
+		combo.addFocusListener(new FocusAdapter () {
+			@Override
+			public void focusLost(FocusEvent event) {
 				Object item = combo.getSelectedItem();
 				setValue(item);
 			}

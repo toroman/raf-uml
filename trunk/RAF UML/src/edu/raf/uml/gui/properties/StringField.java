@@ -91,6 +91,7 @@ class StringField extends PropertyField {
 
 	public void textLostFocus() {
 		if (text != null) {
+			setValue(text.getText());
 			this.remove(text);
 			text = null;
 		}
