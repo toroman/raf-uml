@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
 import edu.raf.uml.gui.DiagramPanel;
+import edu.raf.uml.gui.util.Clickable;
 import edu.raf.uml.gui.util.Draggable;
 import edu.raf.uml.gui.util.Focusable;
 import edu.raf.uml.gui.util.MathUtil;
@@ -40,24 +41,23 @@ public class DefaultTool extends AbstractDrawableTool {
 	@Override
 	public void mouseClicked(MouseEvent event) {
 		try {
-			UMLObject object = parentPanel.diagram
-					.getObjectAt(MathUtil.toPoint2D((event.getPoint())));
-			if (object == parentPanel.diagram.onFocus) {
-				if (object != null) {
-					if (event.getClickCount() == 1) {
-						object.clickOn(MathUtil.toPoint2D(event.getPoint()));
-					} else {
-						object.dblClickOn(MathUtil.toPoint2D(event.getPoint()));
-					}
-				}
-				return;
-			} else if (object != null) {
+			Object object = parentPanel.diagram.getObjectAt(MathUtil
+					.toPoint2D((event.getPoint())));
+			if (object == null)
+				object = parentPanel.diagram;
+
+			if (object instanceof Clickable) {
 				if (event.getClickCount() == 1) {
-					object.clickOn(MathUtil.toPoint2D(event.getPoint()));
+					((Clickable) object).clickOn(MathUtil.toPoint2D(event
+							.getPoint()));
 				} else {
-					object.dblClickOn(MathUtil.toPoint2D(event.getPoint()));
+					((Clickable) object).dblClickOn(MathUtil.toPoint2D(event
+							.getPoint()));
 				}
-				return;
+			}
+
+			if (object instanceof Focusable) {
+				parentPanel.diagram.giveFocus((Focusable) object);
 			} else {
 				parentPanel.diagram.giveFocus(null);
 			}
@@ -65,27 +65,30 @@ public class DefaultTool extends AbstractDrawableTool {
 			parentPanel.repaint();
 		}
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent event) {
-		mouseDownPoint = new Point2D.Double (event.getX(), event.getY());
-		UMLObject object = parentPanel.diagram
-				.getObjectAt(MathUtil.toPoint2D((event.getPoint())));
-        if (object != null)
-        	parentPanel.gui.propertiesPanel.setObject(object);
-		if (object instanceof Focusable) {
-			parentPanel.diagram.giveFocus((Focusable) object);
-			parentPanel.repaint();
+		mouseDownPoint = new Point2D.Double(event.getX(), event.getY());
+		UMLObject object = parentPanel.diagram.getObjectAt(MathUtil
+				.toPoint2D((event.getPoint())));
+
+		if (object != null) {
+			parentPanel.gui.propertiesPanel.setObject(object);
+			if (object instanceof Focusable) {
+				parentPanel.diagram.giveFocus((Focusable) object);
+			}
 		}
+		parentPanel.repaint();
 	}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent event) {
 		if (mouseDownPoint != null) {
 			UMLObject kme = parentPanel.diagram.getObjectAt(mouseDownPoint);
 			if (kme instanceof Draggable) {
 				draggingObject = (Draggable) kme;
-				draggingObject.startDrag(mouseDownPoint.getX(), mouseDownPoint.getY());
+				draggingObject.startDrag(mouseDownPoint.getX(), mouseDownPoint
+						.getY());
 			}
 			mouseDownPoint = null;
 		} else {
@@ -95,7 +98,7 @@ public class DefaultTool extends AbstractDrawableTool {
 		}
 		parentPanel.repaint();
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent event) {
 		if (draggingObject != null) {
@@ -103,11 +106,13 @@ public class DefaultTool extends AbstractDrawableTool {
 			draggingObject = null;
 		}
 		mouseDownPoint = null;
+		parentPanel.repaint();
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent event) {
-		UMLObject kme = parentPanel.diagram.getObjectAt(MathUtil.toPoint2D(event.getPoint()));
+		UMLObject kme = parentPanel.diagram.getObjectAt(MathUtil
+				.toPoint2D(event.getPoint()));
 		if (kme != null)
 			parentPanel.setCursor(kme.getCursor());
 		else

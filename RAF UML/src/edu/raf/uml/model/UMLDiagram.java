@@ -1,19 +1,22 @@
 /*
- * RAF UML - Student project for Object oriented programming and design Copyright (C) <2007> Ivan
- * Bocic, Sasa Sijak, Srecko Toroman
- * 
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU General Public License as published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
- * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with this program. If
- * not, see <http://www.gnu.org/licenses/>.
+RAF UML - Student project for Object oriented programming and design
+Copyright (C) <2007>  Ivan Bocic, Sasa Sijak, Srecko Toroman
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package edu.raf.uml.model; 
+
+package edu.raf.uml.model;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -26,111 +29,118 @@ import edu.raf.uml.gui.DiagramPanel;
 import edu.raf.uml.gui.util.Focusable;
 import edu.raf.uml.model.property.Property;
 
-public class UMLDiagram {
-    private String title = "Untitled";
-    public ArrayList<UMLObject> objects;
-    public Focusable onFocus;
-    private int maxWidth = 3000;
-    private int maxHeight = 3000;
-    public final DiagramPanel panel;
-    
-    public UMLDiagram(DiagramPanel panel) {
-        this.panel = panel;
-        panel.diagram = this;
-        objects = new ArrayList<UMLObject>();
-        onFocus = null;
-    }
+public class UMLDiagram implements Focusable {
+	private String title = "Untitled";
+	public ArrayList<UMLObject> objects;
+	public Focusable onFocus;
+	private int maxWidth = 3000;
+	private int maxHeight = 3000;
+	public final DiagramPanel panel;
 
-    public void addObject(UMLObject object) {
-        objects.add(object);
-    }
+	public UMLDiagram(DiagramPanel panel) {
+		this.panel = panel;
+		panel.diagram = this;
+		objects = new ArrayList<UMLObject>();
+		onFocus = null;
+	}
 
-    public void removeObject(UMLObject object) {
-        objects.remove(object);
-    }
+	public void addObject(UMLObject object) {
+		objects.add(object);
+	}
 
-    public void giveFocus(Focusable fobject) {
-        if (fobject == null) {
-            panel.gui.propertiesPanel.setObject(this);
-            if (onFocus != null) {
-                onFocus.loseFocus(this);
-            }
-            onFocus = null;
-        }
-        else {
-            panel.gui.propertiesPanel.setObject(fobject);
-            if (onFocus != null) {
-                onFocus.loseFocus(this);
-            }
-            if (fobject != null) {
-                fobject.gainFocus(this);
-            }
-            onFocus = fobject;
-        }
-    }
+	public void removeObject(UMLObject object) {
+		objects.remove(object);
+	}
 
-    @Property
-    public String getTitle() {
-        return title;
-    }
+	public void giveFocus(Focusable fobject) {
+		if (fobject == null) {
+			if (onFocus != null) {
+				onFocus.loseFocus(this);
+			}
+			onFocus = null;
+		} else {
+			panel.gui.propertiesPanel.setObject(fobject);
+			if (onFocus != null) {
+				onFocus.loseFocus(this);
+			}
+			if (fobject != null) {
+				fobject.gainFocus(this);
+			}
+			onFocus = fobject;
+		}
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-        panel.repaint();
-    }
+	@Property
+	public String getTitle() {
+		return title;
+	}
 
-    public void paint(Graphics2D g) {
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(new Color(0, 0, 120, 80));
-        g.drawString("RAFUML v1.0", 10, 20);
-        g.drawString("Authors: Ivan Bocic, Srecko Toroman, Sasa Sijak", 10, 40);
-        g.drawString("Title: " + getTitle(), 10, 60);
-        Font orgFont = g.getFont();
+	public void setTitle(String title) {
+		this.title = title;
+		panel.repaint();
+	}
 
-        for (int i = 0; i < objects.size(); i++) {
-            objects.get(i).paint(g);
-            g.setFont(orgFont);
-        }
-    }
+	public void paint(Graphics2D g) {
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setColor(new Color(0, 0, 120, 80));
+		g.drawString("RAFUML v1.0", 10, 20);
+		g.drawString("Authors: Ivan Bocic, Srecko Toroman, Sasa Sijak", 10, 40);
+		g.drawString("Title: " + getTitle(), 10, 60);
+		Font orgFont = g.getFont();
 
-    public UMLObject getObjectAt(Point2D.Double point) {
-        for (int i = objects.size() - 1; i >= 0; i--) {
-            if (objects.get(i).contains(point)) {
-                return objects.get(i);
-            }
-        }
-        return null;
-    }
+		for (int i = 0; i < objects.size(); i++) {
+			objects.get(i).paint(g);
+			g.setFont(orgFont);
+		}
+	}
 
-    public UMLObject getContainerObjectAt(Point2D.Double point) {
-        for (int i = objects.size() - 1; i >= 0; i--) {
-            if (objects.get(i).contains(point)
-                && (objects.get(i) instanceof UMLBox || objects.get(i) instanceof UMLRelation)) {
-                return objects.get(i);
-            }
-        }
-        return null;
-    }
+	public UMLObject getObjectAt(Point2D.Double point) {
+		for (int i = objects.size() - 1; i >= 0; i--) {
+			if (objects.get(i).contains(point)) {
+				return objects.get(i);
+			}
+		}
+		return null;
+	}
 
-    public void moveForward(UMLObject object) {
-        objects.add(object);
-        objects.remove(object);
-    }
+	public UMLObject getContainerObjectAt(Point2D.Double point) {
+		for (int i = objects.size() - 1; i >= 0; i--) {
+			if (objects.get(i).contains(point)
+					&& (objects.get(i) instanceof UMLBox || objects.get(i) instanceof UMLRelation)) {
+				return objects.get(i);
+			}
+		}
+		return null;
+	}
 
-    public int getMaxHeight() {
-        return maxHeight;
-    }
+	public void moveForward(UMLObject object) {
+		objects.add(object);
+		objects.remove(object);
+	}
 
-    public void setMaxHeight(int maxHeight) {
-        this.maxHeight = maxHeight;
-    }
+	public int getMaxHeight() {
+		return maxHeight;
+	}
 
-    public int getMaxWidth() {
-        return maxWidth;
-    }
+	public void setMaxHeight(int maxHeight) {
+		this.maxHeight = maxHeight;
+	}
 
-    public void setMaxWidth(int maxWidth) {
-        this.maxWidth = maxWidth;
-    }
+	public int getMaxWidth() {
+		return maxWidth;
+	}
+
+	public void setMaxWidth(int maxWidth) {
+		this.maxWidth = maxWidth;
+	}
+
+	public void gainFocus(UMLDiagram diagram) {
+
+	}
+
+	public void loseFocus(UMLDiagram diagram) {
+
+	}
 
 }

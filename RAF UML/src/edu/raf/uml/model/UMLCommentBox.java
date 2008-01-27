@@ -1,3 +1,21 @@
+/*
+RAF UML - Student project for Object oriented programming and design
+Copyright (C) <2007>  Ivan Bocic, Sasa Sijak, Srecko Toroman
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package edu.raf.uml.model;
 
 import java.awt.Color;
@@ -43,6 +61,10 @@ public class UMLCommentBox extends UMLBox {
 
 	@Override
 	public void paint(Graphics2D g) {
+		super.paint(g); // bug jer ce parent da iscrta ceo box (cosak treba da
+						// ostane nevidljiv)
+		// bug je i ako se iskljuci jer onda kada se deserijalizuje ne iscrta se
+		// box
 		if (shapePolygon == null) {
 			shapePolygon = new Polygon(new int[5], new int[5], 5);
 			edgeTriangle = new Polygon(new int[3], new int[3], 3);
@@ -57,7 +79,7 @@ public class UMLCommentBox extends UMLBox {
 		g.setColor(Color.DARK_GRAY);
 		g.drawPolygon(edgeTriangle);
 		g.setColor(Color.BLACK);
-		
+
 		for (int i = 0; i < text.size(); i++)
 			g.drawString(text.get(i), (int) x + 3, (int) y + 28 + i * 16);
 		g.setColor(tempColor);

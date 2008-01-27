@@ -85,17 +85,17 @@ public class UMLClass extends UMLBox {
     @Override
     public double calculateMinWidth() {
     	double minw;
-        if (className != null)
-        	minw = className.calculateMinWidth();
-        else
-        	minw = 0;
-    	for (GuiString kme: fields)
-    		if (kme.getBounds().width > minw)
-    			minw = kme.calculateMinWidth();
-    	for (GuiString kme: methods)
-    		if (kme.getBounds().width > minw)
-    			minw = kme.calculateMinWidth();
-        return minw + RIGHT_BLANK_SPACE_WIDTH;
+		if (className != null)
+			minw = className.calculateMinWidth();
+		else
+			minw = 0;
+		for (GuiString kme : fields)
+			if (kme.getBounds().width > minw)
+				minw = kme.calculateMinWidth();
+		for (GuiString kme : methods)
+			if (kme.getBounds().width > minw)
+				minw = kme.calculateMinWidth();
+		return minw + RIGHT_BLANK_SPACE_WIDTH;
     }
 
     @Override
