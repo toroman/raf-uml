@@ -263,4 +263,5 @@ public class GuiString extends UMLObject implements Draggable {
 	    foregroundColor = c;
 	    this.diagram.panel.repaint();
 	}
+
 }

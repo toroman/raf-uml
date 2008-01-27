@@ -22,10 +22,12 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import edu.raf.uml.gui.util.Clickable;
+
 /**
  * Sve shto mozhe da postoji u dijagramu je UML object.
  */
-public abstract class UMLObject {
+public abstract class UMLObject implements Clickable {
 
     protected UMLDiagram diagram;
     protected static final Cursor DEFAULT_CURSOR = Cursor.getDefaultCursor();
@@ -65,16 +67,6 @@ public abstract class UMLObject {
      * ako treba.
      */
     public abstract void paint(Graphics2D g);
-
-    /**
-     * Sve shto treba uraditi kada se klikne na taj objekat.
-     */
-    public abstract void clickOn(Point2D.Double point);
-
-    /**
-     * Sve shto treba uraditi kada se dvaput klikne na taj objekat.
-     */
-    public abstract void dblClickOn(Point2D.Double point);
     
     public Cursor getCursor () {
     	return DEFAULT_CURSOR;

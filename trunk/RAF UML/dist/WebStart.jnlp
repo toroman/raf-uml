@@ -8,7 +8,7 @@
 		<offline-allowed />
 		<shortcut online="true">
 			<desktop />
-			<menu submenu="Application" />
+			<menu submenu="Racunarski fakultet" />
 		</shortcut>
 		<icon kind="shortcut" href="icon.png" />
 		<icon kind="splash" href="splash.jpg" />
@@ -22,7 +22,7 @@
 	<resources>
 		<j2se version="1.6+"
 			href="http://java.sun.com/products/autodl/j2se" />
-		<jar href="rafuml-bin-v1.0.jar" />
+		<jar href="rafuml-bin-v1.0.1.jar" />
 		<jar href="xstream-1.2.2.jar" />
 	</resources>
 	<application-desc main-class="edu.raf.uml.Main" />
