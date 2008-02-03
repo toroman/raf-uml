@@ -33,7 +33,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -41,6 +40,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -53,6 +53,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileFilter;
 
@@ -71,21 +72,21 @@ public class ApplicationGui extends JFrame {
 	public PropertiesPanel propertiesPanel;
 	public JPanel mainPanel;
 	public JToolBar toolBar;
-	public JButton toolDefault;
-	public JButton toolAddClass;
-	public JButton toolAddInterface;
-	public JButton toolAddInheritance;
-	public JButton toolDelete;
-	public JButton toolAddCommentBox;
-	public JButton toolAddCommentRelation;
-	public JButton toolAddAssociationRelation;
-	public JButton toolAddAggregationRelation;
-	public JButton toolAddCompositionRelation;
-	public JButton toolAddRealisationRelation;
-	public JButton toolAddAssociationClass;
+	public JToggleButton toolDefault;
+	public JToggleButton toolAddClass;
+	public JToggleButton toolAddInterface;
+	public JToggleButton toolAddInheritance;
+	public JToggleButton toolDelete;
+	public JToggleButton toolAddCommentBox;
+	public JToggleButton toolAddCommentRelation;
+	public JToggleButton toolAddAssociationRelation;
+	public JToggleButton toolAddAggregationRelation;
+	public JToggleButton toolAddCompositionRelation;
+	public JToggleButton toolAddRealisationRelation;
+	public JToggleButton toolAddAssociationClass;
 	public JButton toolZoomIn;
 	public JButton toolZoomOut;
-	public ArrayList<JButton> toolButtons;
+	public ButtonGroup toolButtons;
 	public JMenuBar mainMenu;
 	public JMenu menuFile;
 	public JMenu menuHelp;
@@ -438,7 +439,7 @@ public class ApplicationGui extends JFrame {
 
 	private void createToolbar() {
 		toolBar = new JToolBar();
-		toolButtons = new ArrayList<JButton>();
+		toolButtons = new ButtonGroup();
 
 		toolZoomIn = new JButton("", createImageIcon("ZoomInToolIcon.PNG"));
 		toolZoomIn.setToolTipText("Zoom in");
@@ -460,21 +461,19 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolDefault = new JButton("", createImageIcon("SelectionToolIcon.PNG"));
+		toolDefault = new JToggleButton("", createImageIcon("SelectionToolIcon.PNG"));
 		toolDefault.setToolTipText("Selection Tool");
 		toolDefault.setFocusable(false);
 		toolDefault.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				getActiveWindow().panel.setTool(DiagramPanel.DEFAULT_TOOL);
 			}
 		});
 
-		toolAddClass = new JButton("", createImageIcon("AddClassToolIcon.PNG"));
+		toolAddClass = new JToggleButton("", createImageIcon("AddClassToolIcon.PNG"));
 		toolAddClass.setToolTipText("Add new Class");
 		toolAddClass.setFocusable(false);
 		toolAddClass.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
@@ -482,12 +481,11 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolAddInheritance = new JButton("",
+		toolAddInheritance = new JToggleButton("",
 				createImageIcon("AddInheritanceToolIcon.PNG"));
 		toolAddInheritance.setToolTipText("Add new generalisation");
 		toolAddInheritance.setFocusable(false);
 		toolAddInheritance.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
@@ -495,23 +493,21 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolDelete = new JButton("", createImageIcon("DeleteToolIcon.PNG"));
+		toolDelete = new JToggleButton("", createImageIcon("DeleteToolIcon.PNG"));
 		toolDelete.setToolTipText("Delete object");
 		toolDelete.setFocusable(false);
 		toolDelete.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel.setTool(DiagramPanel.DELETE_TOOL);
 			}
 		});
 
-		toolAddCommentBox = new JButton("",
+		toolAddCommentBox = new JToggleButton("",
 				createImageIcon("AddCommentBoxToolIcon.PNG"));
 		toolAddCommentBox.setToolTipText("Add comment box");
 		toolAddCommentBox.setFocusable(false);
 		toolAddCommentBox.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
@@ -519,12 +515,11 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolAddCommentRelation = new JButton("",
+		toolAddCommentRelation = new JToggleButton("",
 				createImageIcon("AddCommentRelationToolIcon.PNG"));
 		toolAddCommentRelation.setToolTipText("Add comment link");
 		toolAddCommentRelation.setFocusable(false);
 		toolAddCommentRelation.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
@@ -532,12 +527,11 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolAddAssociationRelation = new JButton("",
+		toolAddAssociationRelation = new JToggleButton("",
 				createImageIcon("AddAssociationToolIcon.PNG"));
 		toolAddAssociationRelation.setToolTipText("Add new association");
 		toolAddAssociationRelation.setFocusable(false);
 		toolAddAssociationRelation.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
@@ -545,12 +539,11 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolAddAggregationRelation = new JButton("",
+		toolAddAggregationRelation = new JToggleButton("",
 				createImageIcon("AddAggregationToolIcon.PNG"));
 		toolAddAggregationRelation.setToolTipText("Add new aggregation");
 		toolAddAggregationRelation.setFocusable(false);
 		toolAddAggregationRelation.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
@@ -558,12 +551,11 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolAddCompositionRelation = new JButton("",
+		toolAddCompositionRelation = new JToggleButton("",
 				createImageIcon("AddCompositionToolIcon.PNG"));
 		toolAddCompositionRelation.setToolTipText("Add new composition");
 		toolAddCompositionRelation.setFocusable(false);
 		toolAddCompositionRelation.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
@@ -571,12 +563,11 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolAddInterface = new JButton("",
+		toolAddInterface = new JToggleButton("",
 				createImageIcon("AddInterfaceToolIcon.PNG"));
 		toolAddInterface.setToolTipText("Add new interface");
 		toolAddInterface.setFocusable(false);
 		toolAddInterface.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
@@ -584,12 +575,11 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolAddRealisationRelation = new JButton("",
+		toolAddRealisationRelation = new JToggleButton("",
 				createImageIcon("AddRealizationToolIcon.PNG"));
 		toolAddRealisationRelation.setToolTipText("Add new realization");
 		toolAddRealisationRelation.setFocusable(false);
 		toolAddRealisationRelation.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
@@ -597,12 +587,11 @@ public class ApplicationGui extends JFrame {
 			}
 		});
 
-		toolAddAssociationClass = new JButton("",
+		toolAddAssociationClass = new JToggleButton("",
 				createImageIcon("AddAssociationClassToolIcon.PNG"));
 		toolAddAssociationClass.setToolTipText("Add new association class");
 		toolAddAssociationClass.setFocusable(false);
 		toolAddAssociationClass.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				if (getActiveWindow() != null)
 					getActiveWindow().panel
