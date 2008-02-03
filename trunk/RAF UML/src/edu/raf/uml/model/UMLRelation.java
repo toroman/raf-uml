@@ -42,6 +42,7 @@ public abstract class UMLRelation extends UMLObject implements PointContainer,
 			endNorthString, endSouthString;
 	public static final double CLICK_MISS_DISTANCE = 5;
 	public static final int DISTANCE_FROM_UMLBOX = 25;
+	public static final double ANCHOR_DISTANCE = 6;
 	protected boolean lineDashed;
 
 	public UMLRelation(UMLDiagram diagram) {
@@ -141,6 +142,25 @@ public abstract class UMLRelation extends UMLObject implements PointContainer,
 	public void movePoint(GuiPoint guiPoint, double x, double y) {
 		guiPoint.setX(x);
 		guiPoint.setY(y);
+		Iterator <GuiPoint> iter1 = points.iterator();
+		Iterator <GuiPoint> iter2 = points.iterator();
+		iter2.next();
+		while (iter2.hasNext()) {
+			GuiPoint p1 = iter1.next();
+			GuiPoint p2 = iter2.next();
+			if (p1 == guiPoint) {
+				if (Math.abs(p2.getX() - guiPoint.getX()) <= ANCHOR_DISTANCE)
+					guiPoint.setX(p2.getX());
+				if (Math.abs(p2.getY() - guiPoint.getY()) <= ANCHOR_DISTANCE)
+					guiPoint.setY(p2.getY());
+			} else
+				if (p2 == guiPoint) {
+					if (Math.abs(p1.getX() - guiPoint.getX()) <= ANCHOR_DISTANCE)
+						guiPoint.setX(p1.getX());
+					if (Math.abs(p1.getY() - guiPoint.getY()) <= ANCHOR_DISTANCE)
+						guiPoint.setY(p1.getY());
+				}			
+		}
 		calculatePointLocations();
 	}
 

@@ -33,7 +33,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -126,110 +125,72 @@ public class DiagramPanel extends JPanel implements MouseListener,
 	}
 
 	public void setTool(int toolName) {
-		for (JButton toolButton : gui.toolButtons) {
-			toolButton.setSelected(false);
-		}
 		switch (toolName) {
 		case DEFAULT_TOOL:
 			currentTool = new DefaultTool(this);
-			if (!gui.toolDefault.isSelected()) {
-				gui.toolDefault.setSelected(true);
-			}
+			gui.toolButtons.setSelected(gui.toolDefault.getModel(), true);
 			this.setRefreshOnMove(false);
 			setCursor(Cursor.getDefaultCursor());
 			break;
 		case ADD_CLASS_TOOL:
 			currentTool = new AddBoxTool(this, new ClassBoxFactory());
-			if (!gui.toolAddClass.isSelected()) {
-				gui.toolAddClass.setSelected(true);
-			}
 			this.setRefreshOnMove(false);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
 		case ADD_INHERITANCE_TOOL:
 			currentTool = new AddRelationTool(this,
 					new InheritanceRelationFactory());
-			if (!gui.toolAddInheritance.isSelected()) {
-				gui.toolAddInheritance.setSelected(true);
-			}
 			this.setRefreshOnMove(true);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
 		case DELETE_TOOL:
 			currentTool = new DeleteTool(this);
-			if (!gui.toolDelete.isSelected()) {
-				gui.toolDelete.setSelected(true);
-			}
 			this.setRefreshOnMove(false);
 			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			break;
 		case ADD_COMMENT_BOX_TOOL:
 			currentTool = new AddBoxTool(this, new CommentBoxFactory());
-			if (!gui.toolAddCommentBox.isSelected()) {
-				gui.toolAddCommentBox.setSelected(true);
-			}
 			this.setRefreshOnMove(false);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
 		case ADD_COMMENT_RELATION_TOOL:
 			currentTool = new AddRelationTool(this,
 					new CommentRelationFactory());
-			if (!gui.toolAddCommentRelation.isSelected()) {
-				gui.toolAddCommentRelation.setSelected(true);
-			}
 			this.setRefreshOnMove(true);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
 		case ADD_ASSOCIATION_TOOL:
 			currentTool = new AddRelationTool(this,
 					new AssociationRelationFactory());
-			if (!gui.toolAddAssociationRelation.isSelected()) {
-				gui.toolAddAssociationRelation.setSelected(true);
-			}
 			this.setRefreshOnMove(true);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
 		case ADD_AGGREGATION_TOOL:
 			currentTool = new AddRelationTool(this,
 					new AggregationRelationFactory());
-			if (!gui.toolAddAggregationRelation.isSelected()) {
-				gui.toolAddAggregationRelation.setSelected(true);
-			}
 			this.setRefreshOnMove(true);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
 		case ADD_COMPOSITION_TOOL:
 			currentTool = new AddRelationTool(this,
 					new CompositionRelationFactory());
-			if (!gui.toolAddCompositionRelation.isSelected()) {
-				gui.toolAddCompositionRelation.setSelected(true);
-			}
 			this.setRefreshOnMove(true);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
 		case ADD_INTERFACE_TOOL:
 			currentTool = new AddBoxTool(this, new InterfaceBoxFactory());
-			if (!gui.toolAddInterface.isSelected()) {
-				gui.toolAddInterface.setSelected(true);
-			}
 			this.setRefreshOnMove(false);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
 		case ADD_REALISATION_TOOL:
 			currentTool = new AddRelationTool(this,
 					new RealisationRelationFactory());
-			if (!gui.toolAddRealisationRelation.isSelected()) {
-				gui.toolAddRealisationRelation.setSelected(true);
-			}
 			this.setRefreshOnMove(true);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
 		case ADD_ASSOCIATION_CLASS_TOOL:
 			currentTool = new AddRelationTool(this,
 					new AssociationClassFactory());
-			if (!gui.toolAddAssociationClass.isSelected()) {
-				gui.toolAddAssociationClass.setSelected(true);
-			}
 			this.setRefreshOnMove(true);
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 			break;
